@@ -643,6 +643,7 @@
       document.querySelectorAll("#logoutBtn, #logoutBtn2").forEach((btn) => {
         btn.addEventListener("click", () => {
           alert("Logging out...");
+          localStorage.removeItem('auth_token');
           // Add your real logout logic here
         });
       });
