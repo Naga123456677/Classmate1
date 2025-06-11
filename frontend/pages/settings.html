@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Settings - Classmate</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+   <style>
+    /* Modern CSS Reset & Base Styles */
+    :root {
+      /* THEME VARIABLES from first code - Clean and minimal */
+      --bg: #f5f5f5;
+      --text: #333333;
+      --text-secondary: rgba(51, 51, 51, 0.7);
+      --accent: #2a8cf4;
+      --accent-secondary: #ff3a8c;
+      --accent-tertiary: #00c2ff;
+      --accent-dark: #284cff;
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --card-border: rgba(0, 0, 0, 0.1);
+      --btn-primary: linear-gradient(135deg, #a18dff, #7d5fff);
+      --btn-secondary: linear-gradient(135deg, #ff3a8c, #ff6b6b);
+      --btn-hover: brightness(1.05);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      --hero-gradient: linear-gradient(135deg, #4361ee 0%, #7209b7 30%, #f72585 70%, #ff006e 100%);
+      --hero-gradient-dark: linear-gradient(135deg, #2a8cf4 0%, #2d00b6 25%, #aa046d 70%, #f40039 100%);
+      --grid-color: rgba(0, 0, 0, 0.05);
+      --glow: 0 0 20px rgba(138, 143, 255, 0.4);
+      --header-bg: rgba(255, 255, 255, 0.9);
+      --header-text: #333333;
+      --header-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+      --input-bg: #ffffff;
+      --input-border: #ddd;
+      --input-text: #333333;
+      --menu-bg: #ffffff;
+      --menu-hover: rgba(138, 143, 255, 0.1);
+      --modal-bg: #ffffff;
+      --danger: #ef4444;
+      --danger-dark: #b91c1c;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --info: #3b82f6;
+    }
+    
+    .dark-mode {
+      /* dark mode colors - matching first code */
+      --bg: #0a0a0a;
+      --text: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.7);
+      --accent: #284cff;
+      --accent-secondary: #ff3a8c;
+      --accent-tertiary: #00c2ff;
+      --accent-dark: #2a8cf4;
+      --card-bg: rgba(0, 0, 0, 0.9);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --btn-primary: linear-gradient(135deg, #a18dff, #7d5fff);
+      --btn-secondary: linear-gradient(135deg, #ff3a8c, #ff6b6b);
+      --btn-hover: brightness(1.1);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      --hero-gradient: linear-gradient(135deg, #2a8cf4 0%, #2d00b6 25%, #aa046d 70%, #f40039 100%);
+      --hero-gradient-dark: linear-gradient(135deg, #4361ee 0%, #7209b7 30%, #f72585 70%, #ff006e 100%);
+      --grid-color: rgba(255, 255, 255, 0.05);
+      --glow: 0 0 20px rgba(138, 143, 255, 0.4);
+      --header-bg: rgba(0, 0, 0, 0.9);
+      --header-text: #ffffff;
+      --header-shadow: 0 4px 30px rgba(255, 255, 255, 0.15);
+      --input-bg: #1a1a1a;
+      --input-border: #333;
+      --input-text: #ffffff;
+      --menu-bg: #1a1a1a;
+      --menu-hover: rgba(138, 143, 255, 0.2);
+      --modal-bg: #1a1a1a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      transition: background 0.3s ease, color 0.3s ease;
+      overflow-x: hidden;
+    }
+
+    .grid-bg {
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%;
+      background-image: 
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+      background-size: 40px 40px; 
+      z-index: -2; 
+      opacity: 0.4;
+    }
+
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    /* Vertical Panel - Narrow Version */
+    .vertical-panel-narrow {
+      width: 80px;
+      background-color: var(--card-bg);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 0;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 10;
+      transition: width 0.3s ease;
+      border-right: 1px solid var(--card-border);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 16px;
+      width: 100%;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--card-bg);
+      border: 1px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo i {
+      font-size: 18px;
+      color: var(--accent);
+    }
+
+    .expand-button {
+      position: absolute;
+      right: -15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+    }
+
+    .expand-button i {
+      font-size: 20px;
+      background-color: var(--card-border);
+      padding: 20px 5px;
+      border-radius: 0px 10px 10px 0px;
+      color: var(--text);
+    }
+
+    .nav-item {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-item i {
+      font-size: 16px;
+      color: var(--text-secondary);
+    }
+
+    .nav-item.active {
+      background-color: var(--menu-hover);
+    }
+
+    .nav-item.active i {
+      color: var(--accent);
+    }
+
+    .nav-item:hover:not(.active) {
+      background-color: var(--menu-hover);
+      transform: translateY(-2px);
+    }
+
+    .spacer {
+      flex-grow: 1;
+    }
+
+    .user-profile {
+      margin-bottom: 16px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+    }
+
+    /* Vertical Panel - Expanded Version */
+    .vertical-panel-expanded {
+      width: 240px;
+      background-color: var(--card-bg);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      padding: 16px 0;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 10;
+      display: none;
+      transition: width 0.3s ease;
+      border-right: 1px solid var(--card-border);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      margin-bottom: 24px;
+    }
+
+    .logo-text {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 18px;
+      margin-left: 8px;
+      background: linear-gradient(to right, var(--accent-dark), var(--accent-secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .collapse-button {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      padding: 0;
+      transition: all 0.2s ease;
+    }
+
+    .collapse-button:hover {
+      color: var(--accent);
+      transform: translateX(-2px);
+    }
+
+    .collapse-button i {
+      font-size: 16px;
+    }
+
+    .panel-section {
+      margin-bottom: 24px;
+    }
+
+    .section-header {
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 0 16px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-item-expanded {
+      display: flex;
+      align-items: center;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      border-radius: 6px;
+      margin: 0 8px;
+    }
+
+    .nav-item-expanded.active {
+      background-color: var(--menu-hover);
+    }
+
+    .nav-item-expanded.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      border-radius: 0 3px 3px 0;
+    }
+
+    .nav-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-icon i {
+      font-size: 16px;
+      color: var(--text-secondary);
+    }
+
+    .nav-item-expanded.active .nav-icon i {
+      color: var(--accent);
+    }
+
+    .nav-item-expanded.active .nav-text {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .nav-text {
+      color: var(--text);
+      font-size: 14px;
+      transition: color 0.2s ease;
+    }
+
+    .nav-item-expanded:hover:not(.active) {
+      background-color: var(--menu-hover);
+    }
+
+    .nav-item-expanded:hover:not(.active) .nav-icon i {
+      color: var(--accent);
+    }
+
+    .dropdown-icon {
+      margin-left: auto;
+    }
+
+    .dropdown-icon i {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .toggle-switch {
+      width: 40px;
+      height: 20px;
+      background-color: var(--card-border);
+      border-radius: 10px;
+      margin-left: auto;
+      position: relative;
+      padding: 2px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .toggle-knob {
+      width: 16px;
+      height: 16px;
+      background-color: var(--card-bg);
+      border-radius: 50%;
+      transition: transform 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .toggle-switch.active {
+      background-color: var(--accent);
+    }
+
+    .toggle-switch.active .toggle-knob {
+      transform: translateX(20px);
+    }
+
+    .user-profile-expanded {
+      display: flex;
+      align-items: center;
+      padding: 8px 16px;
+      margin-bottom: 8px;
+      border-top: 1px solid var(--card-border);
+      padding-top: 16px;
+    }
+
+    .user-info {
+      margin-left: 12px;
+    }
+
+    .user-name {
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .user-role {
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex-grow: 1;
+      background-color: var(--bg);
+      margin-left: 80px;
+      transition: margin-left 0.3s ease;
+      min-height: 100vh;
+    }
+
+    .main-content-expanded {
+      margin-left: 240px;
+    }
+
+    .main-content h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .main-content p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .vertical-panel-narrow {
+        width: 60px;
+      }
+      
+      .vertical-panel-expanded {
+        width: 200px;
+      }
+      
+      .main-content {
+        margin-left: 60px;
+        padding: 16px;
+      }
+      
+      .main-content-expanded {
+        margin-left: 200px;
+      }
+      
+      .expand-button i {
+        padding: 15px 4px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .vertical-panel-expanded {
+        width: 180px;
+      }
+      
+      .main-content-expanded {
+        margin-left: 180px;
+      }
+    }
+
+    /* Animation for smoother transitions */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.3s ease forwards;
+    }
+  </style>
+  <style>
+    /* All previous CSS variables and styles remain the same */
+    /* Add these additional styles for the settings page */
+    
+    .settings-container {
+      padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .settings-card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--card-border);
+      margin-bottom: 2rem;
+    }
+    
+    .settings-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    .settings-header i {
+      font-size: 1.5rem;
+      color: var(--accent);
+      margin-right: 1rem;
+    }
+    
+    .settings-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--input-border);
+      background-color: var(--input-bg);
+      color: var(--input-text);
+      font-size: 1rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(138, 143, 255, 0.2);
+    }
+    
+    .avatar-upload {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .avatar-preview {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent);
+      margin-right: 1.5rem;
+    }
+    
+    .avatar-upload-btn {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+    }
+    
+    .btn-upload {
+      padding: 0.5rem 1rem;
+      background: var(--btn-primary);
+      color: white;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-upload:hover {
+      filter: var(--btn-hover);
+    }
+    
+    .avatar-upload input[type="file"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    
+    .btn-save {
+      padding: 0.75rem 1.5rem;
+      background: var(--btn-primary);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-save:hover {
+      filter: var(--btn-hover);
+      transform: translateY(-2px);
+    }
+    
+    .security-actions {
+      margin-top: 2rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 2rem;
+    }
+    
+    .btn-secondary {
+      padding: 0.75rem 1.5rem;
+      background: var(--btn-secondary);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-secondary:hover {
+      filter: var(--btn-hover);
+      transform: translateY(-2px);
+    }
+    
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--accent);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 4px;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s;
+      box-shadow: var(--shadow);
+    }
+    
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="app-container">
+    <!-- Vertical Panels remain the same as before -->
+    <!-- Main Content Area -->
+    <div class="main-content" id="mainContent">
+      <div class="settings-container">
+        <div class="settings-card">
+          <div class="settings-header">
+            <i class="fas fa-user-cog"></i>
+            <h1 class="settings-title">Profile Settings</h1>
+          </div>
+          
+          <div class="avatar-upload">
+            <img id="avatarPreview" src="https://randomuser.me/api/portraits/men/32.jpg" class="avatar-preview" alt="Profile">
+            <div class="avatar-upload-btn">
+              <button class="btn-upload">
+                <i class="fas fa-camera"></i> Change Photo
+              </button>
+              <input type="file" id="avatarUpload" accept="image/*">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="userName" class="form-label">Full Name</label>
+            <input type="text" id="userName" class="form-control" value="Harper Nelson">
+          </div>
+          
+          <div class="form-group">
+            <label for="userInterests" class="form-label">Interests (comma separated)</label>
+            <input type="text" id="userInterests" class="form-control" value="Web Development, AI, UX Design">
+          </div>
+          
+          <button id="saveProfileBtn" class="btn-save">
+            <i class="fas fa-save"></i> Save Changes
+          </button>
+        </div>
+        
+        <div class="settings-card">
+          <div class="settings-header">
+            <i class="fas fa-lock"></i>
+            <h1 class="settings-title">Security Settings</h1>
+          </div>
+          
+          <div class="form-group">
+            <label for="currentPassword" class="form-label">Current Password</label>
+            <input type="password" id="currentPassword" class="form-control" placeholder="Enter current password">
+          </div>
+          
+          <div class="form-group">
+            <label for="newPassword" class="form-label">New Password</label>
+            <input type="password" id="newPassword" class="form-control" placeholder="Enter new password">
+          </div>
+          
+          <div class="form-group">
+            <label for="confirmPassword" class="form-label">Confirm New Password</label>
+            <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm new password">
+          </div>
+          
+          <div class="security-actions">
+            <button id="changePasswordBtn" class="btn-save">
+              <i class="fas fa-key"></i> Change Password
+            </button>
+            <button id="forgotPasswordBtn" class="btn-secondary" style="margin-left: 1rem;">
+              <i class="fas fa-question-circle"></i> Forgot Password?
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div id="toast" class="toast"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // DOM Elements
+      const avatarPreview = document.getElementById('avatarPreview');
+      const avatarUpload = document.getElementById('avatarUpload');
+      const userNameInput = document.getElementById('userName');
+      const userInterestsInput = document.getElementById('userInterests');
+      const saveProfileBtn = document.getElementById('saveProfileBtn');
+      const changePasswordBtn = document.getElementById('changePasswordBtn');
+      const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
+      const toast = document.getElementById('toast');
+      
+      // Load saved user data
+      function loadUserData() {
+        const savedData = JSON.parse(localStorage.getItem('userSettings')) || {};
+        if (savedData.name) userNameInput.value = savedData.name;
+        if (savedData.interests) userInterestsInput.value = savedData.interests;
+        if (savedData.avatar) avatarPreview.src = savedData.avatar;
+      }
+      
+      // Handle avatar upload
+      avatarUpload.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            avatarPreview.src = event.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+      
+      // Save profile changes
+      saveProfileBtn.addEventListener('click', () => {
+        const userSettings = {
+          name: userNameInput.value,
+          interests: userInterestsInput.value,
+          avatar: avatarPreview.src
+        };
+        
+        localStorage.setItem('userSettings', JSON.stringify(userSettings));
+        
+        // Update the navigation panel
+        updateNavProfile(userSettings);
+        
+        showToast("Profile updated successfully!");
+      });
+      
+      // Update navigation panel with new user data
+      function updateNavProfile(settings) {
+        // Update expanded panel
+        const expandedName = document.querySelector('.user-profile-expanded .user-name');
+        const expandedAvatar = document.querySelector('.user-profile-expanded .user-avatar');
+        
+        if (expandedName) expandedName.textContent = settings.name;
+        if (expandedAvatar) expandedAvatar.src = settings.avatar;
+        
+        // Update narrow panel
+        const narrowAvatar = document.querySelector('.user-profile .user-avatar');
+        if (narrowAvatar) narrowAvatar.src = settings.avatar;
+      }
+      
+      // Handle password change
+      changePasswordBtn.addEventListener('click', () => {
+        const currentPass = document.getElementById('currentPassword').value;
+        const newPass = document.getElementById('newPassword').value;
+        const confirmPass = document.getElementById('confirmPassword').value;
+        
+        if (!currentPass || !newPass || !confirmPass) {
+          showToast("Please fill all password fields");
+          return;
+        }
+        
+        if (newPass !== confirmPass) {
+          showToast("New passwords don't match");
+          return;
+        }
+        
+        // In a real app, you would validate current password and update it
+        showToast("Password changed successfully!");
+        
+        // Clear fields
+        document.getElementById('currentPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+      });
+      
+      // Handle forgot password
+      forgotPasswordBtn.addEventListener('click', () => {
+        // In a real app, this would trigger a password reset flow
+        showToast("Password reset link sent to your email");
+      });
+      
+      // Show toast notification
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+      }
+      
+      // Initialize
+      loadUserData();
+    });
+  </script>
+</body>
+</html>
