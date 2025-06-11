@@ -389,42 +389,56 @@
     </div>
 
   <script>
-    // Theme toggle functionality
+    // Theme toggle functionality (Standardized Logic)
     const themeToggle = document.getElementById('themeToggle');
     const body = document.body;
 
-    // Check local storage for theme preference
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      body.className = savedTheme === 'dark' ? 'dark-mode' : '';
-      themeToggle.checked = savedTheme === 'dark';
-    } else {
-      // Default to dark if no preference saved
-      body.className = 'dark-mode';
-      localStorage.setItem('theme', 'dark');
+    // --- START OF THEME SYNCHRONIZATION LOGIC ---
+    function applyThemeSynchronized() {
+        const parentDarkModeSetting = localStorage.getItem("darkMode"); // Use the SHARED key
+        const isNowDark = parentDarkModeSetting === "enabled";
+        body.classList.toggle("dark-mode", isNowDark);
+        // CSS handles the display of sun/moon icons based on body.dark-mode class
+        // and the .theme-toggle button structure you have.
     }
 
-    themeToggle.addEventListener('click', () => {
-      body.classList.toggle('dark-mode');
-      const isDark = body.classList.contains('dark-mode');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      
-      // Dispatch event for other pages
-      window.dispatchEvent(new CustomEvent('themeChange', {
-        detail: { darkMode: isDark }
-      }));
-    });
+    // 1. Initial theme application on load
+    applyThemeSynchronized();
 
-    // Listen for theme changes from other pages
+    // 2. Listen for 'storage' events (when localStorage.darkMode changes elsewhere)
     window.addEventListener('storage', (e) => {
-      if (e.key === 'theme') {
-        body.className = e.newValue === 'dark' ? 'dark-mode' : '';
-      }
+        if (e.key === 'darkMode') {
+            applyThemeSynchronized();
+        }
     });
 
+    // 3. Listen for 'themeChange' custom event dispatched by the parent to this iframe
     window.addEventListener('themeChange', (e) => {
-      body.className = e.detail.darkMode ? 'dark-mode' : '';
+        if (e.detail && typeof e.detail.darkMode === 'boolean') {
+            body.classList.toggle("dark-mode", e.detail.darkMode);
+            // CSS handles icon changes
+        }
     });
+
+    // 4. Handle the attendance calculator page's own theme toggle button
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const bodyIsDarkNow = body.classList.toggle('dark-mode');
+            // Update the shared 'darkMode' localStorage item
+            localStorage.setItem('darkMode', bodyIsDarkNow ? 'enabled' : 'disabled');
+            // The parent's 'storage' event listener will pick this up.
+            // CSS handles local icon changes.
+
+            // Dispatch event for other pages (if this page directly changes theme)
+            // This is usually handled by the parent, but can be kept for robustness
+            // if an iframe is intended to be a source of truth too.
+            // For consistency, let parent dashboard handle dispatching primarily.
+            // window.dispatchEvent(new CustomEvent('themeChange', {
+            //   detail: { darkMode: bodyIsDarkNow }
+            // }));
+        });
+    }
+    // --- END OF THEME SYNCHRONIZATION LOGIC ---
 
     function clearErrors() {
       const errorMessages = document.querySelectorAll('.error-message');
@@ -480,7 +494,6 @@
         isValid = false;
       }
 
-      // Clear previous result content and hide it for animation
       resultDiv.innerHTML = '<div class="result-content"></div>';
       const resultContent = resultDiv.querySelector('.result-content');
       resultContent.classList.remove('visible');
@@ -500,8 +513,8 @@
         const canBunk = Math.floor((attended * 100 / mandatory) - total);
         const daysCanBunk = perDay > 0 ? Math.floor(canBunk / perDay) : 0;
         message = `<i class="fas fa-check-circle"></i> You are safe with <span class="highlight ${colorClass}">${percentage.toFixed(2)}%</span> attendance.<br>
-                   You can afford to miss <span class="highlight">${canBunk}</span> more class(es).<br>
-                   That's approximately <span class="highlight">${daysCanBunk}</span> day(s).`;
+                  You can afford to miss <span class="highlight">${canBunk}</span> more class(es).<br>
+                  That's approximately <span class="highlight">${daysCanBunk}</span> day(s).`;
       } else {
         colorClass = percentage >= (mandatory * 0.8) ? 'yellow' : 'red';
         const needToAttend = Math.ceil((mandatory * total - attended * 100) / (100 - mandatory));
@@ -509,8 +522,8 @@
         const daysString = daysToAttend === Infinity ? "an infinite number of" : `<span class="highlight">${daysToAttend}</span>`;
 
         message = `<i class="fas fa-exclamation-triangle"></i> Current Attendance: <span class="highlight ${colorClass}">${percentage.toFixed(2)}%</span>.<br>
-                   You need to attend <span class="highlight">${needToAttend}</span> more class(es) consecutively.<br>
-                   That's approximately ${daysString} day(s) to reach <span class="highlight">${mandatory}%</span>.`;
+                  You need to attend <span class="highlight">${needToAttend}</span> more class(es) consecutively.<br>
+                  That's approximately ${daysString} day(s) to reach <span class="highlight">${mandatory}%</span>.`;
       }
 
       resultContent.innerHTML = message;
