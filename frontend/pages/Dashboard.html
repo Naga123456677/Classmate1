@@ -4,484 +4,444 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vertical Nav Panel with Dynamic Content</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
   <style>
-    /* Modern CSS Reset & Base Styles */
-    :root {
-      /* THEME VARIABLES from first code - Clean and minimal */
-      --bg: #f5f5f5;
-      --text: #333333;
-      --text-secondary: rgba(51, 51, 51, 0.7);
-      --accent: #2a8cf4;
-      --accent-secondary: #ff3a8c;
-      --accent-tertiary: #00c2ff;
-      --accent-dark: #284cff;
-      --card-bg: rgba(255, 255, 255, 0.9);
-      --card-border: rgba(0, 0, 0, 0.1);
-      --btn-primary: linear-gradient(135deg, #a18dff, #7d5fff);
-      --btn-secondary: linear-gradient(135deg, #ff3a8c, #ff6b6b);
-      --btn-hover: brightness(1.05);
-      --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      --hero-gradient: linear-gradient(135deg, #4361ee 0%, #7209b7 30%, #f72585 70%, #ff006e 100%);
-      --hero-gradient-dark: linear-gradient(135deg, #2a8cf4 0%, #2d00b6 25%, #aa046d 70%, #f40039 100%);
-      --grid-color: rgba(0, 0, 0, 0.05);
-      --glow: 0 0 20px rgba(138, 143, 255, 0.4);
-      --header-bg: rgba(255, 255, 255, 0.9);
-      --header-text: #333333;
-      --header-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
-      --input-bg: #ffffff;
-      --input-border: #ddd;
-      --input-text: #333333;
-      --menu-bg: #ffffff;
-      --menu-hover: rgba(138, 143, 255, 0.1);
-      --modal-bg: #ffffff;
-      --danger: #ef4444;
-      --danger-dark: #b91c1c;
-      --success: #22c55e;
-      --warning: #f59e0b;
-      --info: #3b82f6;
-    }
-    
-    .dark-mode {
-      /* dark mode colors - matching first code */
-      --bg: #0a0a0a;
-      --text: #ffffff;
-      --text-secondary: rgba(255, 255, 255, 0.7);
-      --accent: #284cff;
-      --accent-secondary: #ff3a8c;
-      --accent-tertiary: #00c2ff;
-      --accent-dark: #2a8cf4;
-      --card-bg: rgba(0, 0, 0, 0.9);
-      --card-border: rgba(255, 255, 255, 0.1);
-      --btn-primary: linear-gradient(135deg, #a18dff, #7d5fff);
-      --btn-secondary: linear-gradient(135deg, #ff3a8c, #ff6b6b);
-      --btn-hover: brightness(1.1);
-      --shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      --hero-gradient: linear-gradient(135deg, #2a8cf4 0%, #2d00b6 25%, #aa046d 70%, #f40039 100%);
-      --hero-gradient-dark: linear-gradient(135deg, #4361ee 0%, #7209b7 30%, #f72585 70%, #ff006e 100%);
-      --grid-color: rgba(255, 255, 255, 0.05);
-      --glow: 0 0 20px rgba(138, 143, 255, 0.4);
-      --header-bg: rgba(0, 0, 0, 0.9);
-      --header-text: #ffffff;
-      --header-shadow: 0 4px 30px rgba(255, 255, 255, 0.15);
-      --input-bg: #1a1a1a;
-      --input-border: #333;
-      --input-text: #ffffff;
-      --menu-bg: #1a1a1a;
-      --menu-hover: rgba(138, 143, 255, 0.2);
-      --modal-bg: #1a1a1a;
-    }
-
+    /* Reset and base styles */
     * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     }
 
     body {
-      background-color: var(--bg);
-      color: var(--text);
-      transition: background 0.3s ease, color 0.3s ease;
-      overflow-x: hidden;
+        background-color: #f5f5f7;
+        overflow-x: hidden;
     }
 
-    .grid-bg {
-      position: fixed; 
-      top: 0; 
-      left: 0; 
-      width: 100%; 
-      height: 100%;
-      background-image: 
-        linear-gradient(var(--grid-color) 1px, transparent 1px),
-        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-      background-size: 40px 40px; 
-      z-index: -2; 
-      opacity: 0.4;
+    body.dark-mode {
+      background-color: #1f2937;
+      color: #e5e7eb;
     }
 
     .app-container {
-      display: flex;
-      min-height: 100vh;
-      width: 100%;
+        display: flex;
+        min-height: 100vh;
+        width: 100%;
     }
 
     /* Vertical Panel - Narrow Version */
     .vertical-panel-narrow {
-      width: 80px;
-      background-color: var(--card-bg);
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 16px 0;
-      height: 100vh;
-      position: fixed;
-      left: 0;
-      top: 0;
-      z-index: 10;
-      transition: width 0.3s ease;
-      border-right: 1px solid var(--card-border);
+        width: 80px;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 16px 0;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 10;
+        transition: width 0.3s ease;
+    }
+
+    body.dark-mode .vertical-panel-narrow,
+    body.dark-mode .vertical-panel-expanded {
+        background-color: #1f2937;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
 
     .logo-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      margin-bottom: 16px;
-      width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin-bottom: 16px;
+        width: 100%;
     }
 
     .logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: var(--card-bg);
-      border: 1px solid var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #ffffff;
+        border: 1px solid #000000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    body.dark-mode .logo {
+        background-color: #374151;
+        border-color: #e5e7eb;
     }
 
     .logo i {
-      font-size: 18px;
-      color: var(--accent);
+        font-size: 18px;
+        color: #000000;
+    }
+
+    body.dark-mode .logo i {
+        color: #e5e7eb;
     }
 
     .expand-button {
-      position: absolute;
-      right: -15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-secondary);
-      cursor: pointer;
-      width: 16px;
-      height: 16px;
+        position: absolute;
+        right: -15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+        cursor: pointer;
+        width: 16px;
+        height: 16px;
     }
 
     .expand-button i {
-      font-size: 20px;
-      background-color: var(--card-border);
-      padding: 20px 5px;
-      border-radius: 0px 10px 10px 0px;
-      color: var(--text);
+        font-size: 20px;
+        background-color: rgb(216, 216, 216,0.514);
+        padding: 20px 5px;
+        border-radius: 0px 10px 10px 0px;
+    }
+
+    body.dark-mode .expand-button i {
+        background-color: #4b556377;
     }
 
     .nav-item {
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 16px;
-      cursor: pointer;
-      transition: all 0.2s ease;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
     }
 
     .nav-item i {
-      font-size: 16px;
-      color: var(--text-secondary);
+        font-size: 16px;
+        color: #6b7280;
+    }
+
+    body.dark-mode .nav-item i {
+        color: #9ca3af;
     }
 
     .nav-item.active {
-      background-color: var(--menu-hover);
+        background-color: #ecfdf5;
+    }
+
+    body.dark-mode .nav-item.active {
+        background-color: #064e3b;
     }
 
     .nav-item.active i {
-      color: var(--accent);
+        color: #0045e7;
+    }
+
+    body.dark-mode .nav-item.active i {
+        color: #3b82f6;
     }
 
     .nav-item:hover:not(.active) {
-      background-color: var(--menu-hover);
-      transform: translateY(-2px);
+        background-color: #f3f4f6;
+    }
+
+    body.dark-mode .nav-item:hover:not(.active) {
+        background-color: #374151;
     }
 
     .spacer {
-      flex-grow: 1;
+        flex-grow: 1;
     }
 
     .user-profile {
-      margin-bottom: 16px;
+        margin-bottom: 16px;
     }
 
     .user-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--accent);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
     }
 
     /* Vertical Panel - Expanded Version */
     .vertical-panel-expanded {
-      width: 240px;
-      background-color: var(--card-bg);
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      padding: 16px 0;
-      height: 100vh;
-      position: fixed;
-      left: 0;
-      top: 0;
-      z-index: 10;
-      display: none;
-      transition: width 0.3s ease;
-      border-right: 1px solid var(--card-border);
+        width: 240px;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        padding: 16px 0;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 10;
+        display: none;
+        transition: width 0.3s ease;
     }
 
     .panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        margin-bottom: 24px;
     }
 
     .logo-text {
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 18px;
-      margin-left: 8px;
-      background: linear-gradient(to right, var(--accent-dark), var(--accent-secondary));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+        color: #0045e7;
+        font-weight: 500;
+        font-size: 18px;
+        margin-left: 8px;
+    }
+
+    body.dark-mode .logo-text {
+        color: #3b82f6;
     }
 
     .collapse-button {
-      background: none;
-      border: none;
-      color: var(--text-secondary);
-      cursor: pointer;
-      width: 20px;
-      height: 20px;
-      padding: 0;
-      transition: all 0.2s ease;
-    }
-
-    .collapse-button:hover {
-      color: var(--accent);
-      transform: translateX(-2px);
+        background: none;
+        border: none;
+        color: #9ca3af;
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+        padding: 0;
     }
 
     .collapse-button i {
-      font-size: 16px;
+        font-size: 16px;
     }
 
     .panel-section {
-      margin-bottom: 24px;
+        margin-bottom: 24px;
     }
 
     .section-header {
-      color: var(--text-secondary);
-      font-size: 12px;
-      font-weight: 500;
-      padding: 0 16px;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+        color: #9ca3af;
+        font-size: 12px;
+        font-weight: 500;
+        padding: 0 16px;
+        margin-bottom: 8px;
     }
 
     .nav-item-expanded {
-      display: flex;
-      align-items: center;
-      padding: 8px 16px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      position: relative;
-      border-radius: 6px;
-      margin: 0 8px;
+        display: flex;
+        align-items: center;
+        padding: 8px 16px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        position: relative;
     }
 
     .nav-item-expanded.active {
-      background-color: var(--menu-hover);
+        background-color: #ecfdf5;
     }
 
-    .nav-item-expanded.active::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: var(--accent);
-      border-radius: 0 3px 3px 0;
+    body.dark-mode .nav-item-expanded.active {
+        background-color: #064e3b;
     }
 
     .nav-icon {
-      width: 20px;
-      height: 20px;
-      margin-right: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+        width: 20px;
+        height: 20px;
+        margin-right: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .nav-icon i {
-      font-size: 16px;
-      color: var(--text-secondary);
+        font-size: 16px;
+        color: #6b7280;
+    }
+
+    body.dark-mode .nav-icon i {
+        color: #9ca3af;
     }
 
     .nav-item-expanded.active .nav-icon i {
-      color: var(--accent);
+        color: #0045e7;
+    }
+
+    body.dark-mode .nav-item-expanded.active .nav-icon i {
+        color: #3b82f6;
     }
 
     .nav-item-expanded.active .nav-text {
-      color: var(--accent);
-      font-weight: 500;
+        color: #0045e7;
+        font-weight: 500;
+    }
+
+    body.dark-mode .nav-item-expanded.active .nav-text {
+        color: #3b82f6;
     }
 
     .nav-text {
-      color: var(--text);
-      font-size: 14px;
-      transition: color 0.2s ease;
+        color: #4b5563;
+        font-size: 14px;
+    }
+
+    body.dark-mode .nav-text {
+        color: #e5e7eb;
     }
 
     .nav-item-expanded:hover:not(.active) {
-      background-color: var(--menu-hover);
+        background-color: #f3f4f6;
     }
 
-    .nav-item-expanded:hover:not(.active) .nav-icon i {
-      color: var(--accent);
+    body.dark-mode .nav-item-expanded:hover:not(.active) {
+        background-color: #374151;
     }
 
     .dropdown-icon {
-      margin-left: auto;
+        margin-left: auto;
     }
 
     .dropdown-icon i {
-      font-size: 12px;
-      color: var(--text-secondary);
+        font-size: 12px;
+        color: #9ca3af;
     }
 
     .toggle-switch {
-      width: 40px;
-      height: 20px;
-      background-color: var(--card-border);
-      border-radius: 10px;
-      margin-left: auto;
-      position: relative;
-      padding: 2px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+        width: 40px;
+        height: 20px;
+        background-color: #e5e7eb;
+        border-radius: 10px;
+        margin-left: auto;
+        position: relative;
+        padding: 2px;
+        cursor: pointer;
+    }
+
+    body.dark-mode .toggle-switch {
+        background-color: #4b5563;
     }
 
     .toggle-knob {
-      width: 16px;
-      height: 16px;
-      background-color: var(--card-bg);
-      border-radius: 50%;
-      transition: transform 0.2s ease;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        width: 16px;
+        height: 16px;
+        background-color: #ffffff;
+        border-radius: 50%;
+        transition: transform 0.2s ease;
     }
 
     .toggle-switch.active {
-      background-color: var(--accent);
+        background-color: #10b981;
     }
 
     .toggle-switch.active .toggle-knob {
-      transform: translateX(20px);
+        transform: translateX(20px);
     }
 
     .user-profile-expanded {
-      display: flex;
-      align-items: center;
-      padding: 8px 16px;
-      margin-bottom: 8px;
-      border-top: 1px solid var(--card-border);
-      padding-top: 16px;
+        display: flex;
+        align-items: center;
+        padding: 8px 16px;
+        margin-bottom: 8px;
     }
 
     .user-info {
-      margin-left: 12px;
+        margin-left: 12px;
     }
 
     .user-name {
-      color: var(--text);
-      font-size: 14px;
-      font-weight: 500;
+        color: #4b5563;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    body.dark-mode .user-name {
+        color: #e5e7eb;
     }
 
     .user-role {
-      color: var(--text-secondary);
-      font-size: 12px;
+        color: #9ca3af;
+        font-size: 12px;
     }
 
     /* Main Content */
     .main-content {
-      flex-grow: 1;
-      background-color: var(--bg);
-      margin-left: 80px;
-      transition: margin-left 0.3s ease;
-      min-height: 100vh;
+        flex-grow: 1;
+        background-color: #f5f5f7;
+        margin-left: 80px;
+        transition: margin-left 0.3s ease;
+        min-height: 100vh;
+    }
+
+    body.dark-mode .main-content {
+        background-color: #374151;
     }
 
     .main-content-expanded {
-      margin-left: 240px;
+        margin-left: 240px;
     }
 
     .main-content h1 {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 16px;
+        font-size: 24px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 16px;
+    }
+
+    body.dark-mode .main-content h1 {
+        color: #f9fafb;
     }
 
     .main-content p {
-      color: var(--text-secondary);
-      line-height: 1.6;
+        color: #4b5563;
+        line-height: 1.6;
+    }
+
+    body.dark-mode .main-content p {
+        color: #d1d5db;
     }
 
     /* Responsive adjustments */
     @media (max-width: 768px) {
-      .vertical-panel-narrow {
-        width: 60px;
-      }
-      
-      .vertical-panel-expanded {
-        width: 200px;
-      }
-      
-      .main-content {
-        margin-left: 60px;
-        padding: 16px;
-      }
-      
-      .main-content-expanded {
-        margin-left: 200px;
-      }
-      
-      .expand-button i {
-        padding: 15px 4px;
-      }
+        .vertical-panel-narrow {
+            width: 60px;
+        }
+        
+        .vertical-panel-expanded {
+            width: 200px;
+        }
+        
+        .main-content {
+            margin-left: 60px;
+            padding: 16px;
+        }
+        
+        .main-content-expanded {
+            margin-left: 200px;
+        }
+        
+        .expand-button i {
+            padding: 15px 4px;
+        }
     }
 
     @media (max-width: 480px) {
-      .vertical-panel-expanded {
-        width: 180px;
-      }
-      
-      .main-content-expanded {
-        margin-left: 180px;
-      }
-    }
-
-    /* Animation for smoother transitions */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .fade-in {
-      animation: fadeIn 0.3s ease forwards;
+        .vertical-panel-expanded {
+            width: 180px;
+        }
+        
+        .main-content-expanded {
+            margin-left: 180px;
+        }
     }
   </style>
 </head>
 <body>
-  <div class="grid-bg"></div>
   <div class="app-container">
     <!-- Narrow (icon-only) panel -->
     <div class="vertical-panel-narrow" id="narrowPanel">
@@ -609,98 +569,157 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const narrow = document.getElementById("narrowPanel");
-      const expanded = document.getElementById("expandedPanel");
-      const expandBtn = narrow.querySelector(".expand-button");
-      const collapseBtn = expanded.querySelector(".collapse-button");
+      const narrowPanel = document.getElementById("narrowPanel");
+      const expandedPanel = document.getElementById("expandedPanel");
+      const expandBtn = narrowPanel.querySelector(".expand-button");
+      const collapseBtn = expandedPanel.querySelector(".collapse-button");
       const navItems = document.querySelectorAll(
         ".nav-item, .nav-item-expanded"
       );
       const darkToggle = document.getElementById("darkToggle");
       const darkToggleExp = document.getElementById("darkToggleExpanded");
-      const main = document.getElementById("mainContent");
-      const toggleSwitch = darkToggleExp?.querySelector(".toggle-switch");
+      const mainContent = document.getElementById("mainContent");
+      const contentFrame = document.getElementById('contentFrame');
 
       // Function to handle panel expansion
       const expandPanel = () => {
-        narrow.style.display = "none";
-        expanded.style.display = "flex";
-        main.classList.add("main-content-expanded");
+        narrowPanel.style.display = "none";
+        expandedPanel.style.display = "flex";
+        mainContent.classList.add("main-content-expanded");
       };
 
       // Function to handle panel collapse
       const collapsePanel = () => {
-        expanded.style.display = "none";
-        narrow.style.display = "flex";
-        main.classList.remove("main-content-expanded");
+        expandedPanel.style.display = "none";
+        narrowPanel.style.display = "flex";
+        mainContent.classList.remove("main-content-expanded");
       };
 
       expandBtn.addEventListener("click", expandPanel);
       collapseBtn.addEventListener("click", collapsePanel);
 
+      const updateDashboardToggleStates = (isDark) => {
+        if (darkToggleExp) {
+            const toggleSwitch = darkToggleExp.querySelector(".toggle-switch");
+            if (toggleSwitch) {
+                toggleSwitch.classList.toggle("active", isDark);
+            }
+        }
+        // For the narrow panel, CSS handles icon change (fa-moon/fa-sun) if you add them.
+        // Currently, it's just one icon that doesn't change, which is fine.
+      };
+
+      const dispatchThemeToIframe = (isDark) => {
+        if (contentFrame && contentFrame.contentWindow) {
+            try {
+                // Ensure iframe is fully loaded and accessible
+                if (contentFrame.contentDocument && contentFrame.contentDocument.readyState === 'complete') {
+                    contentFrame.contentWindow.dispatchEvent(new CustomEvent('themeChange', { detail: { darkMode: isDark } }));
+                } else {
+                    // Fallback: if not ready, dispatch on load.
+                    contentFrame.addEventListener('load', function onDispatchLoad() {
+                         if (contentFrame.contentWindow) {
+                            contentFrame.contentWindow.dispatchEvent(new CustomEvent('themeChange', { detail: { darkMode: isDark } }));
+                         }
+                    }, { once: true });
+                }
+            } catch (e) {
+                console.warn("Dashboard: Could not dispatch themeChange to iframe. This can happen if iframe content is not yet fully initialized or from a different origin.", e.message);
+            }
+        }
+      };
+      
+      const setDarkMode = (isDark, dispatchToIframe = true) => {
+        document.body.classList.toggle("dark-mode", isDark);
+        localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
+        updateDashboardToggleStates(isDark);
+        if (dispatchToIframe) {
+            dispatchThemeToIframe(isDark);
+        }
+      };
+
+      const toggleDark = () => {
+        const currentIsDark = document.body.classList.contains("dark-mode");
+        setDarkMode(!currentIsDark);
+      };
+      
+      // Initial theme setup for parent
+      const initialDarkMode = localStorage.getItem("darkMode") === "enabled";
+      setDarkMode(initialDarkMode, false); // Set parent theme, don't dispatch yet (iframe might not be ready)
+
+      // Event listeners for dashboard's own dark mode toggles
+      darkToggle.addEventListener("click", toggleDark);
+      if (darkToggleExp) darkToggleExp.addEventListener("click", toggleDark);
+
+      // Sync theme with iframe when it loads a new page or initially loads
+      contentFrame.addEventListener('load', () => {
+        const currentParentThemeIsDark = document.body.classList.contains("dark-mode");
+        // Use a small timeout to give iframe's JS a chance to set up its listeners
+        setTimeout(() => {
+            dispatchThemeToIframe(currentParentThemeIsDark);
+        }, 100);
+      });
+      
       // Navigation click and iframe loader
       navItems.forEach((item) => {
         item.addEventListener("click", (e) => {
-          // Don't process click if it's the dark mode toggle
-          if (item.id === "darkToggle" || item.id === "darkToggleExpanded") {
+          const targetIsToggle = item.id === "darkToggle" || item.id === "darkToggleExpanded";
+          const targetIsLogout = item.classList.contains("logout");
+
+          if (targetIsToggle || targetIsLogout) {
+            // Dark mode toggles have their own listeners. Logout is a link.
+            if (targetIsLogout) {
+                // Handle logout logic if not just a plain link navigation
+                // localStorage.removeItem('auth_token'); // Already handled by logout buttons
+                // window.location.href = item.querySelector('a').href; // if not automatically navigating
+            }
             return;
           }
           
-          // highlight
-          navItems.forEach((i) => i.classList.remove("active"));
-          item.classList.add("active");
+          const pageToLoad = item.dataset.page;
 
-          const page = item.dataset.page;
-          if (page) {
-            const iframe = document.getElementById('contentFrame');
-            iframe.src = page;
+          // Remove 'active' from all nav items in both panels (except toggles/logout)
+          document.querySelectorAll(".nav-item, .nav-item-expanded").forEach(i => {
+            if (i.id !== 'darkToggle' && i.id !== 'darkToggleExpanded' && !i.classList.contains('logout')) {
+              i.classList.remove("active");
+            }
+          });
+
+          // Add 'active' to the clicked item and its counterpart in the other panel
+          if (pageToLoad) {
+            document.querySelectorAll(`.nav-item[data-page="${pageToLoad}"], .nav-item-expanded[data-page="${pageToLoad}"]`).forEach(match => {
+              match.classList.add("active");
+            });
+            contentFrame.src = pageToLoad; // This will trigger the 'load' event on contentFrame
           }
         });
       });
 
-      // Dark mode toggle
-      const toggleDark = () => {
-        document.body.classList.toggle("dark-mode");
-        const isDark = document.body.classList.contains("dark-mode");
-        localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
-        
-        // Update toggle switch state
-        if (toggleSwitch) {
-          if (isDark) {
-            toggleSwitch.classList.add("active");
-          } else {
-            toggleSwitch.classList.remove("active");
-          }
+      // Listen to storage events to sync dashboard UI if an iframe changes the theme
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'darkMode') {
+            const isDark = e.newValue === 'enabled';
+            // Set parent's theme, but don't re-dispatch to iframes (they get storage event too)
+            setDarkMode(isDark, false); 
         }
-
-        // Notify iframes about the theme change
-        window.dispatchEvent(new CustomEvent('themeChange', { detail: { darkMode: isDark } }));
-      };
+      });
       
-      // Check for saved dark mode preference
-      if (localStorage.getItem("darkMode") === "enabled") {
-        document.body.classList.add("dark-mode");
-        if (toggleSwitch) {
-          toggleSwitch.classList.add("active");
-        }
-      }
-      
-      darkToggle.addEventListener("click", toggleDark);
-      if (darkToggleExp) darkToggleExp.addEventListener("click", toggleDark);
-
-      // Logout button
-      document.querySelectorAll("#logoutBtn, #logoutBtn2").forEach((btn) => {
-        btn.addEventListener("click", () => {
+      // Logout buttons (already had some logic, ensuring it's robust)
+      document.querySelectorAll(".logout").forEach((btn) => {
+        btn.addEventListener("click", (event) => { // Added event param
+          // For actual logout, you might want to prevent default if it's not just a link
+          // event.preventDefault(); 
           alert("Logging out...");
           localStorage.removeItem('auth_token');
-          // Add your real logout logic here
+          // If the logout item is an <a> tag, it will navigate.
+          // If it's a button, you'd redirect: window.location.href = '../../index.html';
         });
       });
       
       // Close expanded panel when clicking outside on mobile
       window.addEventListener("click", (e) => {
-        if (window.innerWidth <= 768 && expanded.style.display === "flex") {
-          if (!expanded.contains(e.target) && !expandBtn.contains(e.target)) {
+        if (window.innerWidth <= 768 && expandedPanel.style.display === "flex") {
+          if (!expandedPanel.contains(e.target) && !expandBtn.contains(e.target)) {
             collapsePanel();
           }
         }
