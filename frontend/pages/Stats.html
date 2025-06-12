@@ -91,6 +91,12 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
   }
 
   .stat-card h3 {
@@ -324,7 +330,7 @@
     }
     
     .stats-overview {
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr 1fr;
     }
     
     .goals-container {
@@ -341,6 +347,12 @@
       gap: 1rem;
     }
   }
+
+  @media (max-width: 480px) {
+    .stats-overview {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
 </head>
 <body>
@@ -349,7 +361,7 @@
     <div class="header-content">
       <div>
         <i class="fa-solid fa-bars-progress"></i><h1> Progress Dashboard</h1>
-        <p>Track your goals and task completion</p>
+        <p>Track your goals, tasks, and notes</p>
       </div>
       <button class="refresh-btn" id="refreshBtn">
         <i class="fas fa-sync-alt"></i> Refresh Data
@@ -377,6 +389,16 @@
       <h3>Completed Tasks</h3>
       <div class="stat-value" id="completedTasks">0</div>
       <div class="stat-description">Tasks you've finished</div>
+    </div>
+    <div class="stat-card">
+      <h3>Total Notes</h3>
+      <div class="stat-value" id="totalNotes">0</div>
+      <div class="stat-description">Notes created</div>
+    </div>
+    <div class="stat-card">
+      <h3>Pinned Notes</h3>
+      <div class="stat-value" id="pinnedNotes">0</div>
+      <div class="stat-description">Important notes</div>
     </div>
   </div>
 
@@ -417,7 +439,8 @@
   // Sample data - in a real app, this would come from your task manager's localStorage
   let dashboardData = {
     goals: [],
-    activities: []
+    activities: [],
+    notes: []
   };
 
   // DOM Elements
@@ -425,6 +448,8 @@
   const completedGoalsEl = document.getElementById('completedGoals');
   const totalTasksEl = document.getElementById('totalTasks');
   const completedTasksEl = document.getElementById('completedTasks');
+  const totalNotesEl = document.getElementById('totalNotes');
+  const pinnedNotesEl = document.getElementById('pinnedNotes');
   const goalsContainer = document.getElementById('goalsContainer');
   const activityList = document.getElementById('activityList');
   const refreshBtn = document.getElementById('refreshBtn');
@@ -439,9 +464,9 @@
     initCharts();
   }
 
-  // Load data from localStorage (simulating data from your task manager)
+  // Load data from localStorage (from both task manager and notes app)
   function loadData() {
-    // Try to get data from localStorage (from your task manager app)
+    // Load task data
     const tasksData = JSON.parse(localStorage.getItem('tasks')) || [];
     const checkboxStates = JSON.parse(localStorage.getItem('checkboxStates')) || {};
     
@@ -480,17 +505,21 @@
       };
     });
     
+    // Load notes data
+    const notesData = JSON.parse(localStorage.getItem('notes')) || [];
+    dashboardData.notes = notesData;
+    
     // Generate some sample activity data if none exists
-    if (dashboardData.goals.length > 0 && dashboardData.activities.length === 0) {
+    if ((dashboardData.goals.length > 0 || dashboardData.notes.length > 0) && dashboardData.activities.length === 0) {
       generateSampleActivity();
     }
   }
 
-  // Generate sample activity data
+  // Generate sample activity data including notes activity
   function generateSampleActivity() {
     const activities = [];
     const actions = ['completed', 'started', 'updated', 'created'];
-    const items = ['task', 'goal', 'phase'];
+    const items = ['task', 'goal', 'phase', 'note'];
     
     // Add activities for each goal
     dashboardData.goals.forEach(goal => {
@@ -518,6 +547,29 @@
       }
     });
     
+    // Add activities for notes
+    dashboardData.notes.forEach(note => {
+      // Note creation
+      activities.push({
+        id: 'act-' + Math.random().toString(36).substr(2, 9),
+        action: 'created',
+        item: 'note',
+        title: note.title || 'Untitled Note',
+        time: new Date(note.timestamp || Date.now() - Math.random() * 2 * 24 * 60 * 60 * 1000).toISOString()
+      });
+      
+      // If note was updated (not same as creation time)
+      if (note.timestamp && Math.random() > 0.7) {
+        activities.push({
+          id: 'act-' + Math.random().toString(36).substr(2, 9),
+          action: 'updated',
+          item: 'note',
+          title: note.title || 'Untitled Note',
+          time: new Date(Date.now() - Math.random() * 24 * 60 * 60 * 1000).toISOString()
+        });
+      }
+    });
+    
     // Sort by time (newest first)
     activities.sort((a, b) => new Date(b.time) - new Date(a.time));
     
@@ -525,18 +577,25 @@
     dashboardData.activities = activities.slice(0, 10);
   }
 
-  // Render the stats overview
+  // Render the stats overview including notes
   function renderStats() {
+    // Goals and tasks stats
     const totalGoals = dashboardData.goals.length;
     const completedGoals = dashboardData.goals.filter(g => g.completedTasks === g.totalTasks && g.totalTasks > 0).length;
-    
     const totalTasks = dashboardData.goals.reduce((sum, goal) => sum + goal.totalTasks, 0);
     const completedTasks = dashboardData.goals.reduce((sum, goal) => sum + goal.completedTasks, 0);
     
+    // Notes stats
+    const totalNotes = dashboardData.notes.length;
+    const pinnedNotes = dashboardData.notes.filter(note => note.pinned).length;
+    
+    // Update DOM elements
     totalGoalsEl.textContent = totalGoals;
     completedGoalsEl.textContent = completedGoals;
     totalTasksEl.textContent = totalTasks;
     completedTasksEl.textContent = completedTasks;
+    totalNotesEl.textContent = totalNotes;
+    pinnedNotesEl.textContent = pinnedNotes;
   }
 
   // Render the goal cards
@@ -612,7 +671,7 @@
     
     dashboardData.activities.forEach(activity => {
       const timeAgo = getTimeAgo(activity.time);
-      const actionIcon = getActionIcon(activity.action);
+      const actionIcon = getActionIcon(activity.action, activity.item);
       const actionText = getActionText(activity.action, activity.item);
       
       const item = document.createElement('li');
@@ -643,8 +702,16 @@
     return `${Math.floor(seconds / 86400)} days ago`;
   }
 
-  // Helper function to get action icon
-  function getActionIcon(action) {
+  // Helper function to get action icon (updated for notes)
+  function getActionIcon(action, item) {
+    if (item === 'note') {
+      switch (action) {
+        case 'created': return 'fa-file-alt';
+        case 'updated': return 'fa-edit';
+        default: return 'fa-file-alt';
+      }
+    }
+    
     switch (action) {
       case 'completed': return 'fa-check-circle';
       case 'started': return 'fa-play-circle';
@@ -654,8 +721,16 @@
     }
   }
 
-  // Helper function to get action text
+  // Helper function to get action text (updated for notes)
   function getActionText(action, item) {
+    if (item === 'note') {
+      switch (action) {
+        case 'created': return 'Created note';
+        case 'updated': return 'Updated note';
+        default: return 'Modified note';
+      }
+    }
+    
     switch (action) {
       case 'completed': return `Completed ${item}`;
       case 'started': return `Started ${item}`;
@@ -774,6 +849,13 @@
     goalChart.update();
     taskChart.update();
   }
+
+  // Listen for storage events to update when notes or tasks change
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'notes' || e.key === 'tasks' || e.key === 'checkboxStates') {
+      refreshData();
+    }
+  });
 
   // Event listeners
   refreshBtn.addEventListener('click', refreshData);
