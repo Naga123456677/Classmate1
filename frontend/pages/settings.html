@@ -464,14 +464,9 @@
 
     /* Styling for de-emphasized fields when master toggle is OFF */
     .settings-card-content.deactivated {
-        opacity: 0.6; /* Keep it slightly visible but de-emphasized */
-        /* pointer-events: none; REMOVED to allow interaction */
+        opacity: 0.6; 
         transition: opacity 0.3s ease;
     }
-    /* Optional: If you want to de-emphasize labels more */
-    /* .settings-card-content.deactivated .form-label {
-        color: var(--text-secondary);
-    } */
 
 
     @media (max-width: 600px) {
@@ -686,14 +681,20 @@
 
   <script>
     const serverUrl = "https://classmate1-ffw7.onrender.com"; 
-    const pageLoader = document.getElementById('pageLoader'); // Get loader element
+    const pageLoader = document.getElementById('pageLoader'); 
 
     function getAuthToken() {
         return localStorage.getItem('auth_token');
     }
 
     if (!getAuthToken()) {
-        window.location.href = 'Login page.html'; 
+        if (window.parent && window.parent !== window) {
+            // If in an iframe and no token, tell parent to log out
+            window.parent.postMessage({ type: 'logout', reason: 'no_token_in_iframe' }, '*');
+        } else {
+            // If standalone page and no token, redirect directly
+            window.location.href = 'Login page.html'; 
+        }
     }
     
     document.addEventListener("DOMContentLoaded", () => {
@@ -757,24 +758,36 @@
       }
       applyThemeSynchronized(); 
 
-      window.addEventListener('storage', (e) => {
+      window.addEventListener('storage', (e) => { // Listens for changes from other tabs/windows
           if (e.key === 'darkMode' || e.key === 'theme') {
               applyThemeSynchronized();
           }
+           if (e.key === 'auth_token' && !e.newValue) { // Token removed
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ type: 'logout', reason: 'token_cleared_externally' }, '*');
+                } else {
+                    window.location.href = 'Login page.html';
+                }
+            }
       });
+
+      // Listen for theme changes dispatched from parent (Dashboard.html)
       window.addEventListener('themeChange', (e) => { 
           if (e.detail && typeof e.detail.darkMode === 'boolean') {
-              document.body.classList.toggle("dark-mode", e.detail.darkMode);
-               if (pageThemeToggle) { 
+              const isNowDark = e.detail.darkMode;
+              document.body.classList.toggle("dark-mode", isNowDark);
+              // No need to set localStorage here, parent (Dashboard) is the source of truth for iframe theme dispatch
+              if (pageThemeToggle) { 
                 const sunIcon = pageThemeToggle.querySelector('.fa-sun');
                 const moonIcon = pageThemeToggle.querySelector('.fa-moon');
                 if (sunIcon && moonIcon) {
-                    sunIcon.style.display = e.detail.darkMode ? 'block' : 'none'; 
-                    moonIcon.style.display = e.detail.darkMode ? 'none' : 'block'; 
+                    sunIcon.style.display = isNowDark ? 'block' : 'none'; 
+                    moonIcon.style.display = isNowDark ? 'none' : 'block'; 
                 }
               }
           }
       });
+      
       if (pageThemeToggle) { 
           pageThemeToggle.addEventListener('click', () => {
               const bodyIsDarkNow = document.body.classList.toggle('dark-mode');
@@ -788,18 +801,20 @@
                 sunIcon.style.display = bodyIsDarkNow ? 'block' : 'none'; 
                 moonIcon.style.display = bodyIsDarkNow ? 'none' : 'block'; 
               }
+              // Inform parent (Dashboard) about the theme change
               if (window.parent && window.parent !== window) { 
-                  window.parent.postMessage({ type: 'themeChange', darkMode: bodyIsDarkNow }, '*');
+                  window.parent.postMessage({ type: 'themeChangeFromIframe', darkMode: bodyIsDarkNow }, '*');
               }
           });
       }
       // --- END OF THEME SYNCHRONIZATION LOGIC ---
 
       async function loadUserSettings() {
-        pageLoader.classList.remove('hidden'); // Show loader
+        pageLoader.classList.remove('hidden'); 
         const token = getAuthToken();
         if (!token) {
-            pageLoader.classList.add('hidden'); // Hide loader on auth fail
+             // Already handled by initial check, but good to be defensive
+            setTimeout(() => pageLoader.classList.add('hidden'), 200);
             return;
         }
 
@@ -807,6 +822,18 @@
             const response = await fetch(`${serverUrl}/api/me`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
+
+            if (response.status === 401) { // Unauthorized
+                showToast("Session expired. Please log in again.", "error");
+                localStorage.removeItem('auth_token'); // Clear potentially stale token
+                 if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ type: 'logout', reason: 'unauthorized_iframe' }, '*');
+                } else {
+                    window.location.href = 'Login page.html';
+                }
+                return; // Stop further processing
+            }
+
             if (response.ok) {
                 const userData = await response.json();
                 userNameInput.value = userData.name || 'User';
@@ -835,7 +862,6 @@
             userNameInput.value = localStorage.getItem('user_name') || 'User';
             setChatbotCustomizationVisualState(true); 
         } finally {
-            // Ensure loader is hidden after a slight delay to allow rendering if needed
             setTimeout(() => pageLoader.classList.add('hidden'), 200); 
         }
       }
@@ -855,6 +881,11 @@
         const token = getAuthToken();
         if (!token) {
             showToast("Authentication error. Please log in again.", "error");
+             if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: 'logout', reason: 'save_no_token' }, '*');
+            } else {
+                window.location.href = 'Login page.html';
+            }
             return;
         }
 
@@ -883,6 +914,18 @@
                 },
                 body: JSON.stringify(settingsData)
             });
+            
+            if (response.status === 401) { // Unauthorized during save
+                showToast("Session expired. Save failed. Please log in.", "error");
+                localStorage.removeItem('auth_token');
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ type: 'logout', reason: 'unauthorized_save' }, '*');
+                } else {
+                    window.location.href = 'Login page.html';
+                }
+                return;
+            }
+
 
             if (response.ok) {
                 const updatedUser = await response.json();
@@ -924,7 +967,13 @@
       changePasswordBtn.addEventListener('click', async () => {
         const token = getAuthToken();
         if (!token) {
-            showToast("Authentication error.", "error"); return;
+            showToast("Authentication error.", "error"); 
+             if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: 'logout', reason: 'changepw_no_token' }, '*');
+            } else {
+                window.location.href = 'Login page.html';
+            }
+            return;
         }
 
         const currentPasswordInput = document.getElementById('currentPassword');
@@ -958,6 +1007,17 @@
                 },
                 body: JSON.stringify({ current_password: currentPass, new_password: newPass })
             });
+
+            if (response.status === 401) { // Unauthorized during password change
+                showToast("Session expired. Password change failed. Please log in.", "error");
+                localStorage.removeItem('auth_token');
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ type: 'logout', reason: 'unauthorized_changepw' }, '*');
+                } else {
+                    window.location.href = 'Login page.html';
+                }
+                return;
+            }
 
             const data = await response.json();
             if (response.ok) {
@@ -1026,6 +1086,11 @@
                       if (!token) {
                           showToast("Authentication error.", "error");
                           modalElement.classList.remove('show');
+                           if (window.parent && window.parent !== window) {
+                              window.parent.postMessage({ type: 'logout', reason: 'delete_no_token' }, '*');
+                          } else {
+                              window.location.href = 'Login page.html';
+                          }
                           return;
                       }
                       const finalDeleteBtnOriginalHTML = finalDeleteAccountBtn.innerHTML;
@@ -1038,8 +1103,24 @@
                           });
                           if (response.ok) {
                               showToast("Account deleted successfully. You will be logged out.", "warning");
-                              localStorage.clear();
-                              setTimeout(() => { window.location.href = 'Login page.html'; }, 2000);
+                              localStorage.clear(); // Clear iframe's local storage
+
+                              if (window.parent && window.parent !== window) {
+                                  window.parent.postMessage({ type: 'logout', reason: 'account_deleted' }, '*');
+                              }
+                              // The iframe will be redirected by the parent now, or directly if not in iframe
+                              // No need for setTimeout here if parent handles it. If parent doesn't, iframe redirects.
+                              // For simplicity, let parent handle redirect. If this page is standalone, it needs its own redirect.
+                              // setTimeout(() => { window.location.href = 'Login page.html'; }, 500); // Shorter delay
+
+                          } else if (response.status === 401) {
+                                showToast("Session expired. Deletion failed. Please log in.", "error");
+                                localStorage.removeItem('auth_token');
+                                if (window.parent && window.parent !== window) {
+                                    window.parent.postMessage({ type: 'logout', reason: 'unauthorized_delete' }, '*');
+                                } else {
+                                    window.location.href = 'Login page.html';
+                                }
                           } else {
                               const errorData = await response.json();
                               showToast(errorData.detail || "Failed to delete account.", "error");
@@ -1059,7 +1140,6 @@
           }
       }
       
-      // Initial load of user settings (will also handle showing/hiding loader)
       loadUserSettings();
 
     });
