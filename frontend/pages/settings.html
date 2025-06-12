@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -103,11 +102,44 @@
       background-color: var(--bg);
       color: var(--text);
       transition: background-color 0.3s ease, color 0.3s ease;
-      overflow-x: hidden; /* Prevent horizontal scroll on body */
+      overflow-x: hidden; 
       font-size: 15px;
       line-height: 1.6;
-      padding-top: 70px; /* Space for fixed header */
+      padding-top: 70px; 
     }
+    
+    /* Page Loader Styles */
+    .page-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--bg); /* Match body background */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999; /* Highest z-index */
+        transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        opacity: 1;
+        visibility: visible;
+    }
+    .page-loader.hidden {
+        opacity: 0;
+        visibility: hidden;
+    }
+    .spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid var(--text-secondary); /* Lighter border */
+        border-top-color: var(--accent); /* Accent color for spinner top */
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
 
     .grid-bg {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -117,7 +149,7 @@
       background-size: 40px 40px; z-index: -2; opacity: 0.4;
     }
     
-    .page-header { /* New class for the settings page header */
+    .page-header { 
         padding: 0.75rem 1.5rem; 
         height: 70px;
         display: flex; 
@@ -148,12 +180,12 @@
         background-clip: text; 
         color: transparent;
     }
-    .page-title i { /* Style for icon inside page title */
-        background: none; /* Reset possible background if it was a button */
+    .page-title i { 
+        background: none; 
         -webkit-background-clip: initial;
         background-clip: initial;
-        color: var(--accent); /* Use accent color for the icon */
-        font-size: 1.4rem; /* Adjust icon size if needed */
+        color: var(--accent); 
+        font-size: 1.4rem; 
     }
 
     .header-actions { 
@@ -162,7 +194,6 @@
         gap: 1rem; 
     }
 
-    /* Theme Toggle Button - Standardized like in notes.html */
     .theme-toggle-btn {
         width: 40px; 
         height: 40px; 
@@ -170,7 +201,7 @@
         display: flex; 
         align-items: center; 
         justify-content: center;
-        background: transparent; /* Make it transparent by default */
+        background: transparent; 
         border: 1px solid var(--card-border);
         color: var(--text-secondary); 
         cursor: pointer; 
@@ -183,18 +214,16 @@
         transform: translateY(-1px); 
         box-shadow: var(--glow);
     }
-    /* Icon visibility for theme toggle */
-    .dark-mode .theme-toggle-btn .fa-sun { display: block; }
+    .dark-mode .theme-toggle-btn .fa-sun { display: block; } 
     .dark-mode .theme-toggle-btn .fa-moon { display: none; }
-    .theme-toggle-btn .fa-sun { display: none; }
+    .theme-toggle-btn .fa-sun { display: none; } 
     .theme-toggle-btn .fa-moon { display: block; }
 
 
-    /* Settings Page Specific Styles */
     .settings-container {
-      padding: 1.5rem; /* Add padding to the container itself */
+      padding: 1.5rem; 
       max-width: 900px; 
-      margin: 0 auto; /* Center the container */
+      margin: 0 auto; 
     }
     
     .settings-card {
@@ -210,9 +239,14 @@
     .settings-header {
       display: flex;
       align-items: center;
+      justify-content: space-between; 
       margin-bottom: 1.5rem; 
       padding-bottom: 1rem;
       border-bottom: 1px solid var(--card-border);
+    }
+    .settings-header-main { 
+        display: flex;
+        align-items: center;
     }
     
     .settings-header i {
@@ -222,8 +256,8 @@
       flex-shrink: 0;
     }
     
-    .settings-title { /* This is for section titles within cards */
-      font-size: 1.15rem; /* Slightly smaller than page title */
+    .settings-title { 
+      font-size: 1.15rem; 
       font-weight: 600;
       color: var(--text);
     }
@@ -248,7 +282,7 @@
       background-color: var(--input-bg);
       color: var(--input-text);
       font-size: 0.9rem; 
-      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease;
     }
     
     .form-control:focus, .form-select:focus {
@@ -275,6 +309,7 @@
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid var(--accent);
+      background-color: var(--input-bg); 
     }
         
     .btn {
@@ -291,7 +326,7 @@
       text-decoration: none; 
       justify-content: center;
       position: relative;
-      overflow: hidden; /* Ensure pseudo-element doesn't overflow */
+      overflow: hidden; 
     }
     .btn::before {
       content: '';
@@ -307,25 +342,32 @@
     .btn:hover::before {
       left: 100%;
     }
+    .btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+    .btn:disabled::before {
+        display: none; 
+    }
     
     .btn-primary {
       background: var(--btn-primary);
       color: white;
     }
-    .btn-primary:hover { filter: var(--btn-hover); transform: translateY(-1px); box-shadow: var(--glow);}
+    .btn-primary:hover:not(:disabled) { filter: var(--btn-hover); transform: translateY(-1px); box-shadow: var(--glow);}
 
     .btn-secondary {
       background-color: var(--input-bg); 
       color: var(--text);
       border: 1px solid var(--card-border);
     }
-    .btn-secondary:hover { background-color: var(--menu-hover); transform: translateY(-1px); }
+    .btn-secondary:hover:not(:disabled) { background-color: var(--menu-hover); transform: translateY(-1px); }
     
     .btn-danger {
       background-color: var(--danger);
       color: white;
     }
-    .btn-danger:hover { background-color: var(--danger-dark); transform: translateY(-1px); }
+    .btn-danger:hover:not(:disabled) { background-color: var(--danger-dark); transform: translateY(-1px); }
 
     .btn-sm {
         font-size: 0.8rem;
@@ -358,64 +400,7 @@
       flex-wrap: wrap; 
       gap: 0.75rem;
     }
-
-    .appearance-options {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.75rem 0;
-        border-bottom: 1px solid var(--card-border);
-        margin-bottom: 1rem;
-    }
-    .appearance-options:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-    }
-    .appearance-label {
-        color: var(--text);
-        font-weight: 500;
-        font-size: 0.9rem;
-    }
-    /* Toggle switch specific to settings page for compactness */
-    .settings-toggle-switch {
-        width: 36px; 
-        height: 18px;
-        background-color: var(--input-border); /* Use input-border for off state */
-        border-radius: 9px;
-        position: relative;
-        padding: 2px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-    .settings-toggle-knob {
-        width: 14px; 
-        height: 14px;
-        background-color: var(--card-bg);
-        border-radius: 50%;
-        transition: transform 0.2s ease;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    }
-    .dark-mode .settings-toggle-knob {
-      background-color: var(--input-text); /* Lighter knob in dark mode */
-    }
-    .settings-toggle-switch.active {
-        background-color: var(--accent);
-    }
-    .settings-toggle-switch.active .settings-toggle-knob {
-        transform: translateX(18px); 
-    }
     
-    .font-size-selector button {
-        margin-left: 0.5rem;
-        padding: 0.3rem 0.6rem;
-        font-size: 0.8rem;
-    }
-    .font-size-selector button.active {
-        background-color: var(--accent);
-        color: white;
-        border-color: var(--accent);
-    }
-
     .confirmation-modal-overlay {
         position: fixed; top: 0; left: 0; right: 0; bottom: 0;
         background-color: rgba(0,0,0,0.6);
@@ -446,7 +431,48 @@
     .toast.show { opacity: 1; transform: translate(-50%, 0); }
     .toast.error { background-color: var(--danger); }
     .toast.warning { background-color: var(--warning); }
-    .toast.info { background-color: var(--info); } /* Added info toast style */
+    .toast.info { background-color: var(--info); }
+
+    /* Master Toggle Switch for Sections (like Chatbot Customization) */
+    .master-toggle-switch {
+        width: 42px; 
+        height: 22px;
+        background-color: var(--input-border);
+        border-radius: 11px;
+        position: relative;
+        padding: 2px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .master-toggle-knob {
+        width: 18px; 
+        height: 18px;
+        background-color: var(--card-bg);
+        border-radius: 50%;
+        transition: transform 0.2s ease;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .dark-mode .master-toggle-knob {
+      background-color: var(--input-text); 
+    }
+    .master-toggle-switch.active {
+        background-color: var(--accent);
+    }
+    .master-toggle-switch.active .master-toggle-knob {
+        transform: translateX(20px); 
+    }
+
+    /* Styling for de-emphasized fields when master toggle is OFF */
+    .settings-card-content.deactivated {
+        opacity: 0.6; /* Keep it slightly visible but de-emphasized */
+        /* pointer-events: none; REMOVED to allow interaction */
+        transition: opacity 0.3s ease;
+    }
+    /* Optional: If you want to de-emphasize labels more */
+    /* .settings-card-content.deactivated .form-label {
+        color: var(--text-secondary);
+    } */
+
 
     @media (max-width: 600px) {
         .settings-container { padding: 1rem 0.5rem; }
@@ -460,168 +486,164 @@
         .avatar-preview { width: 60px; height: 60px; }
         .security-actions, .data-actions { flex-direction: column; }
         .security-actions .btn, .data-actions .btn { width: 100%; }
-        .appearance-options { flex-direction: column; align-items: flex-start; gap: 0.5rem;}
-        .settings-toggle-switch { margin-top: 0.25rem;}
     }
   </style>
 </head>
 <body>
+  <!-- Page Loader -->
+  <div class="page-loader" id="pageLoader">
+    <div class="spinner"></div>
+  </div>
+
   <div class="grid-bg"></div>
 
   <header class="page-header">
     <h1 class="page-title"><i class="fas fa-cog"></i> Settings</h1>
     <div class="header-actions">
-      <button class="theme-toggle-btn" id="pageThemeToggle"> <!-- Changed ID to be page-specific -->
+      <button class="theme-toggle-btn" id="pageThemeToggle">
         <i class="fas fa-sun"></i>
         <i class="fas fa-moon"></i>
       </button>
     </div>
   </header>
 
-  <div class="settings-container"> <!-- Content starts after the fixed header -->
+  <div class="settings-container">
       
       <!-- Profile Settings -->
       <div class="settings-card fade-in">
         <div class="settings-header">
-          <i class="fas fa-user-edit"></i>
-          <h2 class="settings-title">Profile</h2> <!-- Changed to h2 for section title -->
+          <div class="settings-header-main">
+            <i class="fas fa-user-edit"></i>
+            <h2 class="settings-title">Profile</h2>
+          </div>
         </div>
-        
-        <div class="avatar-upload">
-          <img id="avatarPreview" src="https://randomuser.me/api/portraits/men/32.jpg" class="avatar-preview" alt="Profile">
-          <label for="avatarUpload" class="btn avatar-upload-label">
-            <i class="fas fa-camera"></i> Change Photo
-          </label>
-          <input type="file" id="avatarUpload" accept="image/*">
-        </div>
-        
-        <div class="form-group">
-          <label for="userName" class="form-label">Full Name</label>
-          <input type="text" id="userName" class="form-control" value="Harper Nelson">
-        </div>
-        <div class="form-group">
-          <label for="userEmail" class="form-label">Email Address</label>
-          <input type="email" id="userEmail" class="form-control" value="harper.nelson@example.com" readonly>
-          <small style="color: var(--text-secondary); font-size: 0.8rem;">Email is not editable here.</small>
-        </div>
-        <div class="form-group">
-          <label for="userBio" class="form-label">Short Bio/Interests</label>
-          <textarea id="userBio" class="form-control" rows="3" placeholder="Tell us a bit about yourself or your interests...">Web Development, AI, UX Design</textarea>
-        </div>
-        
-        <button id="saveProfileBtn" class="btn btn-primary">
-          <i class="fas fa-save"></i> Save Profile
-        </button>
-      </div>
-
- 
-      <!-- Appearance Settings 
-      <div class="settings-card fade-in" style="animation-delay: 0.1s;">
-        <div class="settings-header">
-          <i class="fas fa-paint-brush"></i>
-          <h2 class="settings-title">Appearance</h2>
-        </div>
-        <div class="appearance-options">
-            <span class="appearance-label">Dark Mode</span>
-             <div class="settings-toggle-switch" id="darkModeVisualToggle">
-                <div class="settings-toggle-knob"></div>
+        <div class="settings-card-content"> 
+            <div class="avatar-upload">
+              <img id="avatarPreview" src="https://randomuser.me/api/portraits/men/32.jpg" class="avatar-preview" alt="Profile">
+              <label for="avatarUpload" class="btn avatar-upload-label">
+                <i class="fas fa-camera"></i> Change Photo
+              </label>
+              <input type="file" id="avatarUpload" accept="image/*">
             </div>
-        </div>
-        <div class="appearance-options">
-            <span class="appearance-label">Font Size (Conceptual)</span>
-            <div class="font-size-selector">
-                <button class="btn btn-secondary btn-sm" data-size="small">Small</button>
-                <button class="btn btn-secondary btn-sm active" data-size="medium">Medium</button>
-                <button class="btn btn-secondary btn-sm" data-size="large">Large</button>
+            
+            <div class="form-group">
+              <label for="userName" class="form-label">Full Name</label>
+              <input type="text" id="userName" class="form-control" value="User Name">
             </div>
+            <div class="form-group">
+              <label for="userEmail" class="form-label">Email Address</label>
+              <input type="email" id="userEmail" class="form-control" value="user@example.com" readonly>
+              <small style="color: var(--text-secondary); font-size: 0.8rem;">Email is not editable.</small>
+            </div>
+            <div class="form-group">
+              <label for="userBio" class="form-label">Short Bio/Interests</label>
+              <textarea id="userBio" class="form-control" rows="3" placeholder="Tell us a bit about yourself or your interests..."></textarea>
+            </div>
+            
+            <button id="saveProfileBtn" class="btn btn-primary">
+              <i class="fas fa-save"></i> Save Profile
+            </button>
         </div>
       </div>
-
-        -->
+      
       <!-- Chatbot Customization Settings -->
       <div class="settings-card fade-in" style="animation-delay: 0.2s;">
         <div class="settings-header">
-          <i class="fas fa-robot"></i>
-          <h2 class="settings-title">Chatbot Customization</h2>
+          <div class="settings-header-main">
+            <i class="fas fa-robot"></i>
+            <h2 class="settings-title">Chatbot Customization</h2>
+          </div>
+          <div class="master-toggle-switch" id="chatbotCustomizationToggle" aria-label="Enable Chatbot Customization">
+            <div class="master-toggle-knob"></div>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="chatbotPersonality" class="form-label">ClassMate AI Personality</label>
-          <select id="chatbotPersonality" class="form-select">
-            <option value="friendly_supportive" selected>Friendly & Supportive</option>
-            <option value="professional_concise">Professional & Concise</option>
-            <option value="humorous_witty">Humorous & Witty (Experimental)</option>
-          </select>
-        </div>
-        <!-- <div class="appearance-options">
-            <span class="appearance-label">Default To-Do List Mode for Chatbot</span>
-            <div class="settings-toggle-switch" id="defaultTodoModeToggle">
-                <div class="settings-toggle-knob"></div>
+        <div class="settings-card-content" id="chatbotSettingsContent">
+            <div class="form-group">
+              <label for="userNickname" class="form-label">Your Nickname (Optional)</label>
+              <input type="text" id="userNickname" class="form-control" placeholder="e.g., Alex, Study Pro">
+               <small style="color: var(--text-secondary); font-size: 0.8rem; display: block; margin-top: 0.25rem;">Chatbot will use this to address you if provided.</small>
             </div>
-        </div> -->
-         <div class="data-actions" style="border-top:none; padding-top: 1rem;">
-            <button id="clearCurrentChatHistoryBtn" class="btn btn-secondary btn-sm">
-                <i class="fas fa-comment-slash"></i> Clear Current Chat History
-            </button>
-            <button id="clearAllChatHistoryBtn" class="btn btn-danger btn-sm">
-                <i class="fas fa-history"></i> Clear All Chat History
+            <div class="form-group">
+              <label for="chatbotTone" class="form-label">Chatbot Tone/Style</label>
+              <select id="chatbotTone" class="form-select">
+                <option value="friendly_supportive" selected>Friendly & Supportive</option>
+                <option value="professional_concise">Professional & Concise</option>
+                <option value="humorous_witty">Humorous & Witty (Experimental)</option>
+                <option value="custom">Custom (Use Instructions Below)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="chatbotCustomInstructions" class="form-label">Custom Instructions (How should ClassMate respond?)</label>
+              <textarea id="chatbotCustomInstructions" class="form-control" rows="5" placeholder="e.g., You are a helpful AI study assistant. Address me as [Your Nickname if provided, otherwise 'User']. Act as a supportive tutor. Keep responses brief and encouraging. Explain concepts clearly."></textarea>
+              <small style="color: var(--text-secondary); font-size: 0.8rem; display: block; margin-top: 0.25rem;">These instructions are primarily used when 'Custom' tone/style is selected.</small>
+            </div>
+            <div class="form-group">
+              <label for="chatbotUserContext" class="form-label">User Context (Optional: What should ClassMate know about you?)</label>
+              <textarea id="chatbotUserContext" class="form-control" rows="3" placeholder="e.g., I'm studying Computer Science, focusing on Python and AI. I prefer examples in Python. My goal is to pass my final exams."></textarea>
+            </div>
+
+             <div class="data-actions" style="border-top: 1px solid var(--card-border); padding-top: 1.5rem; margin-top:0.5rem;">
+                <button id="clearCurrentChatHistoryBtn" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-comment-slash"></i> Clear Current Chat History
+                </button>
+                <button id="clearAllChatHistoryBtn" class="btn btn-danger btn-sm">
+                    <i class="fas fa-history"></i> Clear All Chat History
+                </button>
+            </div>
+            <button id="saveChatbotSettingsBtn" class="btn btn-primary" style="margin-top: 1.5rem;">
+              <i class="fas fa-cogs"></i> Save Chatbot Settings
             </button>
         </div>
-        <button id="saveChatbotSettingsBtn" class="btn btn-primary" style="margin-top: 1.5rem;">
-          <i class="fas fa-cogs"></i> Save Chatbot Settings
-        </button>
       </div>
 
       <!-- Security Settings -->
       <div class="settings-card fade-in" style="animation-delay: 0.3s;">
         <div class="settings-header">
-          <i class="fas fa-shield-alt"></i>
-          <h2 class="settings-title">Security</h2>
+           <div class="settings-header-main">
+            <i class="fas fa-shield-alt"></i>
+            <h2 class="settings-title">Security</h2>
+          </div>
         </div>
-        
-        <div class="form-group">
-          <label for="currentPassword" class="form-label">Current Password</label>
-          <input type="password" id="currentPassword" class="form-control" placeholder="Enter current password">
-        </div>
-        <div class="form-group">
-          <label for="newPassword" class="form-label">New Password</label>
-          <input type="password" id="newPassword" class="form-control" placeholder="Enter new password (min. 8 characters)">
-        </div>
-        <div class="form-group">
-          <label for="confirmPassword" class="form-label">Confirm New Password</label>
-          <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm new password">
-        </div>
-        <!-- <div class="appearance-options">
-            <span class="appearance-label">Two-Factor Authentication (2FA)</span>
-            <button class="btn btn-secondary btn-sm" id="setup2FABtn">Setup 2FA</button>
-        </div> -->
-        <div class="security-actions">
-          <button id="changePasswordBtn" class="btn btn-primary">
-            <i class="fas fa-key"></i> Change Password
-          </button>
+        <div class="settings-card-content">
+            <div class="form-group">
+              <label for="currentPassword" class="form-label">Current Password</label>
+              <input type="password" id="currentPassword" class="form-control" placeholder="Enter current password">
+            </div>
+            <div class="form-group">
+              <label for="newPassword" class="form-label">New Password</label>
+              <input type="password" id="newPassword" class="form-control" placeholder="Enter new password (min. 6 characters)">
+            </div>
+            <div class="form-group">
+              <label for="confirmPassword" class="form-label">Confirm New Password</label>
+              <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm new password">
+            </div>
+            <div class="security-actions">
+              <button id="changePasswordBtn" class="btn btn-primary">
+                <i class="fas fa-key"></i> Change Password
+              </button>
+            </div>
         </div>
       </div>
-
-      <!-- Data Management -->
-<!--        
+      
+      <!-- Account Actions -->
       <div class="settings-card fade-in" style="animation-delay: 0.4s;">
-          <div class="settings-header">
-              <i class="fas fa-database"></i>
-              <h2 class="settings-title">Data Management</h2>
+        <div class="settings-header">
+          <div class="settings-header-main">
+            <i class="fas fa-user-cog"></i>
+            <h2 class="settings-title">Account Actions</h2>
           </div>
-          <div class="data-actions">
-              <button id="exportDataBtn" class="btn btn-secondary">
-                  <i class="fas fa-file-export"></i> Export My Data
-              </button>
-              <button id="importDataBtn" class="btn btn-secondary">
-                  <i class="fas fa-file-import"></i> Import Data
-              </button>
-          </div>
-          <div class="data-actions" style="margin-top: 1rem; border-top: 1px solid var(--card-border); padding-top: 1rem;">
-              <button id="deleteAccountBtn" class="btn btn-danger">
-                  <i class="fas fa-user-times"></i> Delete My Account
-              </button>
-          </div>
-      </div> -->
+        </div>
+        <div class="settings-card-content">
+            <div class="data-actions" style="border-top: none; padding-top: 0; margin-top:0;"> 
+                <button id="deleteAccountBtn" class="btn btn-danger">
+                    <i class="fas fa-trash-alt"></i> Delete Account
+                </button>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.75rem;">
+                Permanently delete your account and all associated data. This action cannot be undone.
+            </p>
+        </div>
+      </div>
 
     </div> <!-- /.settings-container -->
 
@@ -649,7 +671,7 @@
   <div class="confirmation-modal-overlay" id="deleteAccountModal">
       <div class="confirmation-modal">
           <h3><i class="fas fa-user-slash" style="color: var(--danger);"></i> Confirm Account Deletion</h3>
-          <p><strong>PERMANENT ACTION:</strong> Are you sure you want to delete your account? All your data (notes, tasks, chats, settings) will be permanently erased. This cannot be undone.</p>
+          <p><strong>PERMANENT ACTION:</strong> Are you sure you want to delete your account? All your data (profile, chats, settings) will be permanently erased. This cannot be undone.</p>
           <p>Type "DELETE MY ACCOUNT" to confirm:</p>
           <input type="text" id="deleteAccountConfirmText" class="form-control" style="margin-bottom: 1rem; text-align: center;">
           <div class="confirmation-modal-actions">
@@ -663,6 +685,17 @@
   <div id="toast" class="toast"></div>
 
   <script>
+    const serverUrl = "https://classmate1-ffw7.onrender.com"; 
+    const pageLoader = document.getElementById('pageLoader'); // Get loader element
+
+    function getAuthToken() {
+        return localStorage.getItem('auth_token');
+    }
+
+    if (!getAuthToken()) {
+        window.location.href = 'Login page.html'; 
+    }
+    
     document.addEventListener("DOMContentLoaded", () => {
       // DOM Elements
       const avatarPreview = document.getElementById('avatarPreview');
@@ -672,22 +705,20 @@
       const userBioInput = document.getElementById('userBio');
       const saveProfileBtn = document.getElementById('saveProfileBtn');
       
-      const pageThemeToggle = document.getElementById('pageThemeToggle'); // Renamed for clarity
-      const darkModeVisualToggle = document.getElementById('darkModeVisualToggle'); // Visual only toggle in card
-      const fontSizeSelector = document.querySelector('.font-size-selector');
+      const pageThemeToggle = document.getElementById('pageThemeToggle');
 
-      const chatbotPersonalitySelect = document.getElementById('chatbotPersonality');
-      const defaultTodoModeToggle = document.getElementById('defaultTodoModeToggle');
+      const chatbotCustomizationToggle = document.getElementById('chatbotCustomizationToggle');
+      const chatbotSettingsContent = document.getElementById('chatbotSettingsContent');
+      const userNicknameInput = document.getElementById('userNickname'); 
+      const chatbotToneSelect = document.getElementById('chatbotTone');
+      const chatbotCustomInstructionsTextarea = document.getElementById('chatbotCustomInstructions');
+      const chatbotUserContextTextarea = document.getElementById('chatbotUserContext'); 
       const saveChatbotSettingsBtn = document.getElementById('saveChatbotSettingsBtn');
       const clearCurrentChatHistoryBtn = document.getElementById('clearCurrentChatHistoryBtn');
       const clearAllChatHistoryBtn = document.getElementById('clearAllChatHistoryBtn');
 
       const changePasswordBtn = document.getElementById('changePasswordBtn');
-      const setup2FABtn = document.getElementById('setup2FABtn');
-      
-      const exportDataBtn = document.getElementById('exportDataBtn');
-      const importDataBtn = document.getElementById('importDataBtn');
-      const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+      const deleteAccountBtn = document.getElementById('deleteAccountBtn'); 
 
       const toast = document.getElementById('toast');
 
@@ -697,88 +728,116 @@
       const deleteAccountConfirmText = document.getElementById('deleteAccountConfirmText');
       const finalDeleteAccountBtn = document.getElementById('finalDeleteAccountBtn');
 
-      // --- START OF THEME SYNCHRONIZATION LOGIC (Standardized) ---
+      // --- Chatbot Customization Master Toggle Logic ---
+      function setChatbotCustomizationVisualState(enabled) {
+        chatbotCustomizationToggle.classList.toggle('active', enabled);
+        chatbotSettingsContent.classList.toggle('deactivated', !enabled);
+      }
+
+      chatbotCustomizationToggle.addEventListener('click', () => {
+        const isActive = chatbotCustomizationToggle.classList.toggle('active');
+        setChatbotCustomizationVisualState(isActive);
+      });
+
+
+      // --- THEME SYNCHRONIZATION LOGIC ---
       function applyThemeSynchronized() {
-          const parentDarkModeSetting = localStorage.getItem("darkMode");
-          const isNowDark = parentDarkModeSetting === "enabled";
+          const parentDarkModeSetting = localStorage.getItem("darkMode") || localStorage.getItem("theme");
+          const isNowDark = parentDarkModeSetting === "enabled" || parentDarkModeSetting === "dark";
           document.body.classList.toggle("dark-mode", isNowDark);
           
           if (pageThemeToggle) { 
             const sunIcon = pageThemeToggle.querySelector('.fa-sun');
             const moonIcon = pageThemeToggle.querySelector('.fa-moon');
-            if (sunIcon && moonIcon) {
-                sunIcon.style.display = isNowDark ? 'none' : 'block';
-                moonIcon.style.display = isNowDark ? 'block' : 'none';
+            if (sunIcon && moonIcon) { 
+                sunIcon.style.display = isNowDark ? 'block' : 'none'; 
+                moonIcon.style.display = isNowDark ? 'none' : 'block'; 
             }
-          }
-          if (darkModeVisualToggle) { // Update the visual toggle in the card
-              darkModeVisualToggle.classList.toggle('active', isNowDark);
           }
       }
       applyThemeSynchronized(); 
 
       window.addEventListener('storage', (e) => {
-          if (e.key === 'darkMode') {
+          if (e.key === 'darkMode' || e.key === 'theme') {
               applyThemeSynchronized();
           }
       });
-      window.addEventListener('themeChange', (e) => {
+      window.addEventListener('themeChange', (e) => { 
           if (e.detail && typeof e.detail.darkMode === 'boolean') {
               document.body.classList.toggle("dark-mode", e.detail.darkMode);
-              if (pageThemeToggle) { 
+               if (pageThemeToggle) { 
                 const sunIcon = pageThemeToggle.querySelector('.fa-sun');
                 const moonIcon = pageThemeToggle.querySelector('.fa-moon');
                 if (sunIcon && moonIcon) {
-                    sunIcon.style.display = e.detail.darkMode ? 'none' : 'block';
-                    moonIcon.style.display = e.detail.darkMode ? 'block' : 'none';
+                    sunIcon.style.display = e.detail.darkMode ? 'block' : 'none'; 
+                    moonIcon.style.display = e.detail.darkMode ? 'none' : 'block'; 
                 }
-              }
-              if (darkModeVisualToggle) {
-                darkModeVisualToggle.classList.toggle('active', e.detail.darkMode);
               }
           }
       });
       if (pageThemeToggle) { 
           pageThemeToggle.addEventListener('click', () => {
               const bodyIsDarkNow = document.body.classList.toggle('dark-mode');
-              localStorage.setItem('darkMode', bodyIsDarkNow ? 'enabled' : 'disabled');
+              const newThemeState = bodyIsDarkNow ? 'dark' : 'light';
+              localStorage.setItem('theme', newThemeState); 
+              localStorage.setItem('darkMode', bodyIsDarkNow ? 'enabled' : 'disabled'); 
               
               const sunIcon = pageThemeToggle.querySelector('.fa-sun');
               const moonIcon = pageThemeToggle.querySelector('.fa-moon');
               if (sunIcon && moonIcon) {
-                sunIcon.style.display = bodyIsDarkNow ? 'none' : 'block';
-                moonIcon.style.display = bodyIsDarkNow ? 'block' : 'none';
+                sunIcon.style.display = bodyIsDarkNow ? 'block' : 'none'; 
+                moonIcon.style.display = bodyIsDarkNow ? 'none' : 'block'; 
               }
-              if (darkModeVisualToggle) {
-                darkModeVisualToggle.classList.toggle('active', bodyIsDarkNow);
-              }
-              // Notify parent dashboard (if this page is in an iframe and can change the theme)
-              if (window.parent && window.parent !== window) {
+              if (window.parent && window.parent !== window) { 
                   window.parent.postMessage({ type: 'themeChange', darkMode: bodyIsDarkNow }, '*');
               }
           });
       }
       // --- END OF THEME SYNCHRONIZATION LOGIC ---
 
-      // Load saved user data
-      function loadUserSettings() {
-        const savedProfile = JSON.parse(localStorage.getItem('userProfileSettings')) || {};
-        userNameInput.value = savedProfile.name || 'Harper Nelson';
-        userEmailInput.value = savedProfile.email || 'harper.nelson@example.com';
-        userBioInput.value = savedProfile.bio || 'Web Development, AI, UX Design';
-        avatarPreview.src = savedProfile.avatar || 'https://randomuser.me/api/portraits/men/32.jpg';
-
-        const savedAppearance = JSON.parse(localStorage.getItem('appearanceSettings')) || {};
-        if (fontSizeSelector && savedAppearance.fontSize) {
-            fontSizeSelector.querySelectorAll('button').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.size === savedAppearance.fontSize);
-            });
+      async function loadUserSettings() {
+        pageLoader.classList.remove('hidden'); // Show loader
+        const token = getAuthToken();
+        if (!token) {
+            pageLoader.classList.add('hidden'); // Hide loader on auth fail
+            return;
         }
-        
-        const savedChatbotSettings = JSON.parse(localStorage.getItem('chatbotSettings')) || {};
-        chatbotPersonalitySelect.value = savedChatbotSettings.personality || 'friendly_supportive';
-        const todoModeActive = savedChatbotSettings.defaultTodoMode === true;
-        defaultTodoModeToggle.classList.toggle('active', todoModeActive);
+
+        try {
+            const response = await fetch(`${serverUrl}/api/me`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (response.ok) {
+                const userData = await response.json();
+                userNameInput.value = userData.name || 'User';
+                userEmailInput.value = userData.email || 'user@example.com';
+                userBioInput.value = userData.bio || '';
+                avatarPreview.src = userData.avatar || 'https://randomuser.me/api/portraits/men/32.jpg';
+                if(!userData.avatar) avatarPreview.src = 'https://randomuser.me/api/portraits/men/32.jpg';
+
+                const chatbotEnabled = userData.chatbot_customization_enabled !== false; 
+                setChatbotCustomizationVisualState(chatbotEnabled);
+                
+                userNicknameInput.value = userData.chatbot_nickname || ''; 
+                chatbotToneSelect.value = userData.chatbot_tone || 'friendly_supportive';
+                chatbotCustomInstructionsTextarea.value = userData.chatbot_custom_instructions || '';
+                chatbotUserContextTextarea.value = userData.chatbot_user_context || '';
+
+            } else {
+                console.error("Failed to load user data from backend:", response.status);
+                showToast("Could not load profile data.", "error");
+                userNameInput.value = localStorage.getItem('user_name') || 'User';
+                setChatbotCustomizationVisualState(true); 
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            showToast("Network error loading profile.", "error");
+            userNameInput.value = localStorage.getItem('user_name') || 'User';
+            setChatbotCustomizationVisualState(true); 
+        } finally {
+            // Ensure loader is hidden after a slight delay to allow rendering if needed
+            setTimeout(() => pageLoader.classList.add('hidden'), 200); 
+        }
       }
       
       avatarUpload.addEventListener('change', (e) => {
@@ -792,92 +851,145 @@
         }
       });
       
-      saveProfileBtn.addEventListener('click', () => {
-        const userProfileSettings = {
+      async function saveAllSettings(event) {
+        const token = getAuthToken();
+        if (!token) {
+            showToast("Authentication error. Please log in again.", "error");
+            return;
+        }
+
+        const settingsData = {
           name: userNameInput.value,
-          email: userEmailInput.value,
           bio: userBioInput.value,
-          avatar: avatarPreview.src
+          avatar: avatarPreview.src, 
+          chatbot_customization_enabled: chatbotCustomizationToggle.classList.contains('active'), 
+          chatbot_nickname: userNicknameInput.value,
+          chatbot_tone: chatbotToneSelect.value,
+          chatbot_custom_instructions: chatbotCustomInstructionsTextarea.value,
+          chatbot_user_context: chatbotUserContextTextarea.value
         };
-        localStorage.setItem('userProfileSettings', JSON.stringify(userProfileSettings));
-        showToast("Profile updated successfully!");
-      });
+        
+        const activeSaveButton = event.target.closest('button'); 
+        const originalButtonHTML = activeSaveButton.innerHTML;
+        activeSaveButton.disabled = true;
+        activeSaveButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
 
-      if (fontSizeSelector) {
-        fontSizeSelector.addEventListener('click', (e) => {
-            if (e.target.tagName === 'BUTTON') {
-                fontSizeSelector.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
-                e.target.classList.add('active');
-                const appearanceSettings = JSON.parse(localStorage.getItem('appearanceSettings')) || {};
-                appearanceSettings.fontSize = e.target.dataset.size;
-                localStorage.setItem('appearanceSettings', JSON.stringify(appearanceSettings));
-                showToast(`Font size set to ${e.target.dataset.size} (conceptual).`);
+        try {
+            const response = await fetch(`${serverUrl}/api/me`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(settingsData)
+            });
+
+            if (response.ok) {
+                const updatedUser = await response.json();
+                showToast("Settings updated successfully!");
+                localStorage.setItem('user_name', updatedUser.name); 
+                
+                userNameInput.value = updatedUser.name;
+                userBioInput.value = updatedUser.bio || '';
+                avatarPreview.src = updatedUser.avatar || 'https://randomuser.me/api/portraits/men/32.jpg';
+                if(!updatedUser.avatar) avatarPreview.src = 'https://randomuser.me/api/portraits/men/32.jpg';
+                
+                const chatbotEnabled = updatedUser.chatbot_customization_enabled !== false;
+                setChatbotCustomizationVisualState(chatbotEnabled);
+                userNicknameInput.value = updatedUser.chatbot_nickname || '';
+                chatbotToneSelect.value = updatedUser.chatbot_tone || 'friendly_supportive';
+                chatbotCustomInstructionsTextarea.value = updatedUser.chatbot_custom_instructions || '';
+                chatbotUserContextTextarea.value = updatedUser.chatbot_user_context || '';
+
+            } else {
+                const errorData = await response.json();
+                showToast(errorData.detail || "Failed to update settings.", "error");
             }
-        });
-      }
-      if (darkModeVisualToggle) { // Make the visual toggle in the card also clickable
-        darkModeVisualToggle.addEventListener('click', () => {
-            if(pageThemeToggle) pageThemeToggle.click(); // Trigger the main header toggle
-        });
+        } catch (error) {
+            console.error("Error saving settings:", error);
+            showToast("Network error. Could not save settings.", "error");
+        } finally {
+            activeSaveButton.disabled = false;
+            activeSaveButton.innerHTML = originalButtonHTML;
+        }
       }
 
+      saveProfileBtn.addEventListener('click', saveAllSettings);
+      saveChatbotSettingsBtn.addEventListener('click', saveAllSettings);
 
-      defaultTodoModeToggle.addEventListener('click', () => {
-          defaultTodoModeToggle.classList.toggle('active');
-          const currentChatbotSettings = JSON.parse(localStorage.getItem('chatbotSettings')) || {};
-          currentChatbotSettings.defaultTodoMode = defaultTodoModeToggle.classList.contains('active');
-          localStorage.setItem('chatbotSettings', JSON.stringify(currentChatbotSettings));
-      });
-      
-      saveChatbotSettingsBtn.addEventListener('click', () => {
-          const chatbotSettings = {
-              personality: chatbotPersonalitySelect.value,
-              defaultTodoMode: defaultTodoModeToggle.classList.contains('active')
-          };
-          localStorage.setItem('chatbotSettings', JSON.stringify(chatbotSettings));
-          showToast("Chatbot settings saved!");
-      });
 
       clearCurrentChatHistoryBtn.addEventListener('click', () => showConfirmationModal(clearCurrentChatModal));
       clearAllChatHistoryBtn.addEventListener('click', () => showConfirmationModal(clearAllChatModal));
       
-      changePasswordBtn.addEventListener('click', () => {
-        const currentPass = document.getElementById('currentPassword').value;
-        const newPass = document.getElementById('newPassword').value;
-        const confirmPass = document.getElementById('confirmPassword').value;
+      changePasswordBtn.addEventListener('click', async () => {
+        const token = getAuthToken();
+        if (!token) {
+            showToast("Authentication error.", "error"); return;
+        }
+
+        const currentPasswordInput = document.getElementById('currentPassword');
+        const newPasswordInput = document.getElementById('newPassword');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+
+        const currentPass = currentPasswordInput.value;
+        const newPass = newPasswordInput.value;
+        const confirmPass = confirmPasswordInput.value;
+
         if (!currentPass || !newPass || !confirmPass) {
-          showToast("Please fill all password fields", "error"); return;
+          showToast("Please fill all password fields.", "error"); return;
+        }
+        if (newPass.length < 6) {
+          showToast("New password must be at least 6 characters.", "error"); return;
         }
         if (newPass !== confirmPass) {
-          showToast("New passwords don't match", "error"); return;
+          showToast("New passwords don't match.", "error"); return;
         }
-        showToast("Password changed successfully!");
-        document.getElementById('currentPassword').value = '';
-        document.getElementById('newPassword').value = '';
-        document.getElementById('confirmPassword').value = '';
-      });
 
-      setup2FABtn.addEventListener('click', () => {
-          showToast("2FA setup would open a new flow (conceptual).", "info");
-      });
+        const originalButtonHTML = changePasswordBtn.innerHTML;
+        changePasswordBtn.disabled = true;
+        changePasswordBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Changing...';
 
-      exportDataBtn.addEventListener('click', () => {
-          showToast("Preparing your data for export... (conceptual)", "info");
-      });
+        try {
+            const response = await fetch(`${serverUrl}/api/password/change`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ current_password: currentPass, new_password: newPass })
+            });
 
-      importDataBtn.addEventListener('click', () => {
-          showToast("Import functionality not yet implemented (conceptual).", "info");
+            const data = await response.json();
+            if (response.ok) {
+                showToast("Password changed successfully!");
+                currentPasswordInput.value = '';
+                newPasswordInput.value = '';
+                confirmPasswordInput.value = '';
+            } else {
+                showToast(data.detail || "Failed to change password.", "error");
+            }
+        } catch (error) {
+            console.error("Error changing password:", error);
+            showToast("Network error. Could not change password.", "error");
+        } finally {
+            changePasswordBtn.disabled = false;
+            changePasswordBtn.innerHTML = originalButtonHTML;
+        }
       });
+      
+      if (deleteAccountBtn) {
+        deleteAccountBtn.addEventListener('click', () => {
+            deleteAccountConfirmText.value = ''; 
+            finalDeleteAccountBtn.disabled = true;
+            showConfirmationModal(deleteAccountModal);
+        });
+      }
 
-      deleteAccountBtn.addEventListener('click', () => {
-          deleteAccountConfirmText.value = ''; 
-          finalDeleteAccountBtn.disabled = true;
-          showConfirmationModal(deleteAccountModal);
-      });
-
-      deleteAccountConfirmText.addEventListener('input', () => {
-          finalDeleteAccountBtn.disabled = deleteAccountConfirmText.value !== "DELETE MY ACCOUNT";
-      });
+      if (deleteAccountConfirmText) {
+        deleteAccountConfirmText.addEventListener('input', () => {
+            finalDeleteAccountBtn.disabled = deleteAccountConfirmText.value !== "DELETE MY ACCOUNT";
+        });
+      }
       
       function showToast(message, type = 'success') { 
         toast.textContent = message;
@@ -908,11 +1020,38 @@
                   modalElement.classList.remove('show');
               };
           } else if (modalElement.id === 'deleteAccountModal') {
-              confirmBtn.onclick = () => {
+              confirmBtn.onclick = async () => {
                   if (deleteAccountConfirmText.value === "DELETE MY ACCOUNT") {
-                      console.warn("Account Deletion Triggered (Conceptual)");
-                      showToast("Account deleted successfully. You will be logged out.", "danger");
-                      modalElement.classList.remove('show');
+                      const token = getAuthToken();
+                      if (!token) {
+                          showToast("Authentication error.", "error");
+                          modalElement.classList.remove('show');
+                          return;
+                      }
+                      const finalDeleteBtnOriginalHTML = finalDeleteAccountBtn.innerHTML;
+                      finalDeleteAccountBtn.disabled = true;
+                      finalDeleteAccountBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+                      try {
+                          const response = await fetch(`${serverUrl}/api/me`, {
+                              method: 'DELETE',
+                              headers: { 'Authorization': `Bearer ${token}` }
+                          });
+                          if (response.ok) {
+                              showToast("Account deleted successfully. You will be logged out.", "warning");
+                              localStorage.clear();
+                              setTimeout(() => { window.location.href = 'Login page.html'; }, 2000);
+                          } else {
+                              const errorData = await response.json();
+                              showToast(errorData.detail || "Failed to delete account.", "error");
+                          }
+                      } catch (error) {
+                          console.error("Error deleting account:", error);
+                          showToast("Network error. Could not delete account.", "error");
+                      } finally {
+                          modalElement.classList.remove('show');
+                          finalDeleteAccountBtn.disabled = (deleteAccountConfirmText.value !== "DELETE MY ACCOUNT");
+                          finalDeleteAccountBtn.innerHTML = finalDeleteBtnOriginalHTML;
+                      }
                   } else {
                       showToast("Confirmation text does not match.", "error");
                   }
@@ -920,7 +1059,9 @@
           }
       }
       
+      // Initial load of user settings (will also handle showing/hiding loader)
       loadUserSettings();
+
     });
   </script>
 </body>
