@@ -7,32 +7,70 @@
 <style>
   /* Modern CSS Reset & Base Styles */
   :root {
-    --primary: #5e0f7b;
-    --primary-light: #d9138a;
-    --secondary: #10b981;
-    --secondary-light: #34d399;
-    --accent: #8b5cf6;
-    --highlight: #f59e0b;
-    --neutral-50: #fafafa;
-    --neutral-100: #f5f5f5;
-    --neutral-200: #e5e5e5;
-    --neutral-300: #d4d4d4;
-    --neutral-400: #a3a3a3;
-    --neutral-500: #737373;
-    --neutral-600: #525252;
-    --neutral-700: #404040;
-    --neutral-800: #262626;
-    --neutral-900: #171717;
+    /* THEME VARIABLES from notes.html/settings.html */
+    --bg: #f5f5f5;
+    --text: #333333;
+    --text-secondary: rgba(51, 51, 51, 0.7);
+    --accent: #2a8cf4; /* Was --primary: #5e0f7b */
+    --accent-secondary: #ff3a8c; /* Was --primary-light: #d9138a */
+    --accent-tertiary: #00c2ff;
+    --accent-dark: #284cff; /* Added for consistency */
+    --card-bg: rgba(255, 255, 255, 0.9); /* Was white */
+    --card-border: rgba(0, 0, 0, 0.1); /* Was --neutral-200 */
+    --btn-primary-bg: linear-gradient(135deg, #a18dff, #7d5fff); /* For gradient buttons */
+    --btn-secondary-bg: linear-gradient(135deg, #ff3a8c, #ff6b6b);
+    --btn-hover-brightness: brightness(1.05);
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.1); /* Standardized shadow */
+    --glow: 0 0 20px rgba(138, 143, 255, 0.4);
+    --header-bg: rgba(255, 255, 255, 0.9); /* Was gradient */
+    --header-text: #333333; /* Was white */
+    --header-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+    --input-bg: #ffffff;
+    --input-border: #ddd;
+    --input-text: #333333;
+    --menu-bg: #ffffff;
+    --menu-hover: rgba(138, 143, 255, 0.1);
     --danger: #ef4444;
     --success: #22c55e;
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --warning: #f59e0b; /* Was --highlight */
+    --info: #3b82f6;
+
+    /* Radii from original Stats.html, seem fine */
     --radius-sm: 0.125rem;
     --radius: 0.25rem;
     --radius-md: 0.375rem;
     --radius-lg: 0.5rem;
+    --radius-full: 9999px;
+
+    /* Specific to Stats.html if needed, but prefer common ones */
+    --stats-secondary-color: #10b981; /* Original --secondary */
+    --progress-gradient: linear-gradient(to right, var(--accent-secondary), var(--accent)); /* Updated progress */
+  }
+
+  .dark-mode {
+    /* Dark Theme */
+    --bg: #0a0a0a;
+    --text: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --accent: #8a8fff; /* Was #5e0f7b -> dark version */
+    --accent-secondary: #ff3a8c;
+    --accent-dark: #2a8cf4;
+    --card-bg: rgba(0, 0, 0, 0.9); /* Was --neutral-800 */
+    --card-border: rgba(255, 255, 255, 0.1); /* Was --neutral-700 */
+    --btn-hover-brightness: brightness(1.1);
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --glow: 0 0 20px rgba(138, 143, 255, 0.3);
+    --header-bg: rgba(0, 0, 0, 0.9); /* Was gradient */
+    --header-text: #ffffff;
+    --header-shadow: 0 4px 30px rgba(0,0,0,0.5); /* Darker shadow */
+    --input-bg: #1a1a1a;
+    --input-border: #333;
+    --input-text: #ffffff;
+    --menu-bg: #1a1a1a;
+    --menu-hover: rgba(138, 143, 255, 0.2);
+    
+    --stats-secondary-color: #34d399; /* Original --secondary-light */
+    --progress-gradient: linear-gradient(to right, var(--accent-secondary), var(--accent));
   }
 
   * {
@@ -42,12 +80,29 @@
   }
 
   body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--neutral-100);
-    color: var(--neutral-800);
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* Updated font */
+    background-color: var(--bg);
+    color: var(--text);
     line-height: 1.6;
-    padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding-top: 70px; /* Space for fixed header */
+    overflow-x: hidden;
   }
+  
+  .grid-bg {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: 
+        linear-gradient(var(--card-border) 1px, transparent 1px), /* Use card-border for subtle grid */
+        linear-gradient(90deg, var(--card-border) 1px, transparent 1px);
+      background-size: 40px 40px; z-index: -2; opacity: 0.4;
+  }
+  .dark-mode .grid-bg {
+      background-image: 
+        linear-gradient(var(--card-border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--card-border) 1px, transparent 1px);
+      opacity: 0.2; /* Darker grid for dark mode */
+  }
+
 
   .container {
     max-width: 1200px;
@@ -55,36 +110,103 @@
     padding: 20px;
   }
 
-  header {
-    background: linear-gradient(to right, var(--primary), var(--primary-light));
-    color: white;
-    padding: 1.5rem 2rem;
-    margin-bottom: 2rem;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-  }
-
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .header-content {
+  header { /* Updated header style */
+    padding: 0.75rem 1.5rem;
+    height: 70px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: var(--header-bg);
+    color: var(--header-text);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--header-shadow);
+    border-bottom: 1px solid var(--card-border);
   }
+  
+  .header-brand { /* For title and optional icon/subtitle */
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .header-brand i {
+    font-size: 1.5rem; /* Icon size for header title */
+    color: var(--accent); /* Consistent icon color */
+  }
+  
+  h1.page-title { /* Updated H1 style */
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    /* Gradient text for title if desired, or just var(--header-text) */
+    background: linear-gradient(to right, var(--accent-dark, var(--accent)), var(--accent-secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .dark-mode h1.page-title {
+    background: linear-gradient(to right, var(--accent), var(--accent-secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .header-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: -0.25rem; /* Adjust if needed */
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .theme-toggle { /* Updated theme-toggle style */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+  }
+
+  .theme-toggle:hover {
+    background: var(--menu-hover);
+    color: var(--accent);
+    transform: translateY(-1px);
+    box-shadow: var(--glow);
+  }
+
+  .dark-mode .theme-toggle i.fa-sun { display: block; } /* Sun in dark mode */
+  .dark-mode .theme-toggle i.fa-moon { display: none; } /* Moon hidden in dark */
+  .theme-toggle i.fa-sun { display: none; } /* Sun hidden in light */
+  .theme-toggle i.fa-moon { display: block; } /* Moon in light mode */
+
 
   .stats-overview {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
   }
 
   .stat-card {
-    background: white;
-    border-radius: var(--radius-lg);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg); /* 0.5rem */
     padding: 1.5rem;
     box-shadow: var(--shadow);
     display: flex;
@@ -96,11 +218,11 @@
 
   .stat-card:hover {
     transform: translateY(-3px);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--glow); /* Updated hover shadow */
   }
 
   .stat-card h3 {
-    color: var(--neutral-600);
+    color: var(--text-secondary);
     margin-bottom: 1rem;
     font-size: 1rem;
     text-transform: uppercase;
@@ -110,12 +232,12 @@
   .stat-value {
     font-size: 2.5rem;
     font-weight: 700;
-    color: var(--primary);
+    color: var(--accent); /* Updated color */
     margin-bottom: 0.5rem;
   }
 
   .stat-description {
-    color: var(--neutral-500);
+    color: var(--text-secondary);
     font-size: 0.9rem;
   }
 
@@ -127,19 +249,23 @@
   }
 
   .chart-card {
-    background: white;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
     border-radius: var(--radius-lg);
     padding: 1.5rem;
     box-shadow: var(--shadow);
   }
 
   .chart-card h2 {
-    color: var(--neutral-800);
+    color: var(--text);
     margin-bottom: 1.5rem;
     font-size: 1.25rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+  }
+  .chart-card h2 i { /* Icon color in chart card titles */
+    color: var(--accent);
   }
 
   .chart-wrapper {
@@ -153,6 +279,22 @@
     height: 100% !important;
   }
 
+  .section-title { /* For "Your Goals", "Recent Activity" */
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+  }
+  .section-title i {
+      color: var(--accent);
+  }
+
+
   .goals-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -161,7 +303,8 @@
   }
 
   .goal-card {
-    background: white;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
     border-radius: var(--radius-lg);
     padding: 1.5rem;
     box-shadow: var(--shadow);
@@ -170,11 +313,11 @@
 
   .goal-card:hover {
     transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--glow); /* Updated hover shadow */
   }
 
   .goal-card h3 {
-    color: var(--neutral-900);
+    color: var(--text);
     margin-bottom: 1rem;
     font-size: 1.1rem;
     display: flex;
@@ -183,7 +326,7 @@
   }
 
   .goal-card h3 i {
-    color: var(--primary);
+    color: var(--accent); /* Updated color */
   }
 
   .goal-progress {
@@ -192,15 +335,18 @@
 
   .progress-bar {
     height: 8px;
-    background-color: var(--neutral-200);
+    background-color: var(--card-border); /* Use card-border for background */
     border-radius: var(--radius-full);
     overflow: hidden;
     margin-bottom: 0.5rem;
   }
+  .dark-mode .progress-bar {
+    background-color: rgba(255,255,255,0.1); /* Lighter bg for dark mode progress bar */
+  }
 
   .progress-fill {
     height: 100%;
-    background: linear-gradient(to right, var(--primary-light), var(--primary));
+    background: var(--progress-gradient); /* Updated gradient */
     border-radius: var(--radius-full);
     transition: width 0.5s ease;
   }
@@ -209,7 +355,7 @@
     display: flex;
     justify-content: space-between;
     font-size: 0.85rem;
-    color: var(--neutral-600);
+    color: var(--text-secondary);
   }
 
   .goal-stats {
@@ -228,37 +374,31 @@
   .stat .number {
     font-weight: 700;
     font-size: 1.2rem;
-    color: var(--primary);
+    color: var(--accent); /* Updated color */
   }
 
   .stat .label {
-    color: var(--neutral-500);
+    color: var(--text-secondary);
     font-size: 0.8rem;
   }
 
   .completed .progress-fill {
-    background: var(--secondary);
+    background: var(--success); /* Use success color */
   }
 
   .completed .stat .number {
-    color: var(--secondary);
+    color: var(--success);
   }
 
   .recent-activity {
-    background: white;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
     border-radius: var(--radius-lg);
     padding: 1.5rem;
     box-shadow: var(--shadow);
   }
 
-  .recent-activity h2 {
-    color: var(--neutral-800);
-    margin-bottom: 1.5rem;
-    font-size: 1.25rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
+  /* .recent-activity h2 is covered by .section-title now */
 
   .activity-list {
     list-style: none;
@@ -266,7 +406,7 @@
 
   .activity-item {
     padding: 1rem 0;
-    border-bottom: 1px solid var(--neutral-200);
+    border-bottom: 1px solid var(--card-border);
     display: flex;
     align-items: flex-start;
     gap: 1rem;
@@ -280,13 +420,17 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: var(--neutral-100);
+    background-color: var(--menu-hover); /* Use menu-hover for subtle background */
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--primary);
+    color: var(--accent); /* Updated color */
     flex-shrink: 0;
   }
+  .dark-mode .activity-icon {
+      background-color: rgba(255,255,255,0.05);
+  }
+
 
   .activity-content {
     flex-grow: 1;
@@ -295,56 +439,70 @@
   .activity-title {
     font-weight: 600;
     margin-bottom: 0.25rem;
+    color: var(--text);
   }
 
   .activity-time {
-    color: var(--neutral-500);
+    color: var(--text-secondary);
     font-size: 0.8rem;
   }
 
-  .refresh-btn {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 600;
-    transition: background 0.2s ease;
+  .btn { /* General button class for consistency */
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      justify-content: center;
+  }
+  .btn-primary { /* For primary actions like refresh */
+      background: var(--btn-primary-bg);
+      color: white;
+  }
+  .btn-primary:hover {
+      filter: var(--btn-hover-brightness);
+      transform: translateY(-1px);
+      box-shadow: var(--glow);
   }
 
-  .refresh-btn:hover {
-    background: var(--primary-light);
+  .refresh-btn { /* Specific class for refresh, using general .btn .btn-primary */
+    /* Styles will be inherited from .btn and .btn-primary */
   }
+
 
   @media (max-width: 768px) {
     .container {
       padding: 15px;
     }
-    
+    header { /* Adjust header padding on mobile */
+      padding: 0.5rem 1rem;
+    }
+    .header-brand {
+        gap: 0.5rem;
+    }
+    h1.page-title {
+        font-size: 1.25rem;
+    }
+    .header-brand i {
+        font-size: 1.25rem;
+    }
+    .header-subtitle {
+        display: none; /* Hide subtitle on small screens if too cluttered */
+    }
     .chart-container {
       grid-template-columns: 1fr;
     }
-    
     .stats-overview {
       grid-template-columns: 1fr 1fr;
     }
-    
     .goals-container {
       grid-template-columns: 1fr;
-    }
-    
-    header {
-      padding: 1rem;
-    }
-    
-    .header-content {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1rem;
     }
   }
 
@@ -352,19 +510,38 @@
     .stats-overview {
       grid-template-columns: 1fr;
     }
+    .header-actions {
+        gap: 0.5rem; /* Reduce gap for very small screens */
+    }
+    .refresh-btn span { /* Hide text on very small screens, show only icon */
+        display: none;
+    }
+    .refresh-btn {
+        padding: 0.5rem; /* Make it more square-ish */
+        width: 40px;
+        height: 40px;
+    }
   }
 </style>
 </head>
 <body>
+<div class="grid-bg"></div> <!-- Grid background -->
 <div class="container">
   <header>
-    <div class="header-content">
+    <div class="header-brand">
+      <i class="fas fa-chart-bar"></i> <!-- Changed icon -->
       <div>
-        <i class="fa-solid fa-bars-progress"></i><h1> Progress Dashboard</h1>
-        <p>Track your goals, tasks, and notes</p>
+          <h1 class="page-title">Progress Dashboard</h1>
+          <p class="header-subtitle">Track your goals, tasks, and notes</p>
       </div>
-      <button class="refresh-btn" id="refreshBtn">
-        <i class="fas fa-sync-alt"></i> Refresh Data
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-primary refresh-btn" id="refreshBtn"> <!-- Added .btn .btn-primary -->
+        <i class="fas fa-sync-alt"></i> <span>Refresh Data</span>
+      </button>
+      <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
+        <i class="fas fa-sun"></i>
+        <i class="fas fa-moon"></i>
       </button>
     </div>
   </header>
@@ -417,12 +594,12 @@
     </div>
   </div>
 
-  <h2 style="margin-bottom: 1rem;"><i class="fas fa-bullseye"></i> Your Goals</h2>
+  <h2 class="section-title"><i class="fas fa-bullseye"></i> Your Goals</h2>
   <div class="goals-container" id="goalsContainer">
     <!-- Goal cards will be inserted here -->
   </div>
 
-  <h2 style="margin-bottom: 1rem;"><i class="fas fa-history"></i> Recent Activity</h2>
+  <h2 class="section-title"><i class="fas fa-history"></i> Recent Activity</h2>
   <div class="recent-activity">
     <ul class="activity-list" id="activityList">
       <!-- Activity items will be inserted here -->
@@ -453,10 +630,12 @@
   const goalsContainer = document.getElementById('goalsContainer');
   const activityList = document.getElementById('activityList');
   const refreshBtn = document.getElementById('refreshBtn');
+  const themeToggle = document.getElementById('themeToggle');
   let goalChart, taskChart;
 
   // Initialize the dashboard
   function initDashboard() {
+    applyTheme();
     loadData();
     renderStats();
     renderGoalCards();
@@ -464,132 +643,111 @@
     initCharts();
   }
 
+  // Theme management functions
+  function applyTheme() {
+    // Check localStorage for the shared 'darkMode' key
+    const darkModeEnabled = localStorage.getItem('darkMode') === 'enabled';
+    document.body.classList.toggle('dark-mode', darkModeEnabled);
+  }
+
+  function toggleTheme() {
+    const isDarkNow = document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', isDarkNow ? 'enabled' : 'disabled');
+    // The 'storage' event listener below will handle synchronization if other tabs are open.
+  }
+
+  // Listen for theme changes from other tabs/pages via localStorage
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'darkMode') {
+      applyTheme(); // Re-apply theme based on the new value
+      // Update charts if they need to be re-rendered with new theme colors
+      if (goalChart && taskChart) {
+          // You might need to destroy and re-init charts if their colors are theme-dependent
+          // For now, this just re-applies body class. Chart.js colors are hardcoded.
+      }
+    }
+  });
+
+
   // Load data from localStorage (from both task manager and notes app)
   function loadData() {
-    // Load task data
     const tasksData = JSON.parse(localStorage.getItem('tasks')) || [];
     const checkboxStates = JSON.parse(localStorage.getItem('checkboxStates')) || {};
     
-    // Process the tasks data into our dashboard format
-    dashboardData.goals = tasksData.map(task => {
+    dashboardData.goals = tasksData.map((task, taskArrayIndex) => { // Added taskArrayIndex
       const goalTitle = task.text.split('\n')[0].trim().replace(/^Goal:\s*/, '');
-      
-      // Extract phases and tasks
       const phases = task.text.split(/Phase\s*\d*:/i).slice(1);
-      let totalTasks = 0;
-      let completedTasks = 0;
+      let totalTasksInGoal = 0;
+      let completedTasksInGoal = 0;
       
       phases.forEach((phaseBlock, phaseIndex) => {
         const lines = phaseBlock.trim().split('\n').map(l => l.trim()).filter(Boolean);
-        if (lines.length <= 1) return; // Skip if only phase title or empty
+        if (lines.length <= 1) return;
         
         const phaseTasks = lines.slice(1);
-        totalTasks += phaseTasks.length;
+        totalTasksInGoal += phaseTasks.length;
         
         phaseTasks.forEach((_, taskItemIndex) => {
-          const checkboxId = `task_${tasksData.indexOf(task)}_phase_${phaseIndex}_item_${taskItemIndex}`;
+          // Use taskArrayIndex here for unique IDs across all goals if tasksData order is stable
+          const checkboxId = `task_${taskArrayIndex}_phase_${phaseIndex}_item_${taskItemIndex}`;
           if (checkboxStates[checkboxId]) {
-            completedTasks++;
+            completedTasksInGoal++;
           }
         });
       });
       
       return {
-        id: 'goal-' + Math.random().toString(36).substr(2, 9),
+        id: 'goal-' + Math.random().toString(36).substr(2, 9), // Keep random ID for now
         title: goalTitle,
-        totalTasks: totalTasks,
-        completedTasks: completedTasks,
+        totalTasks: totalTasksInGoal,
+        completedTasks: completedTasksInGoal,
         pinned: task.pinned || false,
         highlighted: task.highlighted || false,
-        lastUpdated: new Date().toISOString()
+        lastUpdated: new Date().toISOString() // Placeholder
       };
     });
     
-    // Load notes data
     const notesData = JSON.parse(localStorage.getItem('notes')) || [];
     dashboardData.notes = notesData;
     
-    // Generate some sample activity data if none exists
     if ((dashboardData.goals.length > 0 || dashboardData.notes.length > 0) && dashboardData.activities.length === 0) {
       generateSampleActivity();
     }
   }
 
-  // Generate sample activity data including notes activity
   function generateSampleActivity() {
     const activities = [];
-    const actions = ['completed', 'started', 'updated', 'created'];
-    const items = ['task', 'goal', 'phase', 'note'];
-    
-    // Add activities for each goal
+    // Simplified sample generation
     dashboardData.goals.forEach(goal => {
-      // Goal creation
       activities.push({
-        id: 'act-' + Math.random().toString(36).substr(2, 9),
-        action: 'created',
-        item: 'goal',
-        title: goal.title,
+        id: 'act-g-' + goal.id, action: 'created', item: 'goal', title: goal.title,
         time: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString()
       });
-      
-      // Some task completions
       if (goal.completedTasks > 0) {
-        const completionCount = Math.min(3, goal.completedTasks);
-        for (let i = 0; i < completionCount; i++) {
-          activities.push({
-            id: 'act-' + Math.random().toString(36).substr(2, 9),
-            action: 'completed',
-            item: 'task',
-            title: `Task ${i+1} in ${goal.title}`,
+         activities.push({
+            id: 'act-t-' + goal.id, action: 'completed', item: 'task', title: `Task in ${goal.title}`,
             time: new Date(Date.now() - Math.random() * 3 * 24 * 60 * 60 * 1000).toISOString()
-          });
-        }
+         });
       }
     });
-    
-    // Add activities for notes
     dashboardData.notes.forEach(note => {
-      // Note creation
       activities.push({
-        id: 'act-' + Math.random().toString(36).substr(2, 9),
-        action: 'created',
-        item: 'note',
-        title: note.title || 'Untitled Note',
+        id: 'act-n-' + (note.id || Math.random().toString(36).substr(2,9)), action: 'created', item: 'note', title: note.title || 'Untitled Note',
         time: new Date(note.timestamp || Date.now() - Math.random() * 2 * 24 * 60 * 60 * 1000).toISOString()
       });
-      
-      // If note was updated (not same as creation time)
-      if (note.timestamp && Math.random() > 0.7) {
-        activities.push({
-          id: 'act-' + Math.random().toString(36).substr(2, 9),
-          action: 'updated',
-          item: 'note',
-          title: note.title || 'Untitled Note',
-          time: new Date(Date.now() - Math.random() * 24 * 60 * 60 * 1000).toISOString()
-        });
-      }
     });
-    
-    // Sort by time (newest first)
     activities.sort((a, b) => new Date(b.time) - new Date(a.time));
-    
-    // Limit to 10 most recent
     dashboardData.activities = activities.slice(0, 10);
   }
 
-  // Render the stats overview including notes
   function renderStats() {
-    // Goals and tasks stats
     const totalGoals = dashboardData.goals.length;
-    const completedGoals = dashboardData.goals.filter(g => g.completedTasks === g.totalTasks && g.totalTasks > 0).length;
+    const completedGoals = dashboardData.goals.filter(g => g.totalTasks > 0 && g.completedTasks === g.totalTasks).length;
     const totalTasks = dashboardData.goals.reduce((sum, goal) => sum + goal.totalTasks, 0);
     const completedTasks = dashboardData.goals.reduce((sum, goal) => sum + goal.completedTasks, 0);
-    
-    // Notes stats
     const totalNotes = dashboardData.notes.length;
     const pinnedNotes = dashboardData.notes.filter(note => note.pinned).length;
     
-    // Update DOM elements
     totalGoalsEl.textContent = totalGoals;
     completedGoalsEl.textContent = completedGoals;
     totalTasksEl.textContent = totalTasks;
@@ -598,27 +756,19 @@
     pinnedNotesEl.textContent = pinnedNotes;
   }
 
-  // Render the goal cards
   function renderGoalCards() {
     goalsContainer.innerHTML = '';
-    
     if (dashboardData.goals.length === 0) {
       goalsContainer.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: var(--neutral-500);">
+        <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: var(--text-secondary);">
           <i class="fas fa-clipboard-list" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
           <p>No goals yet. Create some in your Task Manager!</p>
-        </div>
-      `;
+        </div>`;
       return;
     }
-    
     dashboardData.goals.forEach(goal => {
-      const completionPercentage = goal.totalTasks > 0 
-        ? Math.round((goal.completedTasks / goal.totalTasks) * 100)
-        : 0;
-      
-      const isCompleted = completionPercentage === 100;
-      
+      const completionPercentage = goal.totalTasks > 0 ? Math.round((goal.completedTasks / goal.totalTasks) * 100) : 0;
+      const isCompleted = completionPercentage === 100 && goal.totalTasks > 0;
       const card = document.createElement('div');
       card.className = `goal-card ${isCompleted ? 'completed' : ''}`;
       card.innerHTML = `
@@ -637,193 +787,136 @@
         </div>
         <div class="goal-stats">
           <div class="stat">
-            <div class="number">${goal.completedTasks}</div>
-            <div class="label">Completed</div>
+            <div class="number">${goal.completedTasks}</div><div class="label">Completed</div>
           </div>
           <div class="stat">
-            <div class="number">${goal.totalTasks - goal.completedTasks}</div>
-            <div class="label">Remaining</div>
+            <div class="number">${goal.totalTasks - goal.completedTasks}</div><div class="label">Remaining</div>
           </div>
           <div class="stat">
-            <div class="number">${goal.totalTasks}</div>
-            <div class="label">Total</div>
+            <div class="number">${goal.totalTasks}</div><div class="label">Total</div>
           </div>
-        </div>
-      `;
-      
+        </div>`;
       goalsContainer.appendChild(card);
     });
   }
 
-  // Render the activity log
   function renderActivityLog() {
     activityList.innerHTML = '';
-    
     if (dashboardData.activities.length === 0) {
       activityList.innerHTML = `
-        <li style="text-align: center; padding: 2rem; color: var(--neutral-500);">
+        <li style="text-align: center; padding: 2rem; color: var(--text-secondary);">
           <i class="fas fa-clock" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
           <p>No recent activity</p>
-        </li>
-      `;
+        </li>`;
       return;
     }
-    
     dashboardData.activities.forEach(activity => {
       const timeAgo = getTimeAgo(activity.time);
       const actionIcon = getActionIcon(activity.action, activity.item);
       const actionText = getActionText(activity.action, activity.item);
-      
       const item = document.createElement('li');
       item.className = 'activity-item';
       item.innerHTML = `
-        <div class="activity-icon">
-          <i class="fas ${actionIcon}"></i>
-        </div>
+        <div class="activity-icon"><i class="fas ${actionIcon}"></i></div>
         <div class="activity-content">
           <div class="activity-title">${actionText} "${activity.title}"</div>
           <div class="activity-time">${timeAgo}</div>
-        </div>
-      `;
-      
+        </div>`;
       activityList.appendChild(item);
     });
   }
 
-  // Helper function to get time ago text
   function getTimeAgo(isoString) {
-    const now = new Date();
-    const date = new Date(isoString);
-    const seconds = Math.floor((now - date) / 1000);
-    
+    const seconds = Math.floor((new Date() - new Date(isoString)) / 1000);
     if (seconds < 60) return 'Just now';
-    if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
-    if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
-    return `${Math.floor(seconds / 86400)} days ago`;
+    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+    return `${Math.floor(seconds / 86400)}d ago`;
   }
 
-  // Helper function to get action icon (updated for notes)
   function getActionIcon(action, item) {
-    if (item === 'note') {
-      switch (action) {
-        case 'created': return 'fa-file-alt';
-        case 'updated': return 'fa-edit';
-        default: return 'fa-file-alt';
-      }
-    }
-    
+    if (item === 'note') return action === 'created' ? 'fa-file-alt' : 'fa-edit';
     switch (action) {
       case 'completed': return 'fa-check-circle';
-      case 'started': return 'fa-play-circle';
-      case 'updated': return 'fa-edit';
       case 'created': return 'fa-plus-circle';
       default: return 'fa-info-circle';
     }
   }
 
-  // Helper function to get action text (updated for notes)
   function getActionText(action, item) {
-    if (item === 'note') {
-      switch (action) {
-        case 'created': return 'Created note';
-        case 'updated': return 'Updated note';
-        default: return 'Modified note';
-      }
-    }
-    
-    switch (action) {
-      case 'completed': return `Completed ${item}`;
-      case 'started': return `Started ${item}`;
-      case 'updated': return `Updated ${item}`;
-      case 'created': return `Created ${item}`;
-      default: return `${action} ${item}`;
-    }
+    return `${action.charAt(0).toUpperCase() + action.slice(1)} ${item}`;
   }
 
-  // Initialize the charts
   function initCharts() {
-    // Goal completion chart
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+    const textColor = isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)';
+    // Chart.js global defaults
+    Chart.defaults.borderColor = gridColor;
+    Chart.defaults.color = textColor;
+
+
     const goalCtx = document.getElementById('goalChart').getContext('2d');
-    const totalGoals = dashboardData.goals.length;
-    const completedGoals = dashboardData.goals.filter(g => g.completedTasks === g.totalTasks && g.totalTasks > 0).length;
+    const totalGoalsVal = dashboardData.goals.length;
+    const completedGoalsVal = dashboardData.goals.filter(g => g.totalTasks > 0 && g.completedTasks === g.totalTasks).length;
     
+    // Define colors based on theme, ideally from CSS vars if Chart.js could easily consume them.
+    // Hardcoding for now, matching the original intent but consider CSS vars for future.
+    const completedColor = getComputedStyle(document.documentElement).getPropertyValue('--success').trim() || 'rgba(34, 197, 94, 0.8)'; // Greenish
+    const incompleteColorLight = 'rgba(226, 232, 240, 0.8)'; // Light gray
+    const incompleteColorDark = 'rgba(55, 65, 81, 0.8)'; // Darker gray for dark mode
+    const incompleteColor = isDarkMode ? incompleteColorDark : incompleteColorLight;
+
+
     goalChart = new Chart(goalCtx, {
-      type: 'pie',
+      type: 'doughnut', // Changed to doughnut for a modern look
       data: {
-        labels: ['Completed Goals', 'Incomplete Goals'],
+        labels: ['Completed', 'Incomplete'],
         datasets: [{
-          data: [completedGoals, totalGoals - completedGoals],
-          backgroundColor: [
-            'rgba(16, 185, 129, 0.8)',
-            'rgba(226, 232, 240, 0.8)'
-          ],
-          borderColor: [
-            'rgba(16, 185, 129, 1)',
-            'rgba(226, 232, 240, 1)'
-          ],
-          borderWidth: 1
+          data: [completedGoalsVal, totalGoalsVal - completedGoalsVal],
+          backgroundColor: [completedColor, incompleteColor],
+          borderColor: [completedColor, incompleteColor], // or var(--card-bg) for separation
+          borderWidth: 1,
+          hoverOffset: 8
         }]
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        responsive: true, maintainAspectRatio: false, cutout: '60%', // Doughnut specific
         plugins: {
-          legend: {
-            position: 'bottom',
-          },
+          legend: { position: 'bottom', labels: { padding: 20 } },
           tooltip: {
             callbacks: {
-              label: function(context) {
-                const label = context.label || '';
-                const value = context.raw || 0;
-                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                const percentage = Math.round((value / total) * 100);
-                return `${label}: ${value} (${percentage}%)`;
-              }
+              label: (context) => `${context.label}: ${context.raw} (${Math.round((context.raw / context.dataset.data.reduce((a,b)=>a+b,0)) * 100)}%)`
             }
           }
         }
       }
     });
     
-    // Task completion chart
     const taskCtx = document.getElementById('taskChart').getContext('2d');
-    const totalTasks = dashboardData.goals.reduce((sum, goal) => sum + goal.totalTasks, 0);
-    const completedTasks = dashboardData.goals.reduce((sum, goal) => sum + goal.completedTasks, 0);
-    
+    const totalTasksVal = dashboardData.goals.reduce((sum, goal) => sum + goal.totalTasks, 0);
+    const completedTasksVal = dashboardData.goals.reduce((sum, goal) => sum + goal.completedTasks, 0);
+    const taskAccentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || 'rgba(139, 92, 246, 0.8)'; // Purple/Accent
+
     taskChart = new Chart(taskCtx, {
-      type: 'pie',
+      type: 'doughnut',
       data: {
-        labels: ['Completed Tasks', 'Incomplete Tasks'],
+        labels: ['Completed', 'Incomplete'],
         datasets: [{
-          data: [completedTasks, totalTasks - completedTasks],
-          backgroundColor: [
-            'rgba(139, 92, 246, 0.8)',
-            'rgba(226, 232, 240, 0.8)'
-          ],
-          borderColor: [
-            'rgba(139, 92, 246, 1)',
-            'rgba(226, 232, 240, 1)'
-          ],
-          borderWidth: 1
+          data: [completedTasksVal, totalTasksVal - completedTasksVal],
+          backgroundColor: [taskAccentColor, incompleteColor],
+          borderColor: [taskAccentColor, incompleteColor],
+          borderWidth: 1,
+          hoverOffset: 8
         }]
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        responsive: true, maintainAspectRatio: false, cutout: '60%',
         plugins: {
-          legend: {
-            position: 'bottom',
-          },
+          legend: { position: 'bottom', labels: { padding: 20 } },
           tooltip: {
             callbacks: {
-              label: function(context) {
-                const label = context.label || '';
-                const value = context.raw || 0;
-                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                const percentage = Math.round((value / total) * 100);
-                return `${label}: ${value} (${percentage}%)`;
-              }
+              label: (context) => `${context.label}: ${context.raw} (${Math.round((context.raw / context.dataset.data.reduce((a,b)=>a+b,0)) * 100)}%)`
             }
           }
         }
@@ -831,23 +924,28 @@
     });
   }
 
-  // Refresh data
   function refreshData() {
+    // Clear existing activities before reloading data to avoid duplicates if generateSampleActivity runs again
+    dashboardData.activities = []; 
     loadData();
     renderStats();
     renderGoalCards();
     renderActivityLog();
     
     // Update charts
-    const totalGoals = dashboardData.goals.length;
-    const completedGoals = dashboardData.goals.filter(g => g.completedTasks === g.totalTasks && g.totalTasks > 0).length;
-    const totalTasks = dashboardData.goals.reduce((sum, goal) => sum + goal.totalTasks, 0);
-    const completedTasks = dashboardData.goals.reduce((sum, goal) => sum + goal.completedTasks, 0);
+    const totalGoalsVal = dashboardData.goals.length;
+    const completedGoalsVal = dashboardData.goals.filter(g => g.totalTasks > 0 && g.completedTasks === g.totalTasks).length;
+    const totalTasksVal = dashboardData.goals.reduce((sum, goal) => sum + goal.totalTasks, 0);
+    const completedTasksVal = dashboardData.goals.reduce((sum, goal) => sum + goal.completedTasks, 0);
     
-    goalChart.data.datasets[0].data = [completedGoals, totalGoals - completedGoals];
-    taskChart.data.datasets[0].data = [completedTasks, totalTasks - completedTasks];
-    goalChart.update();
-    taskChart.update();
+    if (goalChart) {
+        goalChart.data.datasets[0].data = [completedGoalsVal, totalGoalsVal - completedGoalsVal];
+        goalChart.update();
+    }
+    if (taskChart) {
+        taskChart.data.datasets[0].data = [completedTasksVal, totalTasksVal - completedTasksVal];
+        taskChart.update();
+    }
   }
 
   // Listen for storage events to update when notes or tasks change
@@ -857,10 +955,9 @@
     }
   });
 
-  // Event listeners
   refreshBtn.addEventListener('click', refreshData);
+  themeToggle.addEventListener('click', toggleTheme);
 
-  // Initialize the dashboard when the page loads
   window.addEventListener('DOMContentLoaded', initDashboard);
 </script>
 </body>
