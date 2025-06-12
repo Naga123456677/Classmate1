@@ -3,87 +3,90 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Vertical Nav Panel with Dynamic Content</title>
+  <title>Dashboard - ClassmateAI</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     /* Modern CSS Reset & Base Styles */
     :root {
-      /* THEME VARIABLES from first code - Clean and minimal */
+      /* THEME VARIABLES - Aligned with settings.html / notes.html */
       --bg: #f5f5f5;
       --text: #333333;
       --text-secondary: rgba(51, 51, 51, 0.7);
-      --accent: #2a8cf4;
-      --accent-secondary: #ff3a8c;
+      --accent: #2a8cf4; /* Main accent */
+      --accent-secondary: #ff3a8c; /* Secondary accent for gradients/highlights */
       --accent-tertiary: #00c2ff;
-      --accent-dark: #284cff;
-      --card-bg: rgba(255, 255, 255, 0.9);
+      --accent-dark: #284cff; /* Used in gradients */
+      --card-bg: rgba(255, 255, 255, 0.9); /* Slightly transparent card */
       --card-border: rgba(0, 0, 0, 0.1);
       --btn-primary: linear-gradient(135deg, #a18dff, #7d5fff);
       --btn-secondary: linear-gradient(135deg, #ff3a8c, #ff6b6b);
       --btn-hover: brightness(1.05);
       --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      --hero-gradient: linear-gradient(135deg, #4361ee 0%, #7209b7 30%, #f72585 70%, #ff006e 100%);
-      --hero-gradient-dark: linear-gradient(135deg, #2a8cf4 0%, #2d00b6 25%, #aa046d 70%, #f40039 100%);
       --grid-color: rgba(0, 0, 0, 0.05);
       --glow: 0 0 20px rgba(138, 143, 255, 0.4);
-      --header-bg: rgba(255, 255, 255, 0.9);
-      --header-text: #333333;
-      --header-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
-      --input-bg: #ffffff;
-      --input-border: #ddd;
-      --input-text: #333333;
-      --menu-bg: #ffffff;
-      --menu-hover: rgba(138, 143, 255, 0.1);
-      --modal-bg: #ffffff;
-      --danger: #ef4444;
-      --danger-dark: #b91c1c;
-      --success: #22c55e;
-      --warning: #f59e0b;
-      --info: #3b82f6;
+      
+      /* Panel specific - can derive from above or be distinct if needed */
+      --panel-bg: var(--card-bg); /* Panel uses card background */
+      --panel-border: var(--card-border);
+      --panel-text: var(--text);
+      --panel-text-secondary: var(--text-secondary);
+      --panel-icon-color: var(--text-secondary);
+      --panel-icon-active-color: var(--accent);
+      --panel-item-hover-bg: rgba(138, 143, 255, 0.1); /* Similar to menu-hover */
+      --panel-item-active-bg: var(--panel-item-hover-bg);
+
+      /* For gradients on text like logo */
+      --logo-gradient: linear-gradient(to right, var(--accent-dark), var(--accent-secondary));
     }
     
     .dark-mode {
-      /* dark mode colors - matching first code */
+      /* dark mode colors - Aligned with settings.html / notes.html */
       --bg: #0a0a0a;
       --text: #ffffff;
       --text-secondary: rgba(255, 255, 255, 0.7);
-      --accent: #284cff; /* Keeping this one for stronger dark mode accent */
+      --accent: #8a8fff; /* Lightened accent for dark mode */
       --accent-secondary: #ff3a8c;
       --accent-tertiary: #00c2ff;
-      --accent-dark: #2a8cf4; /* Was original dark mode accent, can be used for secondary dark accents */
-      --card-bg: rgba(0, 0, 0, 0.9); /* More opaque for better contrast */
+      --accent-dark: #2a8cf4; /* Can remain for gradients if it provides good contrast */
+      --card-bg: #161b22; 
       --card-border: rgba(255, 255, 255, 0.1);
-      --btn-primary: linear-gradient(135deg, #a18dff, #7d5fff);
+      --btn-primary: linear-gradient(135deg, #a18dff, #7d5fff); /* Button gradients can often stay same */
       --btn-secondary: linear-gradient(135deg, #ff3a8c, #ff6b6b);
       --btn-hover: brightness(1.1);
-      --shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      --hero-gradient: linear-gradient(135deg, #2a8cf4 0%, #2d00b6 25%, #aa046d 70%, #f40039 100%);
-      --hero-gradient-dark: linear-gradient(135deg, #4361ee 0%, #7209b7 30%, #f72585 70%, #ff006e 100%);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3); 
       --grid-color: rgba(255, 255, 255, 0.05);
-      --glow: 0 0 20px rgba(138, 143, 255, 0.4); /* Re-evaluating glow for dark mode */
-      --header-bg: rgba(0, 0, 0, 0.9);
-      --header-text: #ffffff;
-      --header-shadow: 0 4px 30px rgba(255, 255, 255, 0.15);
-      --input-bg: #1a1a1a; /* Darker input bg */
-      --input-border: #333; /* Slightly lighter border */
-      --input-text: #ffffff;
-      --menu-bg: #1a1a1a; /* Darker menu */
-      --menu-hover: rgba(138, 143, 255, 0.2); /* Adjusted hover */
-      --modal-bg: #1a1a1a;
+      --glow: 0 0 20px rgba(138, 143, 255, 0.3);
+
+      --panel-bg: var(--card-bg); /* #101010; Darker panel background */
+      --panel-border: var(--card-border); /*rgba(255, 255, 255, 0.08);*/
+      --panel-text: var(--text);
+      --panel-text-secondary: var(--text-secondary);
+      --panel-icon-color: var(--text-secondary);
+      --panel-icon-active-color: var(--accent);
+      --panel-item-hover-bg: rgba(138, 143, 255, 0.2); /* Dark mode menu hover */
+      --panel-item-active-bg: var(--panel-item-hover-bg);
+
+      --logo-gradient: linear-gradient(to right, var(--accent), var(--accent-secondary)); /* Adjusted gradient for dark mode */
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* Consistent font */
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
       background-color: var(--bg);
       color: var(--text);
-      transition: background-color 0.3s ease, color 0.3s ease; /* Adjusted transition for body */
+      transition: background-color 0.3s ease, color 0.3s ease;
       overflow-x: hidden;
+      font-size: 15px; /* Base font size from settings */
+      line-height: 1.6; /* Base line height from settings */
     }
 
     .grid-bg {
@@ -109,7 +112,7 @@
     /* Vertical Panel - Narrow Version */
     .vertical-panel-narrow {
       width: 80px;
-      background-color: var(--card-bg);
+      background-color: var(--panel-bg); /* Use panel variable */
       box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
@@ -120,8 +123,8 @@
       left: 0;
       top: 0;
       z-index: 10;
-      transition: width 0.3s ease, background-color 0.3s ease, border-color 0.3s ease; /* Added transitions */
-      border-right: 1px solid var(--card-border);
+      transition: width 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+      border-right: 1px solid var(--panel-border); /* Use panel variable */
     }
 
     .logo-container {
@@ -137,75 +140,84 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background-color: var(--card-bg); /* Use card-bg for consistency */
-      border: 1px solid var(--accent);
+      background-color: transparent; /* Make logo bg transparent to show panel bg */
+      border: 2px solid var(--accent); /* Thicker, more prominent border */
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
     .logo i {
       font-size: 18px;
-      color: var(--accent);
+      color: var(--accent); /* Icon color matches accent */
     }
 
     .expand-button {
       position: absolute;
-      right: -15px;
+      right: -15px; 
       top: 50%;
       transform: translateY(-50%);
-      color: var(--text-secondary);
       cursor: pointer;
-      width: 16px;
-      height: 16px;
     }
 
     .expand-button i {
       font-size: 20px;
-      background-color: var(--card-border); /* Use card-border for bg */
-      padding: 20px 5px;
-      border-radius: 0px 10px 10px 0px;
-      color: var(--text);
-      transition: background-color 0.3s ease, color 0.3s ease;
+      background-color: var(--panel-bg); /* Match panel for button part */
+      padding: 15px 5px; /* Adjusted padding */
+      border-radius: 0px 8px 8px 0px; /* Softer radius */
+      color: var(--panel-text-secondary);
+      border: 1px solid var(--panel-border);
+      border-left: none;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
+     .expand-button:hover i {
+        color: var(--accent);
+        background-color: var(--panel-item-hover-bg);
+     }
+
 
     .nav-item {
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
+      width: 48px; /* Slightly larger hit area */
+      height: 48px;
+      border-radius: 10px; /* Softer radius */
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 16px;
+      margin-bottom: 12px; /* Adjusted spacing */
       cursor: pointer;
       transition: all 0.2s ease;
+      position: relative; /* For potential tooltips or indicators */
     }
 
     .nav-item i {
-      font-size: 16px;
-      color: var(--text-secondary);
+      font-size: 18px; /* Slightly larger icons */
+      color: var(--panel-icon-color);
     }
 
     .nav-item.active {
-      background-color: var(--menu-hover);
+      background-color: var(--panel-item-active-bg);
     }
-
     .nav-item.active i {
-      color: var(--accent);
+      color: var(--panel-icon-active-color);
     }
 
     .nav-item:hover:not(.active) {
-      background-color: var(--menu-hover);
-      transform: translateY(-2px);
+      background-color: var(--panel-item-hover-bg);
+      transform: scale(1.05); /* Slight scale on hover */
     }
-    .nav-item a { /* Ensure links within nav-item are styled correctly */
+    .nav-item:hover:not(.active) i {
+        color: var(--panel-icon-active-color);
+    }
+
+
+    .nav-item a { 
         display: flex;
         align-items: center;
         justify-content: center;
         width: 100%;
         height: 100%;
-        color: inherit; /* Inherit color from parent i tag */
+        color: inherit; 
         text-decoration: none;
     }
 
@@ -229,7 +241,7 @@
     /* Vertical Panel - Expanded Version */
     .vertical-panel-expanded {
       width: 240px;
-      background-color: var(--card-bg);
+      background-color: var(--panel-bg);
       box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
@@ -240,8 +252,8 @@
       top: 0;
       z-index: 10;
       display: none;
-      transition: width 0.3s ease, background-color 0.3s ease, border-color 0.3s ease; /* Added transitions */
-      border-right: 1px solid var(--card-border);
+      transition: width 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+      border-right: 1px solid var(--panel-border);
     }
 
     .panel-header {
@@ -251,13 +263,17 @@
       padding: 0 16px;
       margin-bottom: 24px;
     }
+    .panel-header .logo-container { /* Adjust logo container in expanded panel */
+        margin-bottom: 0;
+        justify-content: flex-start;
+    }
+
 
     .logo-text {
-      /* color: var(--accent); Original color */
-      font-weight: 600;
-      font-size: 18px;
-      margin-left: 8px;
-      background: linear-gradient(to right, var(--accent-dark), var(--accent-secondary)); /* Consistent gradient */
+      font-weight: 700; /* Bold as in settings/login */
+      font-size: 1.5rem; /* Match settings/login */
+      margin-left: 0.5rem; /* Match settings/login */
+      background: var(--logo-gradient);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -266,48 +282,51 @@
     .collapse-button {
       background: none;
       border: none;
-      color: var(--text-secondary);
+      color: var(--panel-text-secondary);
       cursor: pointer;
-      width: 20px;
-      height: 20px;
+      width: 24px; /* Slightly larger */
+      height: 24px;
       padding: 0;
       transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .collapse-button:hover {
       color: var(--accent);
-      transform: translateX(-2px);
+      /* transform: translateX(-2px); */
     }
 
     .collapse-button i {
-      font-size: 16px;
+      font-size: 18px; /* Slightly larger */
     }
 
     .panel-section {
-      margin-bottom: 24px;
+      margin-bottom: 20px; /* Adjusted spacing */
     }
 
     .section-header {
-      color: var(--text-secondary);
-      font-size: 12px;
-      font-weight: 500;
+      color: var(--panel-text-secondary);
+      font-size: 0.75rem; /* Smaller, subtler */
+      font-weight: 600; /* Bolder */
       padding: 0 16px;
       margin-bottom: 8px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.8px; /* Increased letter spacing */
     }
 
     .nav-item-expanded {
       display: flex;
       align-items: center;
-      padding: 8px 16px;
+      padding: 10px 16px; /* Increased padding */
       cursor: pointer;
       transition: all 0.2s ease;
       position: relative;
-      border-radius: 6px;
-      margin: 0 8px;
+      border-radius: 8px; /* Consistent radius */
+      margin: 2px 12px; /* Add some margin */
     }
-    .nav-item-expanded a { /* Ensure links fill the item and inherit styles */
+    .nav-item-expanded a { 
         display: flex;
         align-items: center;
         width: 100%;
@@ -316,18 +335,19 @@
 
 
     .nav-item-expanded.active {
-      background-color: var(--menu-hover);
+      background-color: var(--panel-item-active-bg);
     }
 
     .nav-item-expanded.active::before {
       content: '';
       position: absolute;
       left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 60%; /* Shorter, more subtle indicator */
+      width: 4px; /* Slightly thicker */
       background: var(--accent);
-      border-radius: 0 3px 3px 0;
+      border-radius: 0 4px 4px 0;
     }
 
     .nav-icon {
@@ -341,33 +361,33 @@
 
     .nav-icon i {
       font-size: 16px;
-      color: var(--text-secondary);
+      color: var(--panel-icon-color);
     }
 
     .nav-item-expanded.active .nav-icon i {
-      color: var(--accent);
+      color: var(--panel-icon-active-color);
     }
 
     .nav-item-expanded.active .nav-text {
-      color: var(--accent);
-      font-weight: 500;
+      color: var(--panel-icon-active-color); /* Match icon color for active text */
+      font-weight: 600; /* Bolder active text */
     }
 
     .nav-text {
-      color: var(--text);
-      font-size: 14px;
+      color: var(--panel-text);
+      font-size: 0.9rem; /* Standardized font size */
       transition: color 0.2s ease;
+      font-weight: 500; /* Slightly bolder normal text */
     }
 
     .nav-item-expanded:hover:not(.active) {
-      background-color: var(--menu-hover);
+      background-color: var(--panel-item-hover-bg);
     }
 
     .nav-item-expanded:hover:not(.active) .nav-icon i,
-    .nav-item-expanded:hover:not(.active) .nav-text { /* Hover state for text too */
-      color: var(--accent);
+    .nav-item-expanded:hover:not(.active) .nav-text { 
+      color: var(--panel-icon-active-color);
     }
-
 
     .dropdown-icon {
       margin-left: auto;
@@ -375,47 +395,45 @@
 
     .dropdown-icon i {
       font-size: 12px;
-      color: var(--text-secondary);
+      color: var(--panel-text-secondary);
     }
 
-    .toggle-switch {
-      width: 40px;
-      height: 20px;
-      background-color: var(--card-border); /* Use card-border for off state */
-      border-radius: 10px;
-      margin-left: auto;
-      position: relative;
-      padding: 2px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+    .toggle-switch { /* Using master-toggle-switch style from settings for consistency */
+        width: 36px; 
+        height: 18px;
+        background-color: var(--input-border); /* Use input-border for off state */
+        border-radius: 9px;
+        position: relative;
+        padding: 2px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-left: auto; /* Keep it to the right */
     }
-
     .toggle-knob {
-      width: 16px;
-      height: 16px;
-      background-color: var(--card-bg); /* Use card-bg for knob */
-      border-radius: 50%;
-      transition: transform 0.2s ease;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        width: 14px; 
+        height: 14px;
+        background-color: var(--card-bg);
+        border-radius: 50%;
+        transition: transform 0.2s ease;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
     }
-    .dark-mode .toggle-knob { /* Adjust knob color for dark mode */
-        background-color: var(--input-text);
+    .dark-mode .toggle-knob {
+      background-color: var(--input-text); /* Lighter knob in dark mode */
     }
-
     .toggle-switch.active {
-      background-color: var(--accent);
+        background-color: var(--accent);
+    }
+    .toggle-switch.active .toggle-knob {
+        transform: translateX(18px); 
     }
 
-    .toggle-switch.active .toggle-knob {
-      transform: translateX(20px);
-    }
 
     .user-profile-expanded {
       display: flex;
       align-items: center;
-      padding: 8px 16px;
+      padding: 12px 16px; /* Adjusted padding */
       margin-bottom: 8px;
-      border-top: 1px solid var(--card-border);
+      border-top: 1px solid var(--panel-border);
       padding-top: 16px;
     }
 
@@ -424,14 +442,14 @@
     }
 
     .user-name {
-      color: var(--text);
-      font-size: 14px;
-      font-weight: 500;
+      color: var(--panel-text);
+      font-size: 0.9rem;
+      font-weight: 600;
     }
 
-    .user-role {
-      color: var(--text-secondary);
-      font-size: 12px;
+    .user-role { /* Using this for email or secondary info */
+      color: var(--panel-text-secondary);
+      font-size: 0.8rem;
     }
 
     /* Main Content */
@@ -439,40 +457,33 @@
       flex-grow: 1;
       background-color: var(--bg);
       margin-left: 80px;
-      transition: margin-left 0.3s ease, background-color 0.3s ease; /* Added background transition */
+      transition: margin-left 0.3s ease, background-color 0.3s ease; 
       min-height: 100vh;
-      /* padding: 24px; REMOVED padding from main-content to allow iframe to fill */
     }
 
     .main-content-expanded {
       margin-left: 240px;
     }
+    /* Removed h1,p styles from here as iframe will have its own */
 
-    .main-content h1 {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 16px;
-    }
-
-    .main-content p {
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
 
     /* Responsive adjustments */
     @media (max-width: 768px) {
       .vertical-panel-narrow {
         width: 60px;
       }
+      .vertical-panel-narrow .nav-item {
+        width: 40px; height: 40px;
+      }
+      .vertical-panel-narrow .nav-item i { font-size: 16px; }
       
       .vertical-panel-expanded {
         width: 200px;
       }
+      .vertical-panel-expanded .logo-text { font-size: 1.3rem; }
       
       .main-content {
         margin-left: 60px;
-        /* padding: 16px; */
       }
       
       .main-content-expanded {
@@ -480,27 +491,27 @@
       }
       
       .expand-button i {
-        padding: 15px 4px;
+        padding: 12px 4px; /* Adjust for smaller narrow panel */
       }
     }
 
     @media (max-width: 480px) {
       .vertical-panel-expanded {
-        width: 180px;
+        width: 180px; /* Even narrower for very small screens */
       }
-      
       .main-content-expanded {
         margin-left: 180px;
       }
+       .vertical-panel-expanded .logo-text { font-size: 1.2rem; }
     }
 
-    /* Animation for smoother transitions */
+    /* Animation for smoother transitions - Can be kept if desired */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .fade-in {
+    .fade-in { /* If you use this for specific elements loaded in iframe, keep it */
       animation: fadeIn 0.3s ease forwards;
     }
   </style>
@@ -511,24 +522,24 @@
     <!-- Narrow (icon-only) panel -->
     <div class="vertical-panel-narrow" id="narrowPanel">
       <div class="logo-container">
-        <div class="logo"><i class="fas fa-robot"></i></div>
-        <div class="expand-button"><i class="fas fa-chevron-right"></i></div>
+        <div class="logo"><i class="fas fa-brain"></i></div> <!-- Updated logo icon -->
+        <div class="expand-button"><i class="fas fa-angle-double-right"></i></div> <!-- Different expand icon -->
       </div>
 
       <div class="nav-item active" data-page="Stats.html">
-        <i class="fas fa-th-large" title="Dashboard"></i>
+        <i class="fas fa-chart-line" title="Dashboard"></i> <!-- Changed Icon -->
       </div>
       <div class="nav-item" data-page="chatbot.html">
         <i class="fas fa-comment-dots" title="AI Chatbot"></i>
       </div>
       <div class="nav-item" data-page="notes.html">
-        <i class="fas fa-sticky-note" title="Notes"></i>
+        <i class="fas fa-book-open" title="Notes"></i> <!-- Changed Icon -->
       </div>
       <div class="nav-item" data-page="To Do List Front End.html">
-        <i class="fas fa-tasks" title="To-do List"></i>
+        <i class="fas fa-check-square" title="To-do List"></i> <!-- Changed Icon -->
       </div>
       <div class="nav-item" data-page="attendance.html">
-        <i class="fas fa-user-clock" title="Attendance Calculator"></i>
+        <i class="fas fa-user-clock" title="Attendance"></i>
       </div>
       <div class="nav-item" data-page="interviewer.html">
         <i class="fas fa-microphone-alt" title="AI Mock Interview"></i>
@@ -537,7 +548,7 @@
         <i class="fas fa-cog" title="Settings"></i>
       </div>
       <div class="nav-item" id="darkToggle">
-        <i class="fas fa-moon" title="Dark Mode"></i>
+        <i class="fas fa-moon" title="Dark Mode"></i> <!-- Icon will be updated by JS -->
       </div>
       <div class="spacer"></div>
       <div class="user-profile">
@@ -549,7 +560,7 @@
         />
       </div>
       <div class="nav-item logout" id="logoutBtnNarrow">
-        <a href="#"> <!-- Href changed to # to prevent default nav, handled by JS -->
+        <a href="#"> 
             <i class="fas fa-sign-out-alt" title="Logout"></i>
         </a>
       </div>
@@ -559,16 +570,16 @@
     <div class="vertical-panel-expanded" id="expandedPanel">
       <div class="panel-header">
         <div class="logo-container">
-          <div class="logo"><i class="fas fa-robot"></i></div>
-          <span class="logo-text">ClassmateAI</span> <!-- Updated name -->
+          <div class="logo"><i class="fas fa-brain"></i></div> <!-- Updated logo icon -->
+          <span class="logo-text">ClassmateAI</span> 
         </div>
-        <button class="collapse-button"><i class="fas fa-chevron-left"></i></button>
+        <button class="collapse-button"><i class="fas fa-angle-double-left"></i></button> <!-- Different collapse icon -->
       </div>
 
       <div class="panel-section">
         <div class="section-header">MENU</div>
         <div class="nav-item-expanded active" data-page="Stats.html">
-          <div class="nav-icon"><i class="fas fa-th-large"></i></div>
+          <div class="nav-icon"><i class="fas fa-chart-line"></i></div> <!-- Changed Icon -->
           <span class="nav-text">Dashboard</span>
         </div>
         <div class="nav-item-expanded" data-page="chatbot.html">
@@ -576,11 +587,11 @@
           <span class="nav-text">AI Chatbot</span>
         </div>
         <div class="nav-item-expanded" data-page="notes.html">
-          <div class="nav-icon"><i class="fas fa-sticky-note"></i></div>
+          <div class="nav-icon"><i class="fas fa-book-open"></i></div> <!-- Changed Icon -->
           <span class="nav-text">Notes</span>
         </div>
         <div class="nav-item-expanded" data-page="To Do List Front End.html">
-          <div class="nav-icon"><i class="fas fa-tasks"></i></div>
+          <div class="nav-icon"><i class="fas fa-check-square"></i></div> <!-- Changed Icon -->
           <span class="nav-text">To‑do List</span>
         </div>
         <div class="nav-item-expanded" data-page="attendance.html">
@@ -600,7 +611,7 @@
           <span class="nav-text">Settings</span>
         </div>
         <div class="nav-item-expanded" id="darkToggleExpanded">
-          <div class="nav-icon"><i class="fas fa-moon"></i></div>
+          <div class="nav-icon"><i class="fas fa-moon"></i></div> <!-- Icon will be updated by JS -->
           <span class="nav-text">Dark mode</span>
           <div class="toggle-switch"><div class="toggle-knob"></div></div>
         </div>
@@ -621,7 +632,7 @@
         </div>
       </div>
       <div class="nav-item-expanded logout" id="logoutBtnExpanded">
-         <a href="#"> <!-- Href changed to # -->
+         <a href="#"> 
             <div class="nav-icon"><i class="fas fa-sign-out-alt"></i></div>
             <span class="nav-text">Log out</span>
         </a>
@@ -641,7 +652,7 @@
       const expandBtn = narrowPanel.querySelector(".expand-button");
       const collapseBtn = expandedPanel.querySelector(".collapse-button");
       const navItems = document.querySelectorAll(
-        ".nav-item, .nav-item-expanded" // Includes logout items if they have these classes
+        ".nav-item, .nav-item-expanded" 
       );
       const darkToggle = document.getElementById("darkToggle");
       const darkToggleExp = document.getElementById("darkToggleExpanded");
@@ -652,29 +663,27 @@
       const expandedUserAvatar = document.getElementById('expandedUserAvatar');
       const expandedUserName = document.getElementById('expandedUserName');
       const expandedUserEmail = document.getElementById('expandedUserEmail');
-      const defaultAvatar = 'https://randomuser.me/api/portraits/men/32.jpg';
+      const defaultAvatar = 'https://randomuser.me/api/portraits/men/32.jpg'; // Default placeholder
 
 
-      // Check for auth token on dashboard load
       if (!localStorage.getItem('auth_token')) {
-          window.location.href = '../../index.html'; // Or your main login page
-          return; // Stop further execution if not logged in
+          window.location.href = '../../index.html'; 
+          return; 
       }
 
       function updateUserInfo() {
         const userName = localStorage.getItem('user_name') || 'User';
-        const userEmail = localStorage.getItem('user_email') || 'user@example.com'; // Assuming email is stored
+        const userEmail = localStorage.getItem('user_email') || 'user@example.com'; 
         const userAvatar = localStorage.getItem('user_avatar') || defaultAvatar;
 
         if (narrowUserAvatar) narrowUserAvatar.src = userAvatar;
         if (expandedUserAvatar) expandedUserAvatar.src = userAvatar;
         if (expandedUserName) expandedUserName.textContent = userName;
-        if (expandedUserEmail) expandedUserEmail.textContent = userEmail; // You might show email or a role
+        if (expandedUserEmail) expandedUserEmail.textContent = userEmail; 
       }
-      updateUserInfo(); // Initial call
+      updateUserInfo(); 
 
 
-      // Function to handle panel expansion
       const expandPanel = () => {
         narrowPanel.style.display = "none";
         expandedPanel.style.display = "flex";
@@ -682,7 +691,6 @@
         localStorage.setItem("panelState", "expanded");
       };
 
-      // Function to handle panel collapse
       const collapsePanel = () => {
         expandedPanel.style.display = "none";
         narrowPanel.style.display = "flex";
@@ -690,11 +698,10 @@
         localStorage.setItem("panelState", "narrow");
       };
 
-      // Restore panel state
       if (localStorage.getItem("panelState") === "expanded") {
         expandPanel();
       } else {
-        collapsePanel(); // Default to narrow or restored narrow
+        collapsePanel(); 
       }
 
 
@@ -702,29 +709,31 @@
       collapseBtn.addEventListener("click", collapsePanel);
 
       const updateDashboardToggleStates = (isDark) => {
+        const darkToggleIconClass = isDark ? "fas fa-sun" : "fas fa-moon";
+        const darkToggleTitle = isDark ? "Light Mode" : "Dark Mode";
+
         if (darkToggleExp) {
             const toggleSwitch = darkToggleExp.querySelector(".toggle-switch");
-            const icon = darkToggleExp.querySelector(".nav-icon i");
+            const iconEl = darkToggleExp.querySelector(".nav-icon i");
             if (toggleSwitch) {
                 toggleSwitch.classList.toggle("active", isDark);
             }
-            if(icon) icon.className = isDark ? "fas fa-sun" : "fas fa-moon"; // Update icon
+            if(iconEl) iconEl.className = darkToggleIconClass;
         }
-        if(darkToggle){ // Narrow panel
-            const icon = darkToggle.querySelector("i");
-            if(icon) icon.className = isDark ? "fas fa-sun" : "fas fa-moon"; // Update icon
-            if(icon) icon.title = isDark ? "Light Mode" : "Dark Mode";
+        if(darkToggle){ 
+            const iconEl = darkToggle.querySelector("i");
+            if(iconEl) iconEl.className = darkToggleIconClass;
+            if(iconEl) iconEl.title = darkToggleTitle;
         }
       };
 
       const dispatchThemeToIframe = (isDark) => {
         if (contentFrame && contentFrame.contentWindow) {
             try {
-                // Check if iframe's document is accessible and ready
                 if (contentFrame.contentDocument && contentFrame.contentDocument.readyState === 'complete') {
+                     // Using postMessage for theme dispatch as it's more reliable with iframes
                     contentFrame.contentWindow.postMessage({ type: 'themeChange', darkMode: isDark }, '*');
                 } else {
-                    // Fallback for when iframe is still loading
                     contentFrame.addEventListener('load', function onDispatchLoad() {
                         if (contentFrame.contentWindow) {
                            contentFrame.contentWindow.postMessage({ type: 'themeChange', darkMode: isDark }, '*');
@@ -732,15 +741,15 @@
                     }, { once: true });
                 }
             } catch (e) {
-                console.warn("Dashboard: Could not dispatch themeChange to iframe. ", e.message);
+                console.warn("Dashboard: Could not dispatch themeChange to iframe via postMessage. ", e.message);
             }
         }
       };
       
       const setDarkMode = (isDark, dispatchToIframe = true) => {
         document.body.classList.toggle("dark-mode", isDark);
-        localStorage.setItem("darkMode", isDark ? "enabled" : "disabled"); // For general use
-        localStorage.setItem("theme", isDark ? "dark" : "light"); // For compatibility with settings.html
+        localStorage.setItem("darkMode", isDark ? "enabled" : "disabled"); 
+        localStorage.setItem("theme", isDark ? "dark" : "light"); 
         updateDashboardToggleStates(isDark);
         if (dispatchToIframe) {
             dispatchThemeToIframe(isDark);
@@ -749,42 +758,44 @@
 
       const toggleDark = () => {
         const currentIsDark = document.body.classList.contains("dark-mode");
-        setDarkMode(!currentIsDark);
+        setDarkMode(!currentIsDark, true); // Dispatch to iframe when user toggles on dashboard
       };
       
       const initialDarkMode = localStorage.getItem("darkMode") === "enabled" || localStorage.getItem("theme") === "dark";
-      setDarkMode(initialDarkMode, false); 
+      setDarkMode(initialDarkMode, false); // Set parent theme, don't dispatch yet
 
       darkToggle.addEventListener("click", toggleDark);
       if (darkToggleExp) darkToggleExp.addEventListener("click", toggleDark);
 
       contentFrame.addEventListener('load', () => {
         const currentParentThemeIsDark = document.body.classList.contains("dark-mode");
-        setTimeout(() => { // Give iframe a moment to set up its listeners
+        setTimeout(() => { 
             dispatchThemeToIframe(currentParentThemeIsDark);
-            updateUserInfo(); // Update user info in panel when iframe loads, e.g., after settings change
+            updateUserInfo(); 
         }, 150); 
       });
       
       navItems.forEach((item) => {
         item.addEventListener("click", (e) => {
-          const isLinkInside = e.target.closest('a'); // Check if click is on or inside an <a>
+          // Allow default <a> behavior if click is directly on it for logout
+          if (e.target.closest('a') && item.classList.contains("logout")) {
+            // Logout logic is now handled by specific logout button listeners
+            return;
+          }
           
           const targetIsToggle = item.id === "darkToggle" || item.id === "darkToggleExpanded";
-          const targetIsLogout = item.classList.contains("logout");
+          const targetIsLogout = item.classList.contains("logout"); // If the item itself is logout
 
-          if (targetIsToggle) return; // Handled by their own listeners
-          if (targetIsLogout) {
-            // Logout logic handled by separate listeners for logout buttons
-            // If the item itself is the logout trigger (not a link inside), handle here
-            // For now, assuming logout is handled by specific logout button listeners
-            return; 
+          if (targetIsToggle) return; 
+          if (targetIsLogout && !e.target.closest('a')) { // If item is logout but not the link part
+            handleLogout(e); // Call the logout handler
+            return;
           }
           
           const pageToLoad = item.dataset.page;
 
           document.querySelectorAll(".nav-item:not(.logout), .nav-item-expanded:not(.logout)").forEach(i => {
-            if (i.id !== 'darkToggle' && i.id !== 'darkToggleExpanded') { // Exclude toggles
+            if (i.id !== 'darkToggle' && i.id !== 'darkToggleExpanded') { 
               i.classList.remove("active");
             }
           });
@@ -793,15 +804,19 @@
             document.querySelectorAll(`.nav-item[data-page="${pageToLoad}"], .nav-item-expanded[data-page="${pageToLoad}"]`).forEach(match => {
               match.classList.add("active");
             });
+            if (contentFrame.src.endsWith(pageToLoad)) return; // Don't reload if same page
             contentFrame.src = pageToLoad; 
           }
         });
       });
       
-      // Listen to messages from iframe (e.g., for logout or theme changes initiated by iframe)
       window.addEventListener('message', (event) => {
         // IMPORTANT: For production, validate event.origin
-        // Example: if (event.origin !== "https://your-app-domain.com") return;
+        // const trustedOrigin = "YOUR_APP_ORIGIN_HERE"; // e.g., https://classmateai.com
+        // if (event.origin !== trustedOrigin) {
+        //     console.warn("Message from untrusted origin ignored:", event.origin);
+        //     return;
+        // }
 
         if (event.data) {
             if (event.data.type === 'logout') {
@@ -810,31 +825,27 @@
                 localStorage.removeItem('user_name');
                 localStorage.removeItem('user_email');
                 localStorage.removeItem('user_avatar');
-                window.location.href = '../../index.html'; // Adjust to your main login page
+                window.location.href = '../../index.html'; 
             } else if (event.data.type === 'themeChangeFromIframe') {
-                // Iframe changed the theme, update dashboard's state (but don't re-dispatch to itself)
-                setDarkMode(event.data.darkMode, false); 
+                setDarkMode(event.data.darkMode, false); // Update parent, don't re-dispatch to iframe
             } else if (event.data.type === 'userProfileUpdatedInIframe') {
-                // If settings page updates profile and posts message
                 updateUserInfo();
             }
         }
       });
       
-      // Logout buttons
       function handleLogout(event) {
-          event.preventDefault(); // Prevent default if it's a link
-          console.log("Logout initiated by dashboard button.");
+          event.preventDefault(); 
+          console.log("Logout initiated.");
           localStorage.removeItem('auth_token');
           localStorage.removeItem('user_name');
           localStorage.removeItem('user_email');
           localStorage.removeItem('user_avatar');
-          window.location.href = '../../index.html'; // Adjust to your main login page
+          window.location.href = '../../index.html'; 
       }
       document.getElementById("logoutBtnNarrow").addEventListener("click", handleLogout);
       document.getElementById("logoutBtnExpanded").addEventListener("click", handleLogout);
       
-      // Close expanded panel when clicking outside on mobile (if panel is not fixed and overlay not used)
       window.addEventListener("click", (e) => {
         if (window.innerWidth <= 768 && expandedPanel.style.display === "flex") {
           if (!expandedPanel.contains(e.target) && !narrowPanel.contains(e.target) && !e.target.closest('.expand-button')) {
@@ -843,18 +854,21 @@
         }
       });
 
-      // Also listen to storage events to catch external logouts (e.g., token cleared in another tab)
       window.addEventListener('storage', (e) => {
-        if (e.key === 'auth_token' && !e.newValue) { // Token was removed
+        if (e.key === 'auth_token' && !e.newValue) { 
             console.log("Auth token cleared externally, logging out dashboard.");
             window.location.href = '../../index.html'; 
         }
-        if (e.key === 'darkMode' || e.key === 'theme') { // Sync theme from other tabs
+        if (e.key === 'darkMode' || e.key === 'theme') { 
             const isDark = e.newValue === 'enabled' || e.newValue === 'dark';
-            setDarkMode(isDark, true); // Dispatch to iframe as well
+            // Update dashboard theme and dispatch to iframe IF the change didn't originate from this dashboard's user action
+            // This simple check might not be enough for complex scenarios but works for basic tab sync.
+            if (document.body.classList.contains('dark-mode') !== isDark) {
+                 setDarkMode(isDark, true);
+            }
         }
         if (e.key === 'user_name' || e.key === 'user_avatar' || e.key === 'user_email') {
-            updateUserInfo(); // Update displayed user info if changed in another tab
+            updateUserInfo(); 
         }
       });
 
