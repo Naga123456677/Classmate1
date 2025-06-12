@@ -8,7 +8,7 @@
    <style>
     /* Modern CSS Reset & Base Styles */
     :root {
-      /* THEME VARIABLES from first code - Clean and minimal */
+      /* THEME VARIABLES from notes.html - Clean and minimal */
       --bg: #f5f5f5;
       --text: #333333;
       --text-secondary: rgba(51, 51, 51, 0.7);
@@ -26,7 +26,7 @@
       --hero-gradient-dark: linear-gradient(135deg, #2a8cf4 0%, #2d00b6 25%, #aa046d 70%, #f40039 100%);
       --grid-color: rgba(0, 0, 0, 0.05);
       --glow: 0 0 20px rgba(138, 143, 255, 0.4);
-      --header-bg: rgba(255, 255, 255, 0.9);
+      --header-bg: rgba(255, 255, 255, 0.9); /* Page-specific header background */
       --header-text: #333333;
       --header-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
       --input-bg: #ffffff;
@@ -37,487 +37,198 @@
       --modal-bg: #ffffff;
       --danger: #ef4444;
       --danger-dark: #b91c1c;
+      --danger-hover-bg: #fee2e2; 
+      --danger-hover-text: #b91c1c;
       --success: #22c55e;
       --warning: #f59e0b;
       --info: #3b82f6;
+      --btn-font-size: 0.9rem;
+
+      /* RGB versions for box-shadows */
+      --accent-rgb: 42, 140, 244;
+      --accent-dark-rgb: 40, 76, 255;
     }
     
     .dark-mode {
-      /* dark mode colors - matching first code */
+      /* dark mode colors - matching notes.html */
       --bg: #0a0a0a;
       --text: #ffffff;
       --text-secondary: rgba(255, 255, 255, 0.7);
-      --accent: #284cff;
+      --accent: #8a8fff; 
       --accent-secondary: #ff3a8c;
       --accent-tertiary: #00c2ff;
       --accent-dark: #2a8cf4;
-      --card-bg: rgba(0, 0, 0, 0.9);
+      --card-bg: #161b22; 
       --card-border: rgba(255, 255, 255, 0.1);
       --btn-primary: linear-gradient(135deg, #a18dff, #7d5fff);
       --btn-secondary: linear-gradient(135deg, #ff3a8c, #ff6b6b);
       --btn-hover: brightness(1.1);
-      --shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3); 
       --hero-gradient: linear-gradient(135deg, #2a8cf4 0%, #2d00b6 25%, #aa046d 70%, #f40039 100%);
       --hero-gradient-dark: linear-gradient(135deg, #4361ee 0%, #7209b7 30%, #f72585 70%, #ff006e 100%);
       --grid-color: rgba(255, 255, 255, 0.05);
-      --glow: 0 0 20px rgba(138, 143, 255, 0.4);
-      --header-bg: rgba(0, 0, 0, 0.9);
+      --glow: 0 0 20px rgba(138, 143, 255, 0.3);
+      --header-bg: rgba(13, 17, 23, 0.85); /* Darker header for dark mode */
       --header-text: #ffffff;
-      --header-shadow: 0 4px 30px rgba(255, 255, 255, 0.15);
-      --input-bg: #1a1a1a;
-      --input-border: #333;
-      --input-text: #ffffff;
+      --header-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); /* Darker shadow for dark header */
+      --input-bg: #0d1117; 
+      --input-border: #30363d; 
+      --input-text: #c9d1d9; 
       --menu-bg: #1a1a1a;
       --menu-hover: rgba(138, 143, 255, 0.2);
-      --modal-bg: #1a1a1a;
+      --modal-bg: #0d1117;
+      --danger: #f85149; 
+      --danger-dark: #da3633;
+      --danger-hover-bg: rgba(248, 81, 73, 0.1);
+      --danger-hover-text: #f85149;
+
+      /* RGB versions for box-shadows */
+      --accent-rgb: 138, 143, 255;
+      --accent-dark-rgb: 42, 140, 244;
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
       background-color: var(--bg);
       color: var(--text);
-      transition: background 0.3s ease, color 0.3s ease;
-      overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      overflow-x: hidden; /* Prevent horizontal scroll on body */
+      font-size: 15px;
+      line-height: 1.6;
+      padding-top: 70px; /* Space for fixed header */
     }
 
     .grid-bg {
-      position: fixed; 
-      top: 0; 
-      left: 0; 
-      width: 100%; 
-      height: 100%;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background-image: 
         linear-gradient(var(--grid-color) 1px, transparent 1px),
         linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-      background-size: 40px 40px; 
-      z-index: -2; 
-      opacity: 0.4;
+      background-size: 40px 40px; z-index: -2; opacity: 0.4;
     }
-
-    .app-container {
-      display: flex;
-      min-height: 100vh;
-      width: 100%;
-    }
-
-    /* Vertical Panel - Narrow Version */
-    .vertical-panel-narrow {
-      width: 80px;
-      background-color: var(--card-bg);
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 16px 0;
-      height: 100vh;
-      position: fixed;
-      left: 0;
-      top: 0;
-      z-index: 10;
-      transition: width 0.3s ease;
-      border-right: 1px solid var(--card-border);
-    }
-
-    .logo-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      margin-bottom: 16px;
-      width: 100%;
-    }
-
-    .logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: var(--card-bg);
-      border: 1px solid var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .logo i {
-      font-size: 18px;
-      color: var(--accent);
-    }
-
-    .expand-button {
-      position: absolute;
-      right: -15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-secondary);
-      cursor: pointer;
-      width: 16px;
-      height: 16px;
-    }
-
-    .expand-button i {
-      font-size: 20px;
-      background-color: var(--card-border);
-      padding: 20px 5px;
-      border-radius: 0px 10px 10px 0px;
-      color: var(--text);
-    }
-
-    .nav-item {
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 16px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .nav-item i {
-      font-size: 16px;
-      color: var(--text-secondary);
-    }
-
-    .nav-item.active {
-      background-color: var(--menu-hover);
-    }
-
-    .nav-item.active i {
-      color: var(--accent);
-    }
-
-    .nav-item:hover:not(.active) {
-      background-color: var(--menu-hover);
-      transform: translateY(-2px);
-    }
-
-    .spacer {
-      flex-grow: 1;
-    }
-
-    .user-profile {
-      margin-bottom: 16px;
-    }
-
-    .user-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--accent);
-    }
-
-    /* Vertical Panel - Expanded Version */
-    .vertical-panel-expanded {
-      width: 240px;
-      background-color: var(--card-bg);
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      padding: 16px 0;
-      height: 100vh;
-      position: fixed;
-      left: 0;
-      top: 0;
-      z-index: 10;
-      display: none;
-      transition: width 0.3s ease;
-      border-right: 1px solid var(--card-border);
-    }
-
-    .panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      margin-bottom: 24px;
-    }
-
-    .logo-text {
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 18px;
-      margin-left: 8px;
-      background: linear-gradient(to right, var(--accent-dark), var(--accent-secondary));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .collapse-button {
-      background: none;
-      border: none;
-      color: var(--text-secondary);
-      cursor: pointer;
-      width: 20px;
-      height: 20px;
-      padding: 0;
-      transition: all 0.2s ease;
-    }
-
-    .collapse-button:hover {
-      color: var(--accent);
-      transform: translateX(-2px);
-    }
-
-    .collapse-button i {
-      font-size: 16px;
-    }
-
-    .panel-section {
-      margin-bottom: 24px;
-    }
-
-    .section-header {
-      color: var(--text-secondary);
-      font-size: 12px;
-      font-weight: 500;
-      padding: 0 16px;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .nav-item-expanded {
-      display: flex;
-      align-items: center;
-      padding: 8px 16px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      position: relative;
-      border-radius: 6px;
-      margin: 0 8px;
-    }
-
-    .nav-item-expanded.active {
-      background-color: var(--menu-hover);
-    }
-
-    .nav-item-expanded.active::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: var(--accent);
-      border-radius: 0 3px 3px 0;
-    }
-
-    .nav-icon {
-      width: 20px;
-      height: 20px;
-      margin-right: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .nav-icon i {
-      font-size: 16px;
-      color: var(--text-secondary);
-    }
-
-    .nav-item-expanded.active .nav-icon i {
-      color: var(--accent);
-    }
-
-    .nav-item-expanded.active .nav-text {
-      color: var(--accent);
-      font-weight: 500;
-    }
-
-    .nav-text {
-      color: var(--text);
-      font-size: 14px;
-      transition: color 0.2s ease;
-    }
-
-    .nav-item-expanded:hover:not(.active) {
-      background-color: var(--menu-hover);
-    }
-
-    .nav-item-expanded:hover:not(.active) .nav-icon i {
-      color: var(--accent);
-    }
-
-    .dropdown-icon {
-      margin-left: auto;
-    }
-
-    .dropdown-icon i {
-      font-size: 12px;
-      color: var(--text-secondary);
-    }
-
-    .toggle-switch {
-      width: 40px;
-      height: 20px;
-      background-color: var(--card-border);
-      border-radius: 10px;
-      margin-left: auto;
-      position: relative;
-      padding: 2px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .toggle-knob {
-      width: 16px;
-      height: 16px;
-      background-color: var(--card-bg);
-      border-radius: 50%;
-      transition: transform 0.2s ease;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .toggle-switch.active {
-      background-color: var(--accent);
-    }
-
-    .toggle-switch.active .toggle-knob {
-      transform: translateX(20px);
-    }
-
-    .user-profile-expanded {
-      display: flex;
-      align-items: center;
-      padding: 8px 16px;
-      margin-bottom: 8px;
-      border-top: 1px solid var(--card-border);
-      padding-top: 16px;
-    }
-
-    .user-info {
-      margin-left: 12px;
-    }
-
-    .user-name {
-      color: var(--text);
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .user-role {
-      color: var(--text-secondary);
-      font-size: 12px;
-    }
-
-    /* Main Content */
-    .main-content {
-      flex-grow: 1;
-      background-color: var(--bg);
-      margin-left: 80px;
-      transition: margin-left 0.3s ease;
-      min-height: 100vh;
-    }
-
-    .main-content-expanded {
-      margin-left: 240px;
-    }
-
-    .main-content h1 {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 16px;
-    }
-
-    .main-content p {
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      .vertical-panel-narrow {
-        width: 60px;
-      }
-      
-      .vertical-panel-expanded {
-        width: 200px;
-      }
-      
-      .main-content {
-        margin-left: 60px;
-        padding: 16px;
-      }
-      
-      .main-content-expanded {
-        margin-left: 200px;
-      }
-      
-      .expand-button i {
-        padding: 15px 4px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .vertical-panel-expanded {
-        width: 180px;
-      }
-      
-      .main-content-expanded {
-        margin-left: 180px;
-      }
-    }
-
-    /* Animation for smoother transitions */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .fade-in {
-      animation: fadeIn 0.3s ease forwards;
-    }
-  </style>
-  <style>
-    /* All previous CSS variables and styles remain the same */
-    /* Add these additional styles for the settings page */
     
+    .page-header { /* New class for the settings page header */
+        padding: 0.75rem 1.5rem; 
+        height: 70px;
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center;
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        z-index: 1000;
+        background-color: var(--header-bg); 
+        color: var(--header-text);
+        backdrop-filter: blur(10px); 
+        box-shadow: var(--header-shadow);
+        border-bottom: 1px solid var(--card-border);
+        transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .page-title {
+        font-size: 1.5rem; 
+        font-weight: 600; 
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        background: linear-gradient(to right, var(--accent-dark), var(--accent-secondary));
+        -webkit-background-clip: text; 
+        background-clip: text; 
+        color: transparent;
+    }
+    .page-title i { /* Style for icon inside page title */
+        background: none; /* Reset possible background if it was a button */
+        -webkit-background-clip: initial;
+        background-clip: initial;
+        color: var(--accent); /* Use accent color for the icon */
+        font-size: 1.4rem; /* Adjust icon size if needed */
+    }
+
+    .header-actions { 
+        display: flex; 
+        align-items: center; 
+        gap: 1rem; 
+    }
+
+    /* Theme Toggle Button - Standardized like in notes.html */
+    .theme-toggle-btn {
+        width: 40px; 
+        height: 40px; 
+        border-radius: 50%;
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        background: transparent; /* Make it transparent by default */
+        border: 1px solid var(--card-border);
+        color: var(--text-secondary); 
+        cursor: pointer; 
+        transition: all 0.3s ease;
+        font-size: 1.1rem;
+    }
+    .theme-toggle-btn:hover { 
+        background: var(--menu-hover); 
+        color: var(--accent); 
+        transform: translateY(-1px); 
+        box-shadow: var(--glow);
+    }
+    /* Icon visibility for theme toggle */
+    .dark-mode .theme-toggle-btn .fa-sun { display: block; }
+    .dark-mode .theme-toggle-btn .fa-moon { display: none; }
+    .theme-toggle-btn .fa-sun { display: none; }
+    .theme-toggle-btn .fa-moon { display: block; }
+
+
+    /* Settings Page Specific Styles */
     .settings-container {
-      padding: 2rem;
-      max-width: 800px;
-      margin: 0 auto;
+      padding: 1.5rem; /* Add padding to the container itself */
+      max-width: 900px; 
+      margin: 0 auto; /* Center the container */
     }
     
     .settings-card {
       background-color: var(--card-bg);
       border-radius: 12px;
-      padding: 2rem;
+      padding: 1.5rem; 
       box-shadow: var(--shadow);
       border: 1px solid var(--card-border);
       margin-bottom: 2rem;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
     
     .settings-header {
       display: flex;
       align-items: center;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem; 
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--card-border);
     }
     
     .settings-header i {
-      font-size: 1.5rem;
+      font-size: 1.25rem; 
       color: var(--accent);
-      margin-right: 1rem;
+      margin-right: 0.75rem; 
+      flex-shrink: 0;
     }
     
-    .settings-title {
-      font-size: 1.5rem;
+    .settings-title { /* This is for section titles within cards */
+      font-size: 1.15rem; /* Slightly smaller than page title */
       font-weight: 600;
       color: var(--text);
     }
     
     .form-group {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem; 
     }
     
     .form-label {
@@ -525,204 +236,424 @@
       margin-bottom: 0.5rem;
       color: var(--text);
       font-weight: 500;
+      font-size: 0.9rem;
     }
     
-    .form-control {
+    .form-control, .form-select {
       width: 100%;
-      padding: 0.75rem 1rem;
+      padding: 0.65rem 0.9rem; 
       border-radius: 8px;
       border: 1px solid var(--input-border);
       background-color: var(--input-bg);
       color: var(--input-text);
-      font-size: 1rem;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      font-size: 0.9rem; 
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, color 0.3s ease;
     }
     
-    .form-control:focus {
+    .form-control:focus, .form-select:focus {
       outline: none;
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(138, 143, 255, 0.2);
+      box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.2); 
     }
-    
+        
+    textarea.form-control {
+        min-height: 80px;
+        resize: vertical;
+    }
+
     .avatar-upload {
       display: flex;
       align-items: center;
+      gap: 1rem; 
       margin-bottom: 1.5rem;
     }
     
     .avatar-preview {
-      width: 80px;
-      height: 80px;
+      width: 70px; 
+      height: 70px;
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid var(--accent);
-      margin-right: 1.5rem;
     }
-    
-    .avatar-upload-btn {
+        
+    .btn {
+      padding: 0.6rem 1.2rem; 
+      border: none;
+      border-radius: 6px; 
+      font-weight: 500; 
+      font-size: var(--btn-font-size);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none; 
+      justify-content: center;
       position: relative;
-      overflow: hidden;
-      display: inline-block;
+      overflow: hidden; /* Ensure pseudo-element doesn't overflow */
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.7s ease;
+    }
+
+    .btn:hover::before {
+      left: 100%;
     }
     
-    .btn-upload {
-      padding: 0.5rem 1rem;
+    .btn-primary {
+      background: var(--btn-primary);
+      color: white;
+    }
+    .btn-primary:hover { filter: var(--btn-hover); transform: translateY(-1px); box-shadow: var(--glow);}
+
+    .btn-secondary {
+      background-color: var(--input-bg); 
+      color: var(--text);
+      border: 1px solid var(--card-border);
+    }
+    .btn-secondary:hover { background-color: var(--menu-hover); transform: translateY(-1px); }
+    
+    .btn-danger {
+      background-color: var(--danger);
+      color: white;
+    }
+    .btn-danger:hover { background-color: var(--danger-dark); transform: translateY(-1px); }
+
+    .btn-sm {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+    
+    .avatar-upload input[type="file"] {
+      display: none; 
+    }
+    .avatar-upload-label { 
+      padding: 0.6rem 1.2rem;
       background: var(--btn-primary);
       color: white;
       border-radius: 6px;
       font-weight: 500;
+      font-size: var(--btn-font-size);
       cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    
-    .btn-upload:hover {
-      filter: var(--btn-hover);
-    }
-    
-    .avatar-upload input[type="file"] {
-      position: absolute;
-      left: 0;
-      top: 0;
-      opacity: 0;
-      width: 100%;
-      height: 100%;
-      cursor: pointer;
-    }
-    
-    .btn-save {
-      padding: 0.75rem 1.5rem;
-      background: var(--btn-primary);
-      color: white;
-      border: none;
-      border-radius: 50px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
     }
-    
-    .btn-save:hover {
-      filter: var(--btn-hover);
-      transform: translateY(-2px);
-    }
-    
-    .security-actions {
-      margin-top: 2rem;
+    .avatar-upload-label:hover { filter: var(--btn-hover); }
+        
+    .security-actions, .data-actions {
+      margin-top: 1.5rem;
       border-top: 1px solid var(--card-border);
-      padding-top: 2rem;
+      padding-top: 1.5rem;
+      display: flex;
+      flex-wrap: wrap; 
+      gap: 0.75rem;
+    }
+
+    .appearance-options {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--card-border);
+        margin-bottom: 1rem;
+    }
+    .appearance-options:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+    .appearance-label {
+        color: var(--text);
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+    /* Toggle switch specific to settings page for compactness */
+    .settings-toggle-switch {
+        width: 36px; 
+        height: 18px;
+        background-color: var(--input-border); /* Use input-border for off state */
+        border-radius: 9px;
+        position: relative;
+        padding: 2px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .settings-toggle-knob {
+        width: 14px; 
+        height: 14px;
+        background-color: var(--card-bg);
+        border-radius: 50%;
+        transition: transform 0.2s ease;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .dark-mode .settings-toggle-knob {
+      background-color: var(--input-text); /* Lighter knob in dark mode */
+    }
+    .settings-toggle-switch.active {
+        background-color: var(--accent);
+    }
+    .settings-toggle-switch.active .settings-toggle-knob {
+        transform: translateX(18px); 
     }
     
-    .btn-secondary {
-      padding: 0.75rem 1.5rem;
-      background: var(--btn-secondary);
-      color: white;
-      border: none;
-      border-radius: 50px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
+    .font-size-selector button {
+        margin-left: 0.5rem;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
     }
-    
-    .btn-secondary:hover {
-      filter: var(--btn-hover);
-      transform: translateY(-2px);
+    .font-size-selector button.active {
+        background-color: var(--accent);
+        color: white;
+        border-color: var(--accent);
     }
+
+    .confirmation-modal-overlay {
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background-color: rgba(0,0,0,0.6);
+        display: none; align-items: center; justify-content: center;
+        z-index: 2000; opacity: 0; transition: opacity 0.3s ease;
+    }
+    .confirmation-modal-overlay.show { display: flex; opacity: 1; }
+    .confirmation-modal {
+        background-color: var(--modal-bg); padding: 1.5rem;
+        border-radius: 8px; box-shadow: var(--shadow);
+        width: 90%; max-width: 400px; text-align: center;
+        border: 1px solid var(--card-border);
+    }
+    .confirmation-modal h3 { font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--text); }
+    .confirmation-modal p { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem; }
+    .confirmation-modal-actions { display: flex; justify-content: center; gap: 1rem; }
+    .confirmation-modal-actions .btn-danger:hover { background-color: var(--danger-dark); }
     
     .toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: var(--accent);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 4px;
-      z-index: 1000;
-      opacity: 0;
-      transition: opacity 0.3s;
-      box-shadow: var(--shadow);
+      position: fixed; bottom: 20px; left: 50%;
+      background-color: var(--success); color: white;
+      padding: 10px 20px; border-radius: 6px;
+      z-index: 3000; opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      box-shadow: var(--shadow); font-size: 0.9rem;
+      transform: translate(-50%, 20px); 
     }
-    
-    .toast.show {
-      opacity: 1;
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .toast.error { background-color: var(--danger); }
+    .toast.warning { background-color: var(--warning); }
+    .toast.info { background-color: var(--info); } /* Added info toast style */
+
+    @media (max-width: 600px) {
+        .settings-container { padding: 1rem 0.5rem; }
+        .settings-card { padding: 1rem; }
+        .page-header { padding: 0.75rem 1rem; }
+        .page-title { font-size: 1.25rem; }
+        .page-title i { font-size: 1.1rem; }
+        .settings-header i { font-size: 1.1rem; margin-right: 0.5rem; }
+        .settings-title { font-size: 1.1rem; }
+        .form-control, .form-select, .btn { font-size: 0.85rem; padding: 0.6rem 0.8rem; }
+        .avatar-preview { width: 60px; height: 60px; }
+        .security-actions, .data-actions { flex-direction: column; }
+        .security-actions .btn, .data-actions .btn { width: 100%; }
+        .appearance-options { flex-direction: column; align-items: flex-start; gap: 0.5rem;}
+        .settings-toggle-switch { margin-top: 0.25rem;}
     }
   </style>
 </head>
 <body>
   <div class="grid-bg"></div>
-  <div class="app-container">
-    <!-- Vertical Panels remain the same as before -->
-    <!-- Main Content Area -->
-    <div class="main-content" id="mainContent">
-      <div class="settings-container">
-        <div class="settings-card">
-          <div class="settings-header">
-            <i class="fas fa-user-cog"></i>
-            <h1 class="settings-title">Profile Settings</h1>
-          </div>
-          
-          <div class="avatar-upload">
-            <img id="avatarPreview" src="https://randomuser.me/api/portraits/men/32.jpg" class="avatar-preview" alt="Profile">
-            <div class="avatar-upload-btn">
-              <button class="btn-upload">
-                <i class="fas fa-camera"></i> Change Photo
-              </button>
-              <input type="file" id="avatarUpload" accept="image/*">
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="userName" class="form-label">Full Name</label>
-            <input type="text" id="userName" class="form-control" value="Harper Nelson">
-          </div>
-          
-          <div class="form-group">
-            <label for="userInterests" class="form-label">Interests (comma separated)</label>
-            <input type="text" id="userInterests" class="form-control" value="Web Development, AI, UX Design">
-          </div>
-          
-          <button id="saveProfileBtn" class="btn-save">
-            <i class="fas fa-save"></i> Save Changes
-          </button>
+
+  <header class="page-header">
+    <h1 class="page-title"><i class="fas fa-cog"></i> Settings</h1>
+    <div class="header-actions">
+      <button class="theme-toggle-btn" id="pageThemeToggle"> <!-- Changed ID to be page-specific -->
+        <i class="fas fa-sun"></i>
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="settings-container"> <!-- Content starts after the fixed header -->
+      
+      <!-- Profile Settings -->
+      <div class="settings-card fade-in">
+        <div class="settings-header">
+          <i class="fas fa-user-edit"></i>
+          <h2 class="settings-title">Profile</h2> <!-- Changed to h2 for section title -->
         </div>
         
-        <div class="settings-card">
-          <div class="settings-header">
-            <i class="fas fa-lock"></i>
-            <h1 class="settings-title">Security Settings</h1>
-          </div>
-          
-          <div class="form-group">
-            <label for="currentPassword" class="form-label">Current Password</label>
-            <input type="password" id="currentPassword" class="form-control" placeholder="Enter current password">
-          </div>
-          
-          <div class="form-group">
-            <label for="newPassword" class="form-label">New Password</label>
-            <input type="password" id="newPassword" class="form-control" placeholder="Enter new password">
-          </div>
-          
-          <div class="form-group">
-            <label for="confirmPassword" class="form-label">Confirm New Password</label>
-            <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm new password">
-          </div>
-          
-          <div class="security-actions">
-            <button id="changePasswordBtn" class="btn-save">
-              <i class="fas fa-key"></i> Change Password
-            </button>
-            <button id="forgotPasswordBtn" class="btn-secondary" style="margin-left: 1rem;">
-              <i class="fas fa-question-circle"></i> Forgot Password?
-            </button>
-          </div>
+        <div class="avatar-upload">
+          <img id="avatarPreview" src="https://randomuser.me/api/portraits/men/32.jpg" class="avatar-preview" alt="Profile">
+          <label for="avatarUpload" class="btn avatar-upload-label">
+            <i class="fas fa-camera"></i> Change Photo
+          </label>
+          <input type="file" id="avatarUpload" accept="image/*">
+        </div>
+        
+        <div class="form-group">
+          <label for="userName" class="form-label">Full Name</label>
+          <input type="text" id="userName" class="form-control" value="Harper Nelson">
+        </div>
+        <div class="form-group">
+          <label for="userEmail" class="form-label">Email Address</label>
+          <input type="email" id="userEmail" class="form-control" value="harper.nelson@example.com" readonly>
+          <small style="color: var(--text-secondary); font-size: 0.8rem;">Email is not editable here.</small>
+        </div>
+        <div class="form-group">
+          <label for="userBio" class="form-label">Short Bio/Interests</label>
+          <textarea id="userBio" class="form-control" rows="3" placeholder="Tell us a bit about yourself or your interests...">Web Development, AI, UX Design</textarea>
+        </div>
+        
+        <button id="saveProfileBtn" class="btn btn-primary">
+          <i class="fas fa-save"></i> Save Profile
+        </button>
+      </div>
+
+      <!-- Appearance Settings -->
+      <div class="settings-card fade-in" style="animation-delay: 0.1s;">
+        <div class="settings-header">
+          <i class="fas fa-paint-brush"></i>
+          <h2 class="settings-title">Appearance</h2>
+        </div>
+        <div class="appearance-options">
+            <span class="appearance-label">Dark Mode</span>
+            <!-- This button will be controlled by the pageThemeToggle in the header for this page -->
+             <div class="settings-toggle-switch" id="darkModeVisualToggle"> <!-- Just a visual indicator now -->
+                <div class="settings-toggle-knob"></div>
+            </div>
+        </div>
+        <div class="appearance-options">
+            <span class="appearance-label">Font Size (Conceptual)</span>
+            <div class="font-size-selector">
+                <button class="btn btn-secondary btn-sm" data-size="small">Small</button>
+                <button class="btn btn-secondary btn-sm active" data-size="medium">Medium</button>
+                <button class="btn btn-secondary btn-sm" data-size="large">Large</button>
+            </div>
         </div>
       </div>
-    </div>
+      
+      <!-- Chatbot Customization Settings -->
+      <div class="settings-card fade-in" style="animation-delay: 0.2s;">
+        <div class="settings-header">
+          <i class="fas fa-robot"></i>
+          <h2 class="settings-title">Chatbot Customization</h2>
+        </div>
+        <div class="form-group">
+          <label for="chatbotPersonality" class="form-label">ClassMate AI Personality</label>
+          <select id="chatbotPersonality" class="form-select">
+            <option value="friendly_supportive" selected>Friendly & Supportive</option>
+            <option value="professional_concise">Professional & Concise</option>
+            <option value="humorous_witty">Humorous & Witty (Experimental)</option>
+          </select>
+        </div>
+        <div class="appearance-options">
+            <span class="appearance-label">Default To-Do List Mode for Chatbot</span>
+            <div class="settings-toggle-switch" id="defaultTodoModeToggle">
+                <div class="settings-toggle-knob"></div>
+            </div>
+        </div>
+         <div class="data-actions" style="border-top:none; padding-top: 1rem;">
+            <button id="clearCurrentChatHistoryBtn" class="btn btn-secondary btn-sm">
+                <i class="fas fa-comment-slash"></i> Clear Current Chat History
+            </button>
+            <button id="clearAllChatHistoryBtn" class="btn btn-danger btn-sm">
+                <i class="fas fa-history"></i> Clear All Chat History
+            </button>
+        </div>
+        <button id="saveChatbotSettingsBtn" class="btn btn-primary" style="margin-top: 1.5rem;">
+          <i class="fas fa-cogs"></i> Save Chatbot Settings
+        </button>
+      </div>
+
+      <!-- Security Settings -->
+      <div class="settings-card fade-in" style="animation-delay: 0.3s;">
+        <div class="settings-header">
+          <i class="fas fa-shield-alt"></i>
+          <h2 class="settings-title">Security</h2>
+        </div>
+        
+        <div class="form-group">
+          <label for="currentPassword" class="form-label">Current Password</label>
+          <input type="password" id="currentPassword" class="form-control" placeholder="Enter current password">
+        </div>
+        <div class="form-group">
+          <label for="newPassword" class="form-label">New Password</label>
+          <input type="password" id="newPassword" class="form-control" placeholder="Enter new password (min. 8 characters)">
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword" class="form-label">Confirm New Password</label>
+          <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm new password">
+        </div>
+        <div class="appearance-options">
+            <span class="appearance-label">Two-Factor Authentication (2FA)</span>
+            <button class="btn btn-secondary btn-sm" id="setup2FABtn">Setup 2FA</button>
+        </div>
+        <div class="security-actions">
+          <button id="changePasswordBtn" class="btn btn-primary">
+            <i class="fas fa-key"></i> Change Password
+          </button>
+        </div>
+      </div>
+
+      <!-- Data Management -->
+      <div class="settings-card fade-in" style="animation-delay: 0.4s;">
+          <div class="settings-header">
+              <i class="fas fa-database"></i>
+              <h2 class="settings-title">Data Management</h2>
+          </div>
+          <div class="data-actions">
+              <button id="exportDataBtn" class="btn btn-secondary">
+                  <i class="fas fa-file-export"></i> Export My Data
+              </button>
+              <button id="importDataBtn" class="btn btn-secondary">
+                  <i class="fas fa-file-import"></i> Import Data
+              </button>
+          </div>
+          <div class="data-actions" style="margin-top: 1rem; border-top: 1px solid var(--card-border); padding-top: 1rem;">
+              <button id="deleteAccountBtn" class="btn btn-danger">
+                  <i class="fas fa-user-times"></i> Delete My Account
+              </button>
+          </div>
+      </div>
+
+    </div> <!-- /.settings-container -->
+
+  <!-- Confirmation Modals (HTML remains the same) -->
+  <div class="confirmation-modal-overlay" id="clearCurrentChatModal">
+      <div class="confirmation-modal">
+          <h3><i class="fas fa-exclamation-triangle" style="color: var(--warning);"></i> Confirm Clear</h3>
+          <p>Are you sure you want to clear the history for the currently active chat? This action cannot be undone.</p>
+          <div class="confirmation-modal-actions">
+              <button class="btn btn-secondary" data-action="cancel">Cancel</button>
+              <button class="btn btn-danger" data-action="confirm">Clear History</button>
+          </div>
+      </div>
+  </div>
+  <div class="confirmation-modal-overlay" id="clearAllChatModal">
+      <div class="confirmation-modal">
+          <h3><i class="fas fa-skull-crossbones" style="color: var(--danger);"></i> Confirm Delete All Chats</h3>
+          <p><strong>DANGER:</strong> Are you sure you want to delete ALL your chat history? This action is permanent and cannot be undone.</p>
+          <div class="confirmation-modal-actions">
+              <button class="btn btn-secondary" data-action="cancel">Cancel</button>
+              <button class="btn btn-danger" data-action="confirm">Delete All Chats</button>
+          </div>
+      </div>
+  </div>
+  <div class="confirmation-modal-overlay" id="deleteAccountModal">
+      <div class="confirmation-modal">
+          <h3><i class="fas fa-user-slash" style="color: var(--danger);"></i> Confirm Account Deletion</h3>
+          <p><strong>PERMANENT ACTION:</strong> Are you sure you want to delete your account? All your data (notes, tasks, chats, settings) will be permanently erased. This cannot be undone.</p>
+          <p>Type "DELETE MY ACCOUNT" to confirm:</p>
+          <input type="text" id="deleteAccountConfirmText" class="form-control" style="margin-bottom: 1rem; text-align: center;">
+          <div class="confirmation-modal-actions">
+              <button class="btn btn-secondary" data-action="cancel">Cancel</button>
+              <button class="btn btn-danger" data-action="confirm" id="finalDeleteAccountBtn" disabled>Delete Account</button>
+          </div>
+      </div>
   </div>
 
   <!-- Toast notification -->
@@ -734,21 +665,119 @@
       const avatarPreview = document.getElementById('avatarPreview');
       const avatarUpload = document.getElementById('avatarUpload');
       const userNameInput = document.getElementById('userName');
-      const userInterestsInput = document.getElementById('userInterests');
+      const userEmailInput = document.getElementById('userEmail');
+      const userBioInput = document.getElementById('userBio');
       const saveProfileBtn = document.getElementById('saveProfileBtn');
-      const changePasswordBtn = document.getElementById('changePasswordBtn');
-      const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
-      const toast = document.getElementById('toast');
       
+      const pageThemeToggle = document.getElementById('pageThemeToggle'); // Renamed for clarity
+      const darkModeVisualToggle = document.getElementById('darkModeVisualToggle'); // Visual only toggle in card
+      const fontSizeSelector = document.querySelector('.font-size-selector');
+
+      const chatbotPersonalitySelect = document.getElementById('chatbotPersonality');
+      const defaultTodoModeToggle = document.getElementById('defaultTodoModeToggle');
+      const saveChatbotSettingsBtn = document.getElementById('saveChatbotSettingsBtn');
+      const clearCurrentChatHistoryBtn = document.getElementById('clearCurrentChatHistoryBtn');
+      const clearAllChatHistoryBtn = document.getElementById('clearAllChatHistoryBtn');
+
+      const changePasswordBtn = document.getElementById('changePasswordBtn');
+      const setup2FABtn = document.getElementById('setup2FABtn');
+      
+      const exportDataBtn = document.getElementById('exportDataBtn');
+      const importDataBtn = document.getElementById('importDataBtn');
+      const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+
+      const toast = document.getElementById('toast');
+
+      const clearCurrentChatModal = document.getElementById('clearCurrentChatModal');
+      const clearAllChatModal = document.getElementById('clearAllChatModal');
+      const deleteAccountModal = document.getElementById('deleteAccountModal');
+      const deleteAccountConfirmText = document.getElementById('deleteAccountConfirmText');
+      const finalDeleteAccountBtn = document.getElementById('finalDeleteAccountBtn');
+
+      // --- START OF THEME SYNCHRONIZATION LOGIC (Standardized) ---
+      function applyThemeSynchronized() {
+          const parentDarkModeSetting = localStorage.getItem("darkMode");
+          const isNowDark = parentDarkModeSetting === "enabled";
+          document.body.classList.toggle("dark-mode", isNowDark);
+          
+          if (pageThemeToggle) { 
+            const sunIcon = pageThemeToggle.querySelector('.fa-sun');
+            const moonIcon = pageThemeToggle.querySelector('.fa-moon');
+            if (sunIcon && moonIcon) {
+                sunIcon.style.display = isNowDark ? 'none' : 'block';
+                moonIcon.style.display = isNowDark ? 'block' : 'none';
+            }
+          }
+          if (darkModeVisualToggle) { // Update the visual toggle in the card
+              darkModeVisualToggle.classList.toggle('active', isNowDark);
+          }
+      }
+      applyThemeSynchronized(); 
+
+      window.addEventListener('storage', (e) => {
+          if (e.key === 'darkMode') {
+              applyThemeSynchronized();
+          }
+      });
+      window.addEventListener('themeChange', (e) => {
+          if (e.detail && typeof e.detail.darkMode === 'boolean') {
+              document.body.classList.toggle("dark-mode", e.detail.darkMode);
+              if (pageThemeToggle) { 
+                const sunIcon = pageThemeToggle.querySelector('.fa-sun');
+                const moonIcon = pageThemeToggle.querySelector('.fa-moon');
+                if (sunIcon && moonIcon) {
+                    sunIcon.style.display = e.detail.darkMode ? 'none' : 'block';
+                    moonIcon.style.display = e.detail.darkMode ? 'block' : 'none';
+                }
+              }
+              if (darkModeVisualToggle) {
+                darkModeVisualToggle.classList.toggle('active', e.detail.darkMode);
+              }
+          }
+      });
+      if (pageThemeToggle) { 
+          pageThemeToggle.addEventListener('click', () => {
+              const bodyIsDarkNow = document.body.classList.toggle('dark-mode');
+              localStorage.setItem('darkMode', bodyIsDarkNow ? 'enabled' : 'disabled');
+              
+              const sunIcon = pageThemeToggle.querySelector('.fa-sun');
+              const moonIcon = pageThemeToggle.querySelector('.fa-moon');
+              if (sunIcon && moonIcon) {
+                sunIcon.style.display = bodyIsDarkNow ? 'none' : 'block';
+                moonIcon.style.display = bodyIsDarkNow ? 'block' : 'none';
+              }
+              if (darkModeVisualToggle) {
+                darkModeVisualToggle.classList.toggle('active', bodyIsDarkNow);
+              }
+              // Notify parent dashboard (if this page is in an iframe and can change the theme)
+              if (window.parent && window.parent !== window) {
+                  window.parent.postMessage({ type: 'themeChange', darkMode: bodyIsDarkNow }, '*');
+              }
+          });
+      }
+      // --- END OF THEME SYNCHRONIZATION LOGIC ---
+
       // Load saved user data
-      function loadUserData() {
-        const savedData = JSON.parse(localStorage.getItem('userSettings')) || {};
-        if (savedData.name) userNameInput.value = savedData.name;
-        if (savedData.interests) userInterestsInput.value = savedData.interests;
-        if (savedData.avatar) avatarPreview.src = savedData.avatar;
+      function loadUserSettings() {
+        const savedProfile = JSON.parse(localStorage.getItem('userProfileSettings')) || {};
+        userNameInput.value = savedProfile.name || 'Harper Nelson';
+        userEmailInput.value = savedProfile.email || 'harper.nelson@example.com';
+        userBioInput.value = savedProfile.bio || 'Web Development, AI, UX Design';
+        avatarPreview.src = savedProfile.avatar || 'https://randomuser.me/api/portraits/men/32.jpg';
+
+        const savedAppearance = JSON.parse(localStorage.getItem('appearanceSettings')) || {};
+        if (fontSizeSelector && savedAppearance.fontSize) {
+            fontSizeSelector.querySelectorAll('button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.size === savedAppearance.fontSize);
+            });
+        }
+        
+        const savedChatbotSettings = JSON.parse(localStorage.getItem('chatbotSettings')) || {};
+        chatbotPersonalitySelect.value = savedChatbotSettings.personality || 'friendly_supportive';
+        const todoModeActive = savedChatbotSettings.defaultTodoMode === true;
+        defaultTodoModeToggle.classList.toggle('active', todoModeActive);
       }
       
-      // Handle avatar upload
       avatarUpload.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -760,76 +789,135 @@
         }
       });
       
-      // Save profile changes
       saveProfileBtn.addEventListener('click', () => {
-        const userSettings = {
+        const userProfileSettings = {
           name: userNameInput.value,
-          interests: userInterestsInput.value,
+          email: userEmailInput.value,
+          bio: userBioInput.value,
           avatar: avatarPreview.src
         };
-        
-        localStorage.setItem('userSettings', JSON.stringify(userSettings));
-        
-        // Update the navigation panel
-        updateNavProfile(userSettings);
-        
+        localStorage.setItem('userProfileSettings', JSON.stringify(userProfileSettings));
         showToast("Profile updated successfully!");
       });
-      
-      // Update navigation panel with new user data
-      function updateNavProfile(settings) {
-        // Update expanded panel
-        const expandedName = document.querySelector('.user-profile-expanded .user-name');
-        const expandedAvatar = document.querySelector('.user-profile-expanded .user-avatar');
-        
-        if (expandedName) expandedName.textContent = settings.name;
-        if (expandedAvatar) expandedAvatar.src = settings.avatar;
-        
-        // Update narrow panel
-        const narrowAvatar = document.querySelector('.user-profile .user-avatar');
-        if (narrowAvatar) narrowAvatar.src = settings.avatar;
+
+      if (fontSizeSelector) {
+        fontSizeSelector.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                fontSizeSelector.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                const appearanceSettings = JSON.parse(localStorage.getItem('appearanceSettings')) || {};
+                appearanceSettings.fontSize = e.target.dataset.size;
+                localStorage.setItem('appearanceSettings', JSON.stringify(appearanceSettings));
+                showToast(`Font size set to ${e.target.dataset.size} (conceptual).`);
+            }
+        });
       }
+      if (darkModeVisualToggle) { // Make the visual toggle in the card also clickable
+        darkModeVisualToggle.addEventListener('click', () => {
+            if(pageThemeToggle) pageThemeToggle.click(); // Trigger the main header toggle
+        });
+      }
+
+
+      defaultTodoModeToggle.addEventListener('click', () => {
+          defaultTodoModeToggle.classList.toggle('active');
+          const currentChatbotSettings = JSON.parse(localStorage.getItem('chatbotSettings')) || {};
+          currentChatbotSettings.defaultTodoMode = defaultTodoModeToggle.classList.contains('active');
+          localStorage.setItem('chatbotSettings', JSON.stringify(currentChatbotSettings));
+      });
       
-      // Handle password change
+      saveChatbotSettingsBtn.addEventListener('click', () => {
+          const chatbotSettings = {
+              personality: chatbotPersonalitySelect.value,
+              defaultTodoMode: defaultTodoModeToggle.classList.contains('active')
+          };
+          localStorage.setItem('chatbotSettings', JSON.stringify(chatbotSettings));
+          showToast("Chatbot settings saved!");
+      });
+
+      clearCurrentChatHistoryBtn.addEventListener('click', () => showConfirmationModal(clearCurrentChatModal));
+      clearAllChatHistoryBtn.addEventListener('click', () => showConfirmationModal(clearAllChatModal));
+      
       changePasswordBtn.addEventListener('click', () => {
         const currentPass = document.getElementById('currentPassword').value;
         const newPass = document.getElementById('newPassword').value;
         const confirmPass = document.getElementById('confirmPassword').value;
-        
         if (!currentPass || !newPass || !confirmPass) {
-          showToast("Please fill all password fields");
-          return;
+          showToast("Please fill all password fields", "error"); return;
         }
-        
         if (newPass !== confirmPass) {
-          showToast("New passwords don't match");
-          return;
+          showToast("New passwords don't match", "error"); return;
         }
-        
-        // In a real app, you would validate current password and update it
         showToast("Password changed successfully!");
-        
-        // Clear fields
         document.getElementById('currentPassword').value = '';
         document.getElementById('newPassword').value = '';
         document.getElementById('confirmPassword').value = '';
       });
-      
-      // Handle forgot password
-      forgotPasswordBtn.addEventListener('click', () => {
-        // In a real app, this would trigger a password reset flow
-        showToast("Password reset link sent to your email");
+
+      setup2FABtn.addEventListener('click', () => {
+          showToast("2FA setup would open a new flow (conceptual).", "info");
+      });
+
+      exportDataBtn.addEventListener('click', () => {
+          showToast("Preparing your data for export... (conceptual)", "info");
+      });
+
+      importDataBtn.addEventListener('click', () => {
+          showToast("Import functionality not yet implemented (conceptual).", "info");
+      });
+
+      deleteAccountBtn.addEventListener('click', () => {
+          deleteAccountConfirmText.value = ''; 
+          finalDeleteAccountBtn.disabled = true;
+          showConfirmationModal(deleteAccountModal);
+      });
+
+      deleteAccountConfirmText.addEventListener('input', () => {
+          finalDeleteAccountBtn.disabled = deleteAccountConfirmText.value !== "DELETE MY ACCOUNT";
       });
       
-      // Show toast notification
-      function showToast(message) {
+      function showToast(message, type = 'success') { 
         toast.textContent = message;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
+        toast.className = 'toast show'; 
+        if (type !== 'success') {
+          toast.classList.add(type);
+        }
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 3000);
+      }
+
+      function showConfirmationModal(modalElement) {
+          modalElement.classList.add('show');
+          modalElement.querySelector('[data-action="cancel"]').onclick = () => modalElement.classList.remove('show');
+          const confirmBtn = modalElement.querySelector('[data-action="confirm"]');
+          
+          if (modalElement.id === 'clearCurrentChatModal') {
+              confirmBtn.onclick = () => {
+                  localStorage.removeItem('currentChatMessages_temp'); 
+                  showToast("Current chat history cleared (conceptual).");
+                  modalElement.classList.remove('show');
+              };
+          } else if (modalElement.id === 'clearAllChatModal') {
+              confirmBtn.onclick = () => {
+                  localStorage.removeItem('allChats_ClassMate'); 
+                  showToast("All chat history cleared (conceptual)!", "warning");
+                  modalElement.classList.remove('show');
+              };
+          } else if (modalElement.id === 'deleteAccountModal') {
+              confirmBtn.onclick = () => {
+                  if (deleteAccountConfirmText.value === "DELETE MY ACCOUNT") {
+                      console.warn("Account Deletion Triggered (Conceptual)");
+                      showToast("Account deleted successfully. You will be logged out.", "danger");
+                      modalElement.classList.remove('show');
+                  } else {
+                      showToast("Confirmation text does not match.", "error");
+                  }
+              };
+          }
       }
       
-      // Initialize
-      loadUserData();
+      loadUserSettings();
     });
   </script>
 </body>
