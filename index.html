@@ -70,6 +70,11 @@
       margin: 0;
       padding: 0;
     }
+    html 
+    {
+    scroll-behavior: smooth;
+    }
+
 
     body {
       font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
@@ -397,16 +402,18 @@
       margin-top: 2rem;
     }
 
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2.5rem;
+    /* Updated Features Grid Layout */
+    .features-container {
       padding: 4rem 2rem;
       max-width: 1400px;
       margin: 0 auto;
       width: 100%;
-      position: relative;
-      z-index: 2;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
     }
 
     .feature-card {
@@ -424,8 +431,6 @@
       flex-direction: column;
       align-items: center;
       height: 100%;
-      min-width: 0;
-      width: 100%;
     }
 
     .feature-card::before {
@@ -954,13 +959,10 @@
     }
 
     /* Responsive styles */
+    
     @media (max-width: 1200px) {
       .hero h1 {
         font-size: 4rem;
-      }
-      
-      .features {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
       }
       
       .image-left, .image-right {
@@ -979,7 +981,7 @@
       }
       
       .features {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+        grid-template-columns: repeat(2, 1fr);
       }
       
       .image-left {
@@ -1040,7 +1042,7 @@
       }
 
       .features {
-        grid-template-columns: 1fr !important;
+        grid-template-columns: 1fr;
         padding: 2rem 1rem;
         gap: 2rem;
       }
@@ -1130,16 +1132,13 @@
     <header id="mainHeader">
       <div class="header-container">
         <div class="logo-container">
-          <img src="frontend/logos/logo.png" alt="Classmate AI Logo" class="logo" />
+          <img src="https://ganesh714.github.io/Classmate1/frontend/logos/logo.png" alt="Classmate AI Logo" class="logo" />
           <span class="logo-text">ClassmateAI</span>
         </div>
         <nav>
-          <a href="#">Features</a>
-          <a href="#">Solutions</a>
-          <a href="#">Learn</a>
-          <a href="#">For Teams</a>
-          <a href="#">For Developers</a>
-          <a href="#">Contact</a>
+          <a href="#" class="nav-link" data-target="hero">Home</a>
+          <a href="#features" class="nav-link" data-target="features">Features</a>
+          <a href="#" class="nav-link" data-target="contact">Contact</a>
         </nav>
         <div class="auth-buttons">
           <button class="theme-toggle" id="themeToggleDesktop">
@@ -1157,15 +1156,12 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="hero">
       <h1>Creativity, Unleashed.</h1>
       <p>Classmate AI helps you learn smarter, not harder. Get personalized study plans, instant answers to your questions, and intelligent insights to boost your academic performance.</p>
       <div class="cta-buttons">
         <button class="btn btn-primary">
           <i class="fas fa-rocket"></i> Get Started
-        </button>
-        <button class="btn btn-secondary">
-          <i class="fas fa-code"></i> Developer API
         </button>
       </div>
     </section>
@@ -1183,60 +1179,59 @@
     <button class="close-mobile-menu" id="closeMobileMenu">
       <i class="fas fa-times"></i>
     </button>
-    <a href="#" style="--i:1">Features</a>
-    <a href="#" style="--i:2">Solutions</a>
-    <a href="#" style="--i:3">Learn</a>
-    <a href="#" style="--i:4">For Teams</a>
-    <a href="#" style="--i:5">For Developers</a>
-    <a href="#" style="--i:6">Contact</a>
+    <a href="#" class="mobile-nav-link" data-target="hero" style="--i:1">Home</a>
+    <a href="#features" class="mobile-nav-link" data-target="features" style="--i:2">Features</a>
+    <a href="#" class="mobile-nav-link" data-target="contact" style="--i:3">Contact</a>
     <button class="btn btn-primary mobile-auth-btn" onclick= "window.location.href = './frontend/pages/Login page.html'" >
       <i class="fas fa-sign-in-alt"></i> Login/Signup
     </button>
   </div>
 
   <!-- Features -->
-  <section class="features">
-    <div class="feature-card">
-      <div class="feature-icon-container">
-        <i class="fas fa-robot feature-icon"></i>
+  <section class="features-container" id="features">
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon-container">
+          <i class="fas fa-robot feature-icon"></i>
+        </div>
+        <h3>Chatbot AI</h3>
+        <p>Get instant answers to your study questions with our intelligent AI assistant available 24/7.</p>
       </div>
-      <h3>Chatbot AI</h3>
-      <p>Get instant answers to your study questions with our intelligent AI assistant available 24/7.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon-container">
-        <i class="fas fa-comments feature-icon"></i>
+      <div class="feature-card">
+        <div class="feature-icon-container">
+          <i class="fas fa-comments feature-icon"></i>
+        </div>
+        <h3>AI Mock Interview</h3>
+        <p>Practice interviews with our AI that adapts to your field and provides detailed feedback.</p>
       </div>
-      <h3>AI Mock Interview</h3>
-      <p>Practice interviews with our AI that adapts to your field and provides detailed feedback.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon-container">
-        <i class="fas fa-book feature-icon"></i>
+      <div class="feature-card">
+        <div class="feature-icon-container">
+          <i class="fas fa-book feature-icon"></i>
+        </div>
+        <h3>Smart Notes</h3>
+        <p>Organize, search, and highlight your notes with AI-powered suggestions and summaries.</p>
       </div>
-      <h3>Smart Notes</h3>
-      <p>Organize, search, and highlight your notes with AI-powered suggestions and summaries.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon-container">
-        <i class="fas fa-tasks feature-icon"></i>
+      <div class="feature-card">
+        <div class="feature-icon-container">
+          <i class="fas fa-tasks feature-icon"></i>
+        </div>
+        <h3>Task Manager</h3>
+        <p>Stay on top of assignments and deadlines with intelligent prioritization and reminders.</p>
       </div>
-      <h3>Task Manager</h3>
-      <p>Stay on top of assignments and deadlines with intelligent prioritization and reminders.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon-container">
-        <i class="fas fa-percentage feature-icon"></i>
+      <div class="feature-card">
+        <div class="feature-icon-container">
+          <i class="fas fa-percentage feature-icon"></i>
+        </div>
+        <h3>Attendance Calculator</h3>
+        <p>Track your class attendance and get alerts when you're at risk of falling below requirements.</p>
       </div>
-      <h3>Attendance Calculator</h3>
-      <p>Track your class attendance and get alerts when you're at risk of falling below requirements.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon-container">
-        <i class="fas fa-chart-line feature-icon"></i>
+      <div class="feature-card">
+        <div class="feature-icon-container">
+          <i class="fas fa-chart-line feature-icon"></i>
+        </div>
+        <h3>Personal Dashboard</h3>
+        <p>Visualize your academic progress with customizable charts and performance metrics.</p>
       </div>
-      <h3>Personal Dashboard</h3>
-      <p>Visualize your academic progress with customizable charts and performance metrics.</p>
     </div>
   </section>
   
@@ -1360,7 +1355,7 @@
   <!-- Footer -->
   <footer>
     <div class="logo-container">
-      <img src="frontend/logos/logo.png" alt="Classmate AI Logo" class="logo" />
+      <img src="https://ganesh714.github.io/Classmate1/frontend/logos/logo.png" alt="Classmate AI Logo" class="logo" />
       <span class="logo-text">ClassmateAI</span>
     </div>
     <div class="footer-links">
@@ -1475,6 +1470,39 @@
       } else {
         document.body.classList.remove('dark-mode');
         if (themeText) themeText.textContent = 'Light Mode';
+      }
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('data-target');
+        const targetElement = document.getElementById(targetId);
+        
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Ensure hash links work with smooth scrolling
+    window.addEventListener('load', function() {
+      if (window.location.hash) {
+        const targetId = window.location.hash.substring(1);
+        const targetElement = document.getElementById(targetId);
+        
+        if (targetElement) {
+          setTimeout(() => {
+            window.scrollTo({
+              top: targetElement.offsetTop - 80,
+              behavior: 'smooth'
+            });
+          }, 100);
+        }
       }
     });
   </script>
